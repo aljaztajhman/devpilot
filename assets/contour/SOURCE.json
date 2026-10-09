@@ -6,15 +6,37 @@
     "date": "2026-10-09",
     "note": "Board keep = locked artifact. Contour D first fold is a mechanical port of Jan's clean assets (C2PA stripped). Prefer these over www-synced poster/WebGL stack.",
     "files": {
-      "d.svg": "Contour D mark path (viewBox 1280\u00d71280)",
+      "d.svg": "Contour D mark path (viewBox 1280×1280)",
       "contours.svg": "Contour field SVG reference / static fallback",
-      "logo-dark.svg": "Wordmark (viewBox 4944\u00d71280, fill #0D0D0D)",
+      "logo-dark.svg": "Wordmark (viewBox 4944×1280, fill #0D0D0D)",
       "logo-light.svg": "Wordmark light variant",
-      "devpilot-hero.html": "Complete sticky Contour hero reference (WebGL + HUD + nav Work\u00b9\u00b3/About/Contact + two-line claim)",
+      "devpilot-hero.html": "Complete sticky Contour hero reference (WebGL + HUD + nav Work¹³/About/Contact + two-line claim)",
       "hero.css": "Scoped CSS port of hero styles under #hero",
       "hero.js": "WebGL field + scroll fly-in + LJU clock from hero.html"
     },
-    "clean_source": "/home/box/devpilot/design/packs/www-devpilot-si/assets/board-jan-2026-10-09/clean/"
+    "clean_source": "/home/box/devpilot/design/packs/www-devpilot-si/assets/board-jan-2026-10-09/clean/",
+    "contour_sot": true,
+    "animation_lock": {
+      "message_id": 630400357,
+      "date": "2026-10-09",
+      "spec": "devpilot-hero.html 'scroll: fly into the hole': 260vh runway, sticky 100vh/100svh stage, z = 1 + 13*ease(p), centre lerps to (W/2,H/2), .fade opacity 1 - sstep(0,.3,p), ALT/Contour readouts, prefers-reduced-motion -> 100vh",
+      "brief": "design/packs/www-devpilot-si/briefs/CONTOUR-SCROLL-ZOOM.md"
+    },
+    "brief": "design/packs/www-devpilot-si/briefs/BOARD-ASSETS-2026-10-09.md",
+    "clean_source_vcs": "none (design pack is not a git repo); provenance = sha256 of clean/ files below, byte-identical to the copies in assets/contour/board/",
+    "sha256": {
+      "devpilot-hero.html -> devpilot-hero.html": "caef96db4d62686cadc8c460b741085ef11887265b9279435a54b67971460e3d",
+      "devpilot-d.svg -> d.svg": "a56f548cb8e1ca2655aeeebf410f9e3f41ec4fde532d8f904aaa9b6f84001f65",
+      "devpilot-d-contours.svg -> contours.svg": "3cf3f7e7c71bfca7b6ec458979a2494dbc1f72b25f9a889748da7f9cf2769a33",
+      "devpilot-logo-dark.svg -> logo-dark.svg": "79e2c8f77280a08c3812d704c027a87f3ab4a507ac895eb12c7d262fe4e49b14",
+      "devpilot-logo-light.svg -> logo-light.svg": "a739e5ffa6cac1598f3379b3e175df041ceb32c0441a646a61f721c600305fc7"
+    },
+    "port_deltas": [
+      "styles scoped under #hero; .hero/.stage renamed .board-stage (#board-stage) because D's below-fold already uses .stage for product demos",
+      "hero.js also writes --cx/--cy/--R on #hero and queries .fade inside #hero only; null-guards on #alt/#lvl",
+      "brand link href '../' (repo root) instead of '/'; nav About -> #about (studio section id)",
+      "data-clock spans carry data-clock-full so the shared site.js clock prints HH:MM:SS like the board clock"
+    ]
   },
   "previous_www_sync": {
     "source": "www-devpilot-si-v2 (superseded for Contour D first fold by board 630400016)",

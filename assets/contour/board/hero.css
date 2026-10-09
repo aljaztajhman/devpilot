@@ -15,7 +15,7 @@
   background:var(--bg);color:var(--ink);
   font-family:var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
 }
-#hero *,#hero *::before,#hero *::after{box-sizing:border-box}
+#hero *,#hero *::before,#hero *::after{box-sizing:border-box;margin:0;padding:0}
 #hero a{color:inherit;text-decoration:none}
 #hero a:focus-visible{outline:1px solid var(--ink);outline-offset:4px}
 

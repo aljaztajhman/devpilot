@@ -177,6 +177,9 @@ def splice(doc: str, name: str, body: str) -> str:
 
 # ---------------------------------------------------------------- main
 def main():
+    if "<!-- www:hero -->" not in D_HTML.read_text():
+        sys.exit("variants/d.html no longer carries www:* markers: Contour D's first fold is the board-locked hero "
+                 "(assets/contour/board/, Jan 630400016). Nothing to sync.")
     css_files = sorted((OUT / "_next/static/css").glob("*.css"))
     assert len(css_files) == 1, css_files
     css_src = css_files[0].read_text()

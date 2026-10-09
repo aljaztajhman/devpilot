@@ -108,9 +108,12 @@ for (const a of $$("[data-hl]")) {
   a.addEventListener("blur", off);
 }
 const drift = [[".s-stranko", -.035], [".s-belin", .03], [".s-custom", -.08]].map(([s, k]) => [$(s, visual), k]).filter(([el]) => el);
+// D's board hero pins for a scroll runway (assets/contour/board/hero.js); the drift starts once it lets go.
+const boardHero = $("#board-stage") && $("#hero");
 function parallax() {
-  if (reduce.matches || scrollY > innerHeight * 1.4) return;
-  for (const [el, k] of drift) el.style.transform = `translateY(${(scrollY * k).toFixed(1)}px)`;
+  const y = Math.max(scrollY - (boardHero ? boardHero.offsetHeight - innerHeight : 0), 0);
+  if (reduce.matches || y > innerHeight * 1.4) return;
+  for (const [el, k] of drift) el.style.transform = `translateY(${(y * k).toFixed(1)}px)`;
 }
 
 /* ---------- demos: messages to and from the frames ---------- */
