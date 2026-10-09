@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Nextgen · Stranko, Belin and custom websites</title>
 <meta name="description" content="Three homepage directions for Nextgen, a two-founder software studio in Ljubljana. Pick a variant at the top.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,6 +29,9 @@
   .page { position: fixed; left: 0; right: 0; bottom: 0; top: calc(var(--bar-h) + env(safe-area-inset-top, 0px)); width: 100%; height: calc(100% - var(--bar-h) - env(safe-area-inset-top, 0px)); border: 0; background: var(--bar-2); }
   @media (max-width: 760px) { .desc, .tag { display: none; } .bar { gap: 10px; } .seg button { padding: 0 11px; } .seg button span { display: none; } }
 </style>
+</head>
+<body>
+
 
 <div class="bar" role="toolbar" aria-label="Variant picker">
   <span class="tag mono">Nextgen · 3 directions</span>
@@ -63,3 +71,5 @@
   if (!V[start]) { try { start = localStorage.getItem("nextgen-variant") || ""; } catch {} }
   show(V[start] ? start : "a", false);
 </script>
+</body>
+</html>
