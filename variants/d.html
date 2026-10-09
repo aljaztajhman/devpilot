@@ -4,34 +4,54 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Devpilot · D · Contour</title>
-<meta name="description" content="Devpilot is a two-founder software studio in Ljubljana. We design and build web apps, internal tools and websites for trades, construction and energy companies in Slovenia, Austria and Germany. Two products of our own, Stranko and Belin, are in production.">
-<meta name="theme-color" content="#0A0A0B">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23ECE9E2'/%3E%3Cpath d='M10 9h5.5a7 7 0 0 1 0 14H10z' fill='none' stroke='%230A0A0B' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E">
-<!-- Contour hero: mechanical copy of www Contour (www-devpilot-si-v2 build). Generated parts are marked www:* — see scripts/sync-contour-www.py -->
-<!-- www:head -->
-<link rel="preload" href="../assets/contour/fonts/GeistSans.woff2" as="font" crossorigin="" type="font/woff2"/><link rel="preload" as="image" imageSrcSet="../assets/contour/img/hero-fallback-480.webp 480w, ../assets/contour/img/hero-fallback-480.webp 480w, ../assets/contour/img/hero-fallback-800.webp 800w, ../assets/contour/img/hero-fallback-800.webp 800w, ../assets/contour/img/hero-fallback-1200.webp 1200w, ../assets/contour/img/hero-fallback-1600.webp 1600w" imageSizes="100vw" fetchPriority="high"/><link rel="preload" as="image" imageSrcSet="../assets/contour/img/hero-fallback-mobile-480.webp 480w, ../assets/contour/img/hero-fallback-mobile-480.webp 480w, ../assets/contour/img/hero-fallback-mobile-800.webp 800w, ../assets/contour/img/hero-fallback-mobile-800.webp 800w, ../assets/contour/img/hero-fallback-mobile-1200.webp 1200w, ../assets/contour/img/hero-fallback-mobile-1600.webp 1600w" imageSizes="100vw"/>
-<!-- /www:head -->
+<meta name="description" content="Devpilot designs and builds apps and websites end-to-end, from first brief to live release. Software studio in Ljubljana.">
+<meta name="theme-color" content="#0D0D0D">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23ECE8E3'/%3E%3Cpath d='M0 0H16A16 16 0 0 1 16 32H11.325V21.3125H16A5.3125 5.3125 0 1 0 10.6875 16V20.675H0Z' fill='%230D0D0D'/%3E%3C/svg%3E">
+<!-- Contour D first fold: board-locked Jan hero (Zulip 630400016, 2026-10-09). Mechanical port — see assets/contour/board/ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600&family=Geist+Mono:wght@400&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/d.css">
-<link rel="stylesheet" href="../assets/contour/www-hero.css">
-<!-- www layout.tsx bootScript, verbatim: js flag, reduced motion (?rm=1 / ?shot=1 / OS), first-visit intro only on "/" (never here), then html.hero-in -->
-<script>(function(h){h.classList.add('js');var q=location.search;if(/[?&]shot=1/.test(q))h.classList.add('shot','rm');else if(/[?&]rm=1/.test(q)||matchMedia('(prefers-reduced-motion: reduce)').matches)h.classList.add('rm');try{if(location.pathname==='/'&&!h.classList.contains('rm')&&(!localStorage.getItem('dp-intro')||/[?&]intro=1/.test(q))){h.classList.add('intro');localStorage.setItem('dp-intro','1');setTimeout(function(){h.classList.remove('intro');h.classList.add('hero-in')},1000)}else h.classList.add('hero-in')}catch(e){h.classList.add('hero-in')}})(document.documentElement)</script>
+<link rel="stylesheet" href="../assets/contour/board/hero.css">
 </head>
 <body id="top">
 <a class="skip" href="#main">Skip to content</a>
 
-<!-- www:nav -->
-<header class="nav"><a class="nav__logo" aria-label="Devpilot — home" href="#top"><svg viewBox="0 0 368.92 96" aria-hidden="true" focusable="false"><path fill="currentColor" d="M0 0H48A48 48 0 0 1 48 96H34V64H48A16 16 0 1 0 32 48V62H0Z"></path><path fill="currentColor" transform="translate(124.8 70.08)" d="M4.677 0V-44.16H19.789Q30.511-44.16 36.277-38.407Q42.043-32.654 42.043-22.018Q42.043-11.444 36.37-5.722Q30.698 0 20.162 0ZM13.858-7.767H19.789Q26.309-7.767 29.444-11.286Q32.579-14.805 32.579-22.053Q32.579-29.355 29.444-32.874Q26.309-36.393 19.789-36.393H13.858ZM62.324 .746Q57.241 .746 53.486-1.403Q49.73-3.553 47.669-7.475Q45.608-11.397 45.608-16.656Q45.608-21.916 47.669-25.807Q49.73-29.698 53.458-31.879Q57.187-34.059 62.215-34.059Q67.133-34.059 70.795-31.898Q74.457-29.738 76.449-25.707Q78.441-21.677 78.441-16.072V-14.203H54.982Q55.189-10.17 57.185-8.175Q59.182-6.18 62.463-6.18Q64.897-6.18 66.527-7.234Q68.158-8.287 68.827-10.357L77.978-9.817Q76.637-4.844 72.458-2.049Q68.28 .746 62.324 .746ZM54.982-19.851H69.166Q68.967-23.595 67.077-25.434Q65.188-27.272 62.215-27.272Q59.256-27.272 57.322-25.34Q55.388-23.409 54.982-19.851ZM90.85 0 78.672-33.313H88.156L96.167-9.111L104.143-33.313H113.627L101.414 0ZM116.157 9.33V-33.313H124.875L125.069-26.257L124.287-26.596Q125.531-30.23 128.336-32.145Q131.142-34.059 134.901-34.059Q139.57-34.059 142.694-31.738Q145.818-29.417 147.394-25.481Q148.97-21.545 148.97-16.656Q148.97-11.803 147.376-7.849Q145.783-3.896 142.642-1.575Q139.501 .746 134.831 .746Q132.385 .746 130.265-.142Q128.144-1.03 126.62-2.655Q125.096-4.279 124.432-6.498L125.213-7.021V9.33ZM132.418-6.284Q135.769-6.284 137.7-9.048Q139.63-11.812 139.63-16.656Q139.63-21.5 137.7-24.264Q135.769-27.028 132.418-27.028Q130.184-27.028 128.57-25.869Q126.957-24.71 126.085-22.391Q125.213-20.072 125.213-16.656Q125.213-13.241 126.071-10.922Q126.93-8.603 128.557-7.444Q130.184-6.284 132.418-6.284ZM153.226 0V-33.313H162.282V0ZM153.067-37.465V-44.884H162.442V-37.465ZM177.21 0Q173.234 0 170.943-2.015Q168.651-4.03 168.651-8.519V-44.16H177.707V-9.476Q177.707-8.063 178.393-7.43Q179.078-6.797 180.352-6.797H182.621V0ZM200.817 .746Q195.754 .746 191.968-1.403Q188.181-3.553 186.089-7.475Q183.997-11.397 183.997-16.656Q183.997-21.943 186.089-25.834Q188.181-29.725 191.968-31.892Q195.754-34.059 200.817-34.059Q205.88-34.059 209.653-31.892Q213.426-29.725 215.518-25.834Q217.611-21.943 217.611-16.656Q217.611-11.397 215.518-7.475Q213.426-3.553 209.653-1.403Q205.88 .746 200.817 .746ZM200.817-6.284Q204.382-6.284 206.327-9.01Q208.271-11.735 208.271-16.656Q208.271-21.543 206.327-24.286Q204.382-27.028 200.817-27.028Q197.252-27.028 195.294-24.286Q193.336-21.543 193.336-16.656Q193.336-11.735 195.294-9.01Q197.252-6.284 200.817-6.284ZM234.573 0Q229.433 0 227.026-2.383Q224.619-4.767 224.619-9.922V-41.13H233.675V-10.952Q233.675-8.573 234.687-7.685Q235.7-6.797 237.787-6.797H242.445V0ZM219.28-26.516V-33.313H242.445V-26.516Z"></path></svg></a><div class="nav__mid mono" aria-hidden="true"><span>LJU <span data-clock="true" data-clock-full="">--:--:--</span></span><span>ALT <span data-alt="true">000</span></span></div><nav class="nav__links" aria-label="Primary"><a href="#work"><span class="sr">Work</span><span class="roll" aria-hidden="true"><span class="roll__a"><i style="--i:0">W</i><i style="--i:1">o</i><i style="--i:2">r</i><i style="--i:3">k</i></span><span class="roll__b"><i style="--i:0">W</i><i style="--i:1">o</i><i style="--i:2">r</i><i style="--i:3">k</i></span></span><sup>13</sup></a><a href="#studio"><span class="sr">About</span><span class="roll" aria-hidden="true"><span class="roll__a"><i style="--i:0">A</i><i style="--i:1">b</i><i style="--i:2">o</i><i style="--i:3">u</i><i style="--i:4">t</i></span><span class="roll__b"><i style="--i:0">A</i><i style="--i:1">b</i><i style="--i:2">o</i><i style="--i:3">u</i><i style="--i:4">t</i></span></span></a><a href="#contact"><span class="sr">Contact</span><span class="roll" aria-hidden="true"><span class="roll__a"><i style="--i:0">C</i><i style="--i:1">o</i><i style="--i:2">n</i><i style="--i:3">t</i><i style="--i:4">a</i><i style="--i:5">c</i><i style="--i:6">t</i></span><span class="roll__b"><i style="--i:0">C</i><i style="--i:1">o</i><i style="--i:2">n</i><i style="--i:3">t</i><i style="--i:4">a</i><i style="--i:5">c</i><i style="--i:6">t</i></span></span></a></nav><button class="nav__menu" type="button" aria-expanded="false" aria-controls="mnav" aria-label="Menu"><span class="nav__burger" aria-hidden="true"></span><span class="nav__burger-label">Menu</span></button></header><div class="mnav" id="mnav" role="dialog" aria-label="Menu" aria-hidden="true"><button class="mnav__close mono" type="button" tabindex="-1">Close</button><nav aria-label="Mobile"><a class="big" tabindex="-1" aria-current="page" href="#top">Home</a><a class="big" tabindex="-1" href="#work">Work</a><a class="big" tabindex="-1" href="#studio">About</a><a class="big" tabindex="-1" href="#contact">Contact</a></nav><div class="mono steel"><a href="mailto:hello@example.com" tabindex="-1">hello@example.com</a><br/>LJU <span data-clock="true" data-clock-full="">--:--:--</span></div></div>
-<!-- /www:nav -->
+<!-- ============ BOARD HERO (Jan locked) ============ -->
+<section class="hero board-hero" id="hero" aria-label="Intro">
+  <div class="board-stage" id="board-stage">
+    <canvas id="field" aria-hidden="true"></canvas>
+<svg class="d-fallback" viewBox="0 0 1280 1280" aria-hidden="true"><path fill="#ECE8E3" d="M0 0H640A640 640 0 0 1 640 1280H453V852.5H640A212.5 212.5 0 1 0 427.5 640V827H0Z"/></svg>
+
+    <a class="x brand" href="../" aria-label="Devpilot home">
+<svg viewBox="0 0 4944 1280" aria-hidden="true"><g fill="currentColor"><path d="M0 0H640A640 640 0 0 1 640 1280H453V852.5H640A212.5 212.5 0 1 0 427.5 640V827H0Z"/><path d="M1780 912.5V367.5H1968.1Q2100.9 367.5 2172.2 438.5Q2243.6 509.5 2243.6 640.8Q2243.6 771.3 2173.4 841.9Q2103.2 912.5 1972.7 912.5ZM1896.7 814.2H1968.1Q2047.1 814.2 2085.1 771.6Q2123.1 729 2123.1 640Q2123.1 551 2085.1 508.4Q2047.1 465.8 1968.1 465.8H1896.7ZM2508.5 921.7Q2445.5 921.7 2399.1 895.2Q2352.6 868.7 2326.9 820.4Q2301.2 772 2301.2 706.8Q2301.2 641.5 2326.9 593.6Q2352.6 545.6 2398.7 518.7Q2444.7 491.9 2507.7 491.9Q2569.1 491.9 2614.4 518.7Q2659.7 545.6 2684.6 595.5Q2709.6 645.4 2709.6 714.5V737.5H2420.2Q2422.5 786.6 2446.7 810.4Q2470.8 834.2 2510.8 834.2Q2539.9 834.2 2559.5 821.9Q2579.1 809.6 2587.5 784.3L2703.4 791.2Q2687.3 852.6 2635.1 887.2Q2582.9 921.7 2508.5 921.7ZM2420.2 666.9H2591.4Q2589.1 621.6 2566.4 599.3Q2543.8 577.1 2507.7 577.1Q2471.6 577.1 2448.2 600.5Q2424.8 623.9 2420.2 666.9ZM2903.8 912.5 2753.3 501.1H2873.8L2971.3 796.6L3068 501.1H3188.6L3037.3 912.5ZM3255.3 1027.6V501.1H3365.9L3368.2 587.8L3359 584Q3374.3 539.4 3408.9 515.6Q3443.4 491.9 3489.5 491.9Q3547 491.9 3585.4 520.3Q3623.8 548.7 3643.4 597.4Q3662.9 646.1 3662.9 706.8Q3662.9 766.7 3643.4 815.8Q3623.8 864.9 3585 893.3Q3546.3 921.7 3488.7 921.7Q3458.8 921.7 3432.7 910.6Q3406.6 899.5 3387.8 879.5Q3368.9 859.5 3360.5 831.9L3370.5 825.8V1027.6ZM3457.2 833.4Q3497.9 833.4 3521.3 799.7Q3544.7 765.9 3544.7 706.8Q3544.7 647.7 3521.3 613.9Q3497.9 580.1 3457.2 580.1Q3430.4 580.1 3410.8 594.3Q3391.2 608.5 3380.8 636.9Q3370.5 665.3 3370.5 706.8Q3370.5 748.2 3380.8 776.6Q3391.2 805 3410.8 819.2Q3430.4 833.4 3457.2 833.4ZM3742 912.5V501.1H3857.1V912.5ZM3739.7 450.4V358.3H3858.7V450.4ZM4065.2 912.5Q4014.5 912.5 3986.1 887.2Q3957.7 861.8 3957.7 805V367.5H4072.8V792.8Q4072.8 811.2 4081.3 818.9Q4089.7 826.5 4105.8 826.5H4133.5V912.5ZM4384.5 921.7Q4321.5 921.7 4274.7 895.2Q4227.9 868.7 4201.8 820.4Q4175.7 772 4175.7 706.8Q4175.7 641.5 4201.8 593.6Q4227.9 545.6 4274.7 518.7Q4321.5 491.9 4384.5 491.9Q4447.4 491.9 4494.3 518.7Q4541.1 545.6 4567.2 593.6Q4593.3 641.5 4593.3 706.8Q4593.3 772 4567.2 820.4Q4541.1 868.7 4494.3 895.2Q4447.4 921.7 4384.5 921.7ZM4384.5 833.4Q4427.5 833.4 4451.3 800Q4475.1 766.7 4475.1 706.8Q4475.1 646.9 4451.3 613.5Q4427.5 580.1 4384.5 580.1Q4341.5 580.1 4317.7 613.5Q4293.9 646.9 4293.9 706.8Q4293.9 766.7 4317.7 800Q4341.5 833.4 4384.5 833.4ZM4842.7 912.5Q4779 912.5 4749.1 882.9Q4719.2 853.4 4719.2 788.9V404.3H4834.3V775.1Q4834.3 805 4847 815.8Q4859.6 826.5 4885 826.5H4942.5V912.5ZM4653.1 587V501.1H4942.5V587Z"/></g></svg>
+    </a>
+
+    <div class="x mono clock" aria-hidden="true"><span>LJU <span data-clock data-clock-full>11:04:38</span></span><span>ALT <span id="alt">000</span></span></div>
+
+    <nav class="x nav" aria-label="Main">
+      <a href="#work">Work<sup>13</sup></a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <span class="sq fade" aria-hidden="true"></span>
+    <p class="x mono tag fade">Software &amp; web studio · Ljubljana</p>
+    <p class="x mono coords fade" aria-hidden="true">46.05°N 14.51°E · Ljubljana<br>LJU <span data-clock data-clock-full>11:04:38</span></p>
+
+    <p class="x lede fade">Devpilot designs and builds apps and websites end-to-end, from first brief to live release.</p>
+
+    <h1 class="x fade"><span>Software</span><span class="l2">that ships.</span></h1>
+
+    <p class="x mono index fade">Index: 2 apps / 11 websites</p>
+    <p class="x mono scroll fade" aria-hidden="true">Scroll to fly in</p>
+    <p class="x mono contour" aria-hidden="true">(<span id="lvl">00</span>) Contour</p>
+  </div>
+</section>
 
 <main id="main">
 
   <div class="opening dark grain" data-theme="dark">
-
-  <!-- ============ HERO ============ -->
-  <!-- www Contour hero, copied from the www build by scripts/sync-contour-www.py (poster + WebGL field, HUD, two-line desktop / three-line mobile claim) -->
-<!-- www:hero -->
-<section class="hero" aria-label="Intro"><div class="hero__top"><div style="position:absolute;inset:0"><div class="hero__poster"><img alt="" fetchPriority="high" width="1920" height="1080" decoding="async" data-nimg="1" class="hero__posterDesk" style="color:transparent" sizes="100vw" srcSet="../assets/contour/img/hero-fallback-480.webp 480w, ../assets/contour/img/hero-fallback-480.webp 480w, ../assets/contour/img/hero-fallback-800.webp 800w, ../assets/contour/img/hero-fallback-800.webp 800w, ../assets/contour/img/hero-fallback-1200.webp 1200w, ../assets/contour/img/hero-fallback-1600.webp 1600w" src="../assets/contour/img/hero-fallback-1600.webp"/><img alt="" width="1080" height="1920" decoding="async" data-nimg="1" class="hero__posterMob" style="color:transparent" sizes="100vw" srcSet="../assets/contour/img/hero-fallback-mobile-480.webp 480w, ../assets/contour/img/hero-fallback-mobile-480.webp 480w, ../assets/contour/img/hero-fallback-mobile-800.webp 800w, ../assets/contour/img/hero-fallback-mobile-800.webp 800w, ../assets/contour/img/hero-fallback-mobile-1200.webp 1200w, ../assets/contour/img/hero-fallback-mobile-1600.webp 1600w" src="../assets/contour/img/hero-fallback-mobile-1600.webp"/></div><canvas aria-hidden="true"></canvas></div><div class="hero__ui"><h1 class="hero__title hero__titleDesk" data-lines="" aria-label="Software that ships."><span class="ln" style="--i:0"><span aria-hidden="true">Software</span></span><span class="ln" style="--i:1"><span aria-hidden="true">that ships.</span></span></h1><p class="hero__title hero__titleMob" aria-hidden="true" data-lines=""><span class="ln" style="--i:0"><span>Software</span></span><span class="ln" style="--i:1"><span>that</span></span><span class="ln" style="--i:2"><span>ships.</span></span></p><div class="hero__readouts"><p class="hero__sub">Devpilot designs and builds apps and websites end-to-end, from first brief to live release.</p><p class="hero__r tl mono"><span class="notch"></span>Software &amp; web studio · Ljubljana</p><p class="hero__r tr mono">46.05°N 14.51°E · Ljubljana<span class="hero__trClock"><br/>LJU <span data-clock="true" data-clock-full="">--:--:--</span></span></p><p class="hero__r bl mono">Index: 2 apps / 11 websites</p><p class="hero__r bc mono hero__scroll"><i></i>Scroll to fly in</p><p class="hero__r br mono">(GG) Contour</p></div></div></div></section>
-<!-- /www:hero -->
 
   <!-- Build stage plate — below first fold on desktop (www Contour composition) -->
   <div class="hero-stage">
@@ -267,11 +287,11 @@
   <div class="seam" aria-hidden="true"></div>
 
   <!-- ============ STUDIO ============ -->
-  <section class="section studio" id="studio" aria-labelledby="studio-title">
+  <section class="section studio" id="about" aria-labelledby="about-title">
     <div class="wrap">
       <header class="sec-head rv">
         <div class="sec-row mono"><p class="kicker">Studio</p><span class="idx">04 / 06</span></div>
-        <h2 id="studio-title">Two founders. The person you talk to writes the code.</h2>
+        <h2 id="about-title">Two founders. The person you talk to writes the code.</h2>
       </header>
       <div class="studio-grid">
         <article class="founder rv">
@@ -345,6 +365,6 @@
 </main>
 
 <script type="module" src="../assets/site.js"></script>
-<script type="module" src="../assets/contour/contour.js"></script>
+<script src="../assets/contour/board/hero.js"></script>
 </body>
 </html>

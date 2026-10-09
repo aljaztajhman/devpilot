@@ -1,26 +1,30 @@
 {
- "source": "www-devpilot-si-v2 unknown-wip@a05df40 \u00b7 css c5837dedb711 \u00b7 html 9bf770a67fcc",
- "www": "/home/box/devpilot/engineer/www-devpilot-si-v2",
- "fonts": {
-  "/_next/static/media/6ebafd0f286e011b-s.p.woff2": "GeistSans.woff2",
-  "/_next/static/media/eedff87053fce9ac.woff2": "GeistMono.woff2"
- },
- "files": [
-  "assets/contour/SOURCE.json",
-  "assets/contour/contour.js",
-  "assets/contour/field.js",
-  "assets/contour/fonts/GeistMono.woff2",
-  "assets/contour/fonts/GeistSans.woff2",
-  "assets/contour/img/hero-fallback-1200.webp",
-  "assets/contour/img/hero-fallback-1600.webp",
-  "assets/contour/img/hero-fallback-480.webp",
-  "assets/contour/img/hero-fallback-800.webp",
-  "assets/contour/img/hero-fallback-mobile-1200.webp",
-  "assets/contour/img/hero-fallback-mobile-1600.webp",
-  "assets/contour/img/hero-fallback-mobile-480.webp",
-  "assets/contour/img/hero-fallback-mobile-800.webp",
-  "assets/contour/img/hero-fallback-mobile.jpg",
-  "assets/contour/img/hero-fallback.jpg",
-  "assets/contour/www-hero.css"
- ]
+  "board": {
+    "locked_by": "Jan",
+    "zulip": "https://chat... #devpilot > design msg 630400016",
+    "message_id": 630400016,
+    "date": "2026-10-09",
+    "note": "Board keep = locked artifact. Contour D first fold is a mechanical port of Jan's clean assets (C2PA stripped). Prefer these over www-synced poster/WebGL stack.",
+    "files": {
+      "d.svg": "Contour D mark path (viewBox 1280\u00d71280)",
+      "contours.svg": "Contour field SVG reference / static fallback",
+      "logo-dark.svg": "Wordmark (viewBox 4944\u00d71280, fill #0D0D0D)",
+      "logo-light.svg": "Wordmark light variant",
+      "devpilot-hero.html": "Complete sticky Contour hero reference (WebGL + HUD + nav Work\u00b9\u00b3/About/Contact + two-line claim)",
+      "hero.css": "Scoped CSS port of hero styles under #hero",
+      "hero.js": "WebGL field + scroll fly-in + LJU clock from hero.html"
+    },
+    "clean_source": "/home/box/devpilot/design/packs/www-devpilot-si/assets/board-jan-2026-10-09/clean/"
+  },
+  "previous_www_sync": {
+    "source": "www-devpilot-si-v2 (superseded for Contour D first fold by board 630400016)",
+    "retained": [
+      "assets/contour/img/* poster webps (mobile mark-first locked; not deleted)",
+      "assets/contour/fonts/*",
+      "assets/contour/field.js",
+      "assets/contour/contour.js",
+      "assets/contour/www-hero.css"
+    ],
+    "note": "Contour D no longer links www-hero.css or contour.js. Mobile Jan JPEG posters kept on disk per anti-drift; board hero.html defines its own mobile framing."
+  }
 }

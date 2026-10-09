@@ -21,8 +21,8 @@ img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; }
 h1, h2, h3 { margin: 0; font-weight: 500; letter-spacing: -.04em; line-height: 1; text-wrap: balance; }
 p { margin: 0; text-wrap: pretty; }
-/* the www Contour nav/hero (assets/contour/www-hero.css) must not inherit D's own type tweaks: www has no text-wrap rules */
-.nav :is(h1, h2, h3, p), .mnav :is(h1, h2, h3, p), .hero :is(h1, h2, h3, p) { text-wrap: auto; }
+/* Board Contour hero (#hero) brings its own type; keep text-wrap from fighting display claim */
+#hero :is(h1, h2, h3, p) { text-wrap: auto; }
 .wrap { max-width: 1680px; margin: 0 auto; padding: 0 var(--gutter); }
 .mono { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; font-variant-numeric: tabular-nums; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
