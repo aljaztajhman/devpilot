@@ -20,7 +20,13 @@
 <!-- Contour D first fold: board-locked Jan hero (Zulip 630402395, 2026-10-09; supersedes 630400016). Mechanical port + zoom→#main handoff — see assets/contour/board/ -->
 <!-- Self-hosted Geist / Inter Tight (latin + latin-ext, display=swap). Preload only Inter Tight (hero display); Geist via CSS. -->
 <link rel="preload" href="../assets/fonts/NGSnv5HMAFg6IuGlBNMjxJEL2VmU3NS7Z2mjPQ-aWy5S.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/fonts/d-fonts.css">
+<!-- d-fonts.css inlined (one render-blocking request less); assets/fonts/d-fonts.css stays for 404 / imprint / privacy. -->
+<style>
+@font-face{font-family:'Geist';font-style:normal;font-weight:500;font-display:swap;src:url(../assets/fonts/gyByhwUxId8gMEwcGFU.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Geist';font-style:normal;font-weight:600;font-display:swap;src:url(../assets/fonts/gyByhwUxId8gMEwcGFU.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Geist Mono';font-style:normal;font-weight:400;font-display:swap;src:url(../assets/fonts/or3yQ6H-1_WfwkMZI_qYPLs1a-t7PU0AbeE9KK5U5Ck.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Inter Tight';font-style:normal;font-weight:500;font-display:swap;src:url(../assets/fonts/NGSnv5HMAFg6IuGlBNMjxJEL2VmU3NS7Z2mjPQ-aWy5S.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+</style>
 <link rel="stylesheet" href="../assets/d.css">
 <link rel="stylesheet" href="../assets/contour/board/hero.css">
 <script>document.documentElement.classList.add("js")</script>
@@ -76,9 +82,9 @@
         </div>
         <div class="stage-plate" aria-hidden="true">
           <i class="cross tl"></i><i class="cross tr"></i><i class="cross bl"></i><i class="cross br"></i>
-          <figure class="shot s-stranko" data-shot="stranko" style="--d:0"><img src="../assets/previews/stranko.webp" alt="" width="1600" height="800" decoding="async" fetchpriority="low"></figure>
-          <figure class="shot s-belin" data-shot="belin" style="--d:1"><img src="../assets/previews/belin.webp" alt="" width="1600" height="800" decoding="async" fetchpriority="low"></figure>
-          <figure class="shot s-custom" data-shot="custom" style="--d:2"><img src="../assets/previews/custom-phone.webp" alt="" width="600" height="1240" decoding="async" fetchpriority="low"></figure>
+          <figure class="shot s-stranko" data-shot="stranko" style="--d:0"><img src="../assets/previews/stranko.webp" srcset="../assets/previews/stranko-800.webp 800w, ../assets/previews/stranko-1200.webp 1200w, ../assets/previews/stranko.webp 1600w" sizes="(max-width: 640px) calc(70vw - 30px), (min-width: 1680px) 950px, 56vw" alt="" width="1600" height="800" decoding="async" fetchpriority="low"></figure>
+          <figure class="shot s-belin" data-shot="belin" style="--d:1"><img src="../assets/previews/belin.webp" srcset="../assets/previews/belin-800.webp 800w, ../assets/previews/belin-1200.webp 1200w, ../assets/previews/belin.webp 1600w" sizes="(max-width: 640px) calc(66vw - 28px), (min-width: 1680px) 855px, 50vw" alt="" width="1600" height="800" decoding="async" fetchpriority="low"></figure>
+          <figure class="shot s-custom" data-shot="custom" style="--d:2"><img src="../assets/previews/custom-phone.webp" srcset="../assets/previews/custom-phone-300.webp 300w, ../assets/previews/custom-phone-450.webp 450w, ../assets/previews/custom-phone.webp 600w" sizes="(max-width: 640px) calc(17vw - 7px), (min-width: 1680px) 198px, 12vw" alt="" width="600" height="1240" decoding="async" fetchpriority="low"></figure>
         </div>
       </div>
     </div>
@@ -181,7 +187,7 @@
       </header>
       <div class="ch-body">
         <div class="stage">
-          <div class="frame" style="--frame-bg:#eef3f4"><iframe src="../demos/stranko.html" title="Stranko product demo" loading="lazy" tabindex="-1"></iframe></div>
+          <div class="frame" style="--frame-bg:#eef3f4"><iframe data-src="../demos/stranko.html" title="Stranko product demo" loading="lazy" tabindex="-1"></iframe></div>
           <div class="stage-bar"><span class="mono count"><b>01</b> / 05</span><span class="cap"></span><span class="segs"></span></div>
         </div>
         <ol class="steps">
@@ -216,7 +222,7 @@
       </header>
       <div class="ch-body">
         <div class="stage">
-          <div class="frame" style="--frame-bg:#0b1524"><iframe src="../demos/belin.html" title="Belin product demo" loading="lazy" tabindex="-1"></iframe></div>
+          <div class="frame" style="--frame-bg:#0b1524"><iframe data-src="../demos/belin.html" title="Belin product demo" loading="lazy" tabindex="-1"></iframe></div>
           <div class="stage-bar"><span class="mono count"><b>01</b> / 06</span><span class="cap"></span><span class="segs"></span></div>
         </div>
         <ol class="steps">
@@ -247,7 +253,7 @@
       </header>
 
       <div class="device rv">
-        <div class="plate"><div class="frame" style="--frame-bg:#e9e6df"><iframe src="../demos/custom.html" title="Sample custom website, shown on a desktop and a phone" loading="lazy" tabindex="-1"></iframe></div></div>
+        <div class="plate"><div class="frame" style="--frame-bg:#e9e6df"><iframe data-src="../demos/custom.html" title="Sample custom website, shown on a desktop and a phone" loading="lazy" tabindex="-1"></iframe></div></div>
         <div class="device-bar">
           <div class="toggle" role="group" aria-label="Device">
             <button type="button" data-device="desktop" aria-pressed="true">Desktop</button>

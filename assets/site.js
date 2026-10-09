@@ -104,6 +104,19 @@ function navState(at) {
   }
 }
 
+/* ---------- demos: deferred frames load about a screen ahead ----------
+ * D keeps its demo URLs in data-src: #main is pulled up over the hero runway, so native loading="lazy"
+ * saw the frames as near and fetched all three on first paint. The contentWindow (what link() keys on)
+ * survives the navigation, so the message plumbing below is unaffected. Before the reveal IO: no-IO fallback. */
+const deferred = $$("iframe[data-src]");
+const loadFrame = (f) => { if (!f.getAttribute("src")) f.src = f.dataset.src; };
+if (window.IntersectionObserver) {
+  const fio = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (e.isIntersecting) { fio.unobserve(e.target); loadFrame(e.target); }
+  }), { rootMargin: "100% 0px" });
+  deferred.forEach((f) => fio.observe(f));
+} else deferred.forEach(loadFrame);
+
 /* ---------- reveal on scroll ---------- */
 const io = new IntersectionObserver((entries) => {
   entries.filter((e) => e.isIntersecting)
@@ -319,16 +332,19 @@ stageHeights();
 measure();
 frame();
 
-/* Prefetch the first product demo after idle — Contour D keeps iframes lazy; this warms the cache without competing with hero. */
+/* Prefetch the first product demo after idle — warms the cache without competing with hero. A deferred frame (D,
+ * data-src) warms on the first scroll instead of first paint, and not at all once the loader above has set its src. */
 const warmDemo = () => {
   const iframe = $("[data-demo=stranko] iframe");
-  if (!iframe?.src) return;
+  const href = iframe?.dataset.src ?? iframe?.getAttribute("src");
+  if (!href || (iframe.dataset.src && iframe.getAttribute("src"))) return;
   const link = document.createElement("link");
   link.rel = "prefetch";
-  link.href = iframe.getAttribute("src");
+  link.href = href;
   link.as = "document";
   document.head.append(link);
 };
-if ("requestIdleCallback" in window) requestIdleCallback(warmDemo, { timeout: 4000 });
-else setTimeout(warmDemo, 2000);
+const warmIdle = () => { if ("requestIdleCallback" in window) requestIdleCallback(warmDemo, { timeout: 4000 }); else setTimeout(warmDemo, 2000); };
+if ($("[data-demo=stranko] iframe[data-src]")) addEventListener("scroll", warmIdle, { once: true, passive: true });
+else warmIdle();
 
