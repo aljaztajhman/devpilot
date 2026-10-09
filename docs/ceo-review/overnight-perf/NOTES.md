@@ -21,3 +21,9 @@ Baseline tip: `798266f` (jank fix). Local Lighthouse:
 
 ## Later same night
 - Tip2+: FAQ polish, svc a11y, OG, default D, imprint/privacy stubs, 404, apple-touch, parallax write-on-change, idle prefetch Stranko demo.
+
+## Tip d7f4e85 metrics (local mobile LH)
+- A11y **100** (step contrast via color; svc list semantics)
+- FCP ~2.1s · LCP ~2.4s · SI ~2.1s · TBT variable (0–350 headless WebGL)
+- Fonts: latin-only self-host ~63KB dir (was ~126KB with latin-ext)
+- TBT win vs baseline 210ms attributed to site.js geometry cache
