@@ -387,18 +387,57 @@ details[open]::details-content { block-size: auto; }
   .seam, .seam.flip { height: 28px; }
 }
 
-/* Contour D mobile: full Contour field visible (meet, not slice crop) — mirror Jan www */
+/* Contour D mobile: mark-first (mirror www v2 / Jan board JPEG 2026-10-09).
+   Large Contour field+D upper; claim lower; blurb on D curve. Uniform scale only — never non-uniform stretch. */
 @media (max-width: 640px) {
-  .contour {
-    mask-image: radial-gradient(95% 80% at 70% 38%, #000 35%, transparent 78%);
-    -webkit-mask-image: radial-gradient(95% 80% at 70% 38%, #000 35%, transparent 78%);
-    opacity: 1;
+  .opening { min-height: 100svh; }
+  .hero {
+    min-height: 100svh; padding: 0 0 28px;
+    display: flex; flex-direction: column;
   }
-  .hud-r .coords { display: none; }
-  .hero { padding-top: calc(var(--nav-h) + 12px); padding-bottom: 36px; }
-  .hero-title { margin-top: 28px; font-size: clamp(40px, 11vw, 52px); max-width: 8em; letter-spacing: -.05em; }
-  .hero-lead { font-size: 16px; }
-  .hero-foot { margin-top: 24px; flex-wrap: wrap; gap: 8px 16px; }
-  .cta-row .btn { min-height: 44px; display: inline-flex; align-items: center; }
-  .hero-visual { margin-top: 28px; }
+  .contour {
+    mask-image: none;
+    -webkit-mask-image: none;
+    opacity: 1;
+    transform: none;
+    /* Pull back framing vs prior tight crop — more of Contour D visible (Jan JPEG) */
+    height: 58%;
+    top: 0; bottom: auto;
+  }
+  .hero > .wrap {
+    position: relative; z-index: 1;
+    flex: 1; display: flex; flex-direction: column;
+    min-height: 100svh;
+    padding-top: calc(var(--nav-h) + 10px);
+    box-sizing: border-box;
+  }
+  .hud { order: 1; margin-bottom: 0; border-top: 0; padding-top: 8px; }
+  .hud-r { display: flex; font-size: 10px; }
+  .hud .kicker { font-size: 10px; letter-spacing: .04em; text-transform: uppercase; }
+  /* blurb on lower-right curve of D */
+  .hero-row {
+    order: 2; position: absolute; right: 0; left: auto;
+    top: 36%; margin-top: 0; gap: 0;
+    grid-template-columns: 1fr; max-width: 11.8em; width: 42%;
+  }
+  .hero-lead { font-size: 12.5px; line-height: 1.4; max-width: none; color: var(--bone); }
+  .cta-row { display: none; }
+  .hero-title {
+    order: 3; margin-top: auto; margin-bottom: 10px;
+    font-size: clamp(52px, 15.5vw, 72px); max-width: none;
+    letter-spacing: -.06em; line-height: .82;
+  }
+  .hero-foot {
+    order: 4; margin-top: 12px; flex-wrap: nowrap; gap: 8px 12px; font-size: 10px;
+    justify-content: space-between;
+  }
+  .hero-foot-mid { display: none; }
+  .hero-visual { order: 5; margin-top: 28px; }
+  .menu-btn {
+    width: 44px; height: 44px; padding: 0; font-size: 0; color: inherit;
+    background: linear-gradient(currentColor,currentColor) center 15px/22px 2px no-repeat,
+      linear-gradient(currentColor,currentColor) center 21px/22px 2px no-repeat,
+      linear-gradient(currentColor,currentColor) center 27px/22px 2px no-repeat;
+    border: 0;
+  }
 }
