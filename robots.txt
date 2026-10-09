@@ -1,3 +1,4 @@
 # Contour review site on GitHub Pages. www.devpilot.si is the eventual public host (board DNS).
 User-agent: *
 Allow: /
+Sitemap: https://devpilotbot.github.io/devpilot/sitemap.xml

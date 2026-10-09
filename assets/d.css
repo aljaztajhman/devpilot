@@ -105,8 +105,8 @@ p { margin: 0; text-wrap: pretty; }
 .svc .n { color: var(--steel); display: flex; justify-content: space-between; }
 .svc .n::after { content: ""; width: 6px; height: 6px; background: var(--ash-2); margin-top: 4px; transition: background .3s; }
 .svc div:hover .n::after { background: var(--ign); }
-.svc dt { font-size: clamp(22px, 1.7vw, 28px); letter-spacing: -.035em; font-weight: 500; line-height: 1.05; text-wrap: balance; margin-top: 28px; }
-.svc dd { margin: 0; color: var(--fg-2); font-size: 15.5px; line-height: 1.5; }
+.svc h3 { font-size: clamp(22px, 1.7vw, 28px); letter-spacing: -.035em; font-weight: 500; line-height: 1.05; text-wrap: balance; margin-top: 28px; }
+.svc p { margin: 0; color: var(--fg-2); font-size: 15.5px; line-height: 1.5; }
 .svc a { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; color: var(--bone); display: inline-flex; align-items: center; gap: 8px; width: max-content; margin-top: 10px; }
 .svc a span { transition: transform .4s var(--ease); }
 .svc a:hover span, .svc a:focus-visible span { transform: translateX(4px); }
@@ -315,7 +315,7 @@ details[open]::details-content { block-size: auto; }
   .facts-in { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; font-size: 10px; }
   .facts-in span + span::before { display: none; }
   .svc { grid-template-columns: 1fr; }
-  .svc dt { margin-top: 16px; }
+  .svc h3 { margin-top: 16px; }
   .plate-f { aspect-ratio: 16 / 7; }
   .plate-f span { font-size: 150px; bottom: -22%; }
   .row { grid-template-columns: 1fr 24px; gap: 6px 12px; padding: 20px 0; }

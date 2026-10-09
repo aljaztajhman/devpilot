@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Devpilot · Software and web development, Ljubljana</title>
+<meta property="og:image" content="https://devpilotbot.github.io/devpilot/assets/og-contour.png">
+<meta name="twitter:image" content="https://devpilotbot.github.io/devpilot/assets/og-contour.png">
 <meta name="description" content="Devpilot designs, builds and runs web applications, internal tools and websites. Written scope, agreed price per phase, and code you own.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,12 +36,12 @@
 
 
 <div class="bar" role="toolbar" aria-label="Variant picker">
-  <span class="tag mono">Devpilot · 4 directions</span>
+  <span class="tag mono">Devpilot · Contour review · A–D</span>
   <div class="seg" id="seg">
-    <button type="button" data-v="a" aria-pressed="true"><b>A</b><span>Paper</span></button>
+    <button type="button" data-v="a" aria-pressed="false"><b>A</b><span>Paper</span></button>
     <button type="button" data-v="b" aria-pressed="false"><b>B</b><span>Blueprint</span></button>
     <button type="button" data-v="c" aria-pressed="false"><b>C</b><span>Stage</span></button>
-    <button type="button" data-v="d" aria-pressed="false"><b>D</b><span>Contour</span></button>
+    <button type="button" data-v="d" aria-pressed="true"><b>D</b><span>Contour</span></button>
   </div>
   <span class="desc" id="desc"></span>
   <a class="open mono" id="open" href="variants/a.html" target="_blank" rel="noopener">Open on its own ↗</a>
@@ -71,7 +73,7 @@
   addEventListener("hashchange", () => { const h = location.hash.slice(1); if (V[h]) show(h, false); });
   let start = location.hash.slice(1);
   if (!V[start]) { try { start = localStorage.getItem("devpilot-variant") || ""; } catch {} }
-  show(V[start] ? start : "a", false);
+  show(V[start] ? start : "d", false); /* overnight: Contour D is the review tip */
 </script>
 </body>
 </html>
