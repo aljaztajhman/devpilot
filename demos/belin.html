@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Belin · demo</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..800&display=swap" rel="stylesheet">
+<style>
+  /* 1rem = 10 design px on a 1280 × 650 stage; kit.js scales it to the frame. */
+  :root {
+    color-scheme: dark;
+    --bg: #0b1524; --win: #0c1727; --card: #111c2d; --card-2: #152236; --line: #1f2c40; --line-2: #2a3a52;
+    --ink: #f3f1ea; --ink-2: #b7c0cd; --muted: #7f8b9d;
+    --yellow: #ffd21a; --yellow-2: #ffe27a; --green: #2fc24a; --green-soft: #12301f; --orange: #f0894a; --red: #f26b5b;
+    --morph-screen: #070e19;
+    font-size: 10px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); overflow: hidden; }
+  body { font: 400 1.4rem/1.5 Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; font-feature-settings: "tnum" 1, "cv11" 1; }
+  button { font: inherit; color: inherit; }
+
+  .stage { position: absolute; left: 50%; top: 50%; width: 128rem; height: 65rem; transform: translate(-50%, -50%);
+    background: radial-gradient(90rem 50rem at 80% -10%, #12233a 0%, transparent 60%), var(--bg); overflow: hidden; }
+
+  /* ---------- the app window (a browser on desktop scenes, a phone on the crew scene) ---------- */
+  .win { position: absolute; left: 4rem; top: 2.4rem; width: 120rem; height: 60rem; border-radius: 1.2rem; overflow: hidden;
+    background: linear-gradient(180deg, #0d1829 0%, #0a1321 100%); border: 1px solid var(--line); }
+  .chrome { height: 2.6rem; display: flex; align-items: center; gap: .6rem; padding: 0 1.2rem; background: #0a1220; border-bottom: 1px solid var(--line); }
+  .chrome i { width: .8rem; height: .8rem; border-radius: 50%; background: #253247; }
+  .chrome span { margin: 0 auto; font-size: 1rem; color: var(--muted); letter-spacing: .02em; padding-right: 4rem; }
+  .appbar { display: flex; align-items: center; gap: 1.4rem; height: 6rem; padding: 0 8rem; background: #0b1524; border-bottom: 1px solid var(--line); }
+  .logo { display: flex; align-items: center; gap: 1rem; font-weight: 800; font-size: 1.8rem; letter-spacing: .02em; }
+  .logo svg { width: 1.9rem; height: 2.2rem; display: block; }
+  .crumb { padding-left: 1.4rem; border-left: 1px solid var(--line-2); font-weight: 600; font-size: 1.4rem; }
+  .sp { flex: 1; }
+  .who { color: var(--muted); font-size: 1.3rem; }
+  .navb { border: 1px solid var(--line-2); border-radius: .9rem; padding: .7rem 1.3rem; font-weight: 500; font-size: 1.3rem; }
+  .bell { width: 3.6rem; height: 3.6rem; border: 1px solid var(--line-2); border-radius: .9rem; display: grid; place-items: center; }
+  .bell svg { width: 1.6rem; height: 1.6rem; fill: none; stroke: var(--ink-2); stroke-width: 1.6; }
+  .lang { display: flex; gap: .2rem; font-size: 1.15rem; font-weight: 700; letter-spacing: .04em; color: var(--muted); }
+  .lang b { padding: .5rem .8rem; border-radius: .6rem; }
+  .lang b.on { background: var(--card-2); color: var(--ink); }
+  .status { display: flex; align-items: center; gap: .8rem; border: 1px solid var(--line-2); border-radius: 99rem; padding: .7rem 1.4rem; font-weight: 700; font-size: 1.35rem; }
+  .status::before { content: ""; width: .9rem; height: .9rem; border-radius: 50%; background: var(--green); }
+  .newp { background: linear-gradient(180deg, var(--yellow-2), var(--yellow)); color: #1a1405; border-radius: .9rem; padding: .9rem 1.5rem; font-weight: 700; font-size: 1.35rem; }
+  .tabs { display: flex; gap: 3.2rem; padding: 0 8rem; height: 4.4rem; border-bottom: 1px solid var(--line); }
+  .tabs a { display: flex; align-items: center; color: var(--muted); font-weight: 600; font-size: 1.35rem; text-decoration: none; border-bottom: 2px solid transparent; }
+  .tabs a.on { color: var(--ink); border-color: var(--yellow); }
+  .body { padding: 2.4rem 8rem 0; }
+
+  .eyebrow { display: flex; align-items: center; gap: 1.2rem; font-size: 1.1rem; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: var(--muted); margin: 0 0 1.4rem; width: max-content; }
+  .eyebrow::before { content: ""; width: 2.4rem; height: 1px; background: var(--muted); }
+  .h1 { margin: 0; font-size: 4.6rem; line-height: 1.02; font-weight: 800; letter-spacing: -.035em; width: max-content; max-width: 56rem; }
+  .sub { margin: .8rem 0 0; color: var(--ink-2); font-size: 1.9rem; font-weight: 500; width: max-content; }
+  .label { font-size: 1rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+  .num { font-weight: 800; letter-spacing: -.03em; }
+  .num small { font-size: .45em; font-weight: 500; color: var(--ink-2); letter-spacing: 0; margin-left: .3rem; }
+
+  .card { background: linear-gradient(180deg, var(--card) 0%, #0f1828 100%); border: 1px solid var(--line); border-radius: 1.2rem; }
+  .kpi { background: var(--card); border: 1px solid var(--line); border-radius: 1.2rem; padding: 1.4rem 1.8rem; }
+
+  /* portfolio */
+  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+  .kpis .kpi .num { font-size: 3rem; margin-top: .6rem; display: block; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; margin-top: 1.4rem; }
+  .pcard { padding: 1.6rem 2rem 1.6rem; height: 14.8rem; display: flex; flex-direction: column; }
+  .pcard h3 { margin: 0; font-size: 1.75rem; font-weight: 700; letter-spacing: -.01em; width: max-content; }
+  .pcard .meta { margin-top: .4rem; color: var(--muted); font-size: 1.25rem; }
+  .pcard .alerts { margin-top: .8rem; color: var(--yellow-2); font-size: 1.2rem; font-weight: 600; min-height: 1.8rem; }
+  .pcard .row { display: flex; align-items: flex-end; justify-content: space-between; margin-top: auto; }
+  .pcard .pct { font-size: 2.4rem; display: inline-block; }
+  .pcard .slack { text-align: right; font-size: 1.15rem; font-weight: 600; color: var(--ink-2); }
+  .pcard .slack i { display: block; width: 13rem; height: .5rem; border-radius: 1rem; background: #1e2a3c; margin: 0 0 .6rem auto; position: relative; overflow: hidden; }
+  .pcard .slack i::after { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: var(--w); background: #4a90e2; border-radius: 1rem; }
+  .pcard .slack i.late::after { left: auto; right: 50%; background: var(--orange); }
+  .badge { display: inline-block; margin-top: 1.2rem; font-size: 1.05rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; border-radius: 99rem; padding: .45rem 1.2rem; border: 1px solid; width: 26rem; }
+  .badge.on { color: #5bd879; border-color: #2a6b3c; background: #0f2a1b; }
+  .badge.done { color: var(--yellow-2); border-color: #6b5a1c; background: #221d0d; }
+  .badge.draft { color: var(--ink-2); border-color: var(--line-2); background: #141d2b; }
+  .focus { border-color: #39475d; }
+
+  /* overview */
+  .hero { display: grid; grid-template-columns: 1fr 24rem; align-items: center; gap: 4rem; }
+  .chips { display: flex; gap: 1.2rem; margin-top: 2.2rem; }
+  .chips .kpi { padding: 1.1rem 1.6rem; }
+  .chips .num { font-size: 2.1rem; display: block; margin-top: .3rem; }
+  .ring { position: relative; width: 22rem; height: 22rem; display: grid; place-items: center; text-align: center; }
+  .ring svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+  .ring .num { font-size: 5.6rem; line-height: 1; }
+  .ring .label { display: block; margin-top: .6rem; letter-spacing: .18em; }
+  .ring p { margin: .4rem 0 0; font-size: 1.1rem; color: var(--muted); max-width: 16rem; }
+  .chart { margin-top: 2.2rem; padding: 1.8rem 2.2rem 1.2rem; height: 18.4rem; position: relative; }
+  .chart h3 { margin: 0; font-size: 1.5rem; }
+  .chart .big { font-size: 3rem; margin-top: .2rem; display: flex; align-items: baseline; gap: 1.2rem; }
+  .chart .big small { font-size: 1.25rem; color: var(--ink-2); font-weight: 500; }
+  .chart svg { position: absolute; left: 2.2rem; right: 2.2rem; bottom: 1.2rem; width: calc(100% - 4.4rem); height: 9rem; overflow: visible; }
+  .pill { position: absolute; right: 2.2rem; top: 1.8rem; border: 1px solid #2a6b3c; background: #0f2a1b; color: #5bd879; border-radius: 99rem; font-weight: 700; font-size: 1.2rem; padding: .5rem 1.2rem; }
+
+  /* hours */
+  .seg { display: grid; grid-template-columns: 1fr 1fr; padding: .5rem; border: 1px solid var(--line); border-radius: 1.2rem; background: #0d1626; }
+  .seg span { text-align: center; padding: 1rem; font-weight: 700; font-size: 1.4rem; color: var(--muted); border-radius: .8rem; display: flex; justify-content: center; align-items: center; gap: .8rem; }
+  .seg span.on { background: var(--card-2); color: var(--ink); }
+  .seg em { font-style: normal; width: 2rem; height: 2rem; border-radius: 50%; background: var(--yellow); color: #1a1405; font-size: 1.1rem; display: grid; place-items: center; }
+  .sheet { padding: 1.6rem 2rem; margin-top: 1.2rem; position: relative; }
+  .sheet h3 { margin: 0; font-size: 1.5rem; }
+  .sheet .state { position: absolute; right: 2rem; top: 1.4rem; font-size: 1.2rem; font-weight: 700; padding: .4rem 1.1rem; border-radius: 99rem; }
+  .state.wait { background: #2a2410; color: var(--yellow-2); }
+  .state.ok { background: #0f2a1b; color: #5bd879; }
+  .due { margin: .8rem 0 0; color: var(--red); font-weight: 700; font-size: 1.35rem; }
+  .small { margin: .2rem 0 0; color: var(--muted); font-size: 1.2rem; }
+  .lines { margin: 1.1rem 0 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+  .lines li { display: flex; gap: 2rem; padding: .9rem 0; border-bottom: 1px solid var(--line); font-size: 1.35rem; }
+  .lines li:last-child { border-bottom: 0; }
+  .lines time { color: var(--muted); width: 4.4rem; }
+  .lines b { margin-left: auto; color: var(--yellow-2); }
+  .btns { display: flex; gap: 1rem; margin-top: 1rem; }
+  .act { border: 1px solid var(--line-2); background: #131d2c; border-radius: .9rem; padding: .9rem 1.6rem; font-weight: 600; font-size: 1.3rem; display: inline-block; }
+  .act.yes { border-color: #6b5a1c; background: #2a2410; color: var(--yellow-2); }
+  .act.no { border-color: #6b3a2a; color: var(--orange); }
+
+  /* phone */
+  .win.phone { left: 31rem; top: 1.6rem; width: 30rem; height: 61.6rem; border-radius: 3.6rem; border: .5rem solid #1d2738; background: linear-gradient(180deg, #0f1c2e, #0a1220); }
+  .win.phone .chrome { height: 3rem; background: transparent; border: 0; padding: 0 2.4rem; font-size: 1.15rem; font-weight: 600; justify-content: space-between; }
+  .win.phone .chrome b { width: 8rem; height: 2rem; border-radius: 2rem; background: #000; }
+  .win.phone .appbar { height: 5.2rem; padding: 0 1.8rem; gap: 1rem; }
+  .win.phone .logo { font-size: 1.5rem; }
+  .win.phone .lang { font-size: 1rem; }
+  .win.phone .lang b { padding: .4rem .5rem; }
+  .win.phone .status { padding: .5rem 1rem; font-size: 1.15rem; }
+  .pbody { padding: 1.4rem 1.8rem 0; }
+  .pbody .sub { font-size: 1.25rem; margin: 0; font-weight: 400; color: var(--ink-2); }
+  .prog { margin-top: 1rem; padding: 1.4rem 1.8rem; border-radius: 1.4rem; border: 1px solid #4a4420; background: linear-gradient(135deg, #2a2a1c 0%, #142033 70%); }
+  .prog .num { font-size: 4.6rem; display: block; line-height: 1.1; margin-top: .4rem; }
+  .pbtn { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+  .pbtn .act { text-align: center; padding: 1.2rem; font-size: 1.4rem; border-radius: 1.2rem; font-weight: 700; }
+  .pbtn .act.no { background: #2a1f1d; }
+  .mat { margin-top: 1rem; padding: 1.2rem 1.4rem; display: flex; align-items: center; gap: 1rem; font-size: 1.05rem; color: var(--ink-2); white-space: nowrap; }
+  .mat em { font-style: normal; color: #5bd879; border: 1px solid #2a6b3c; background: #0f2a1b; border-radius: 99rem; padding: .4rem 1rem; font-weight: 700; font-size: 1.15rem; }
+  .h2 { margin: 1.6rem 0 0; font-size: 1.9rem; font-weight: 800; letter-spacing: -.02em; width: max-content; }
+  .photos { margin-top: 1rem; padding: 1.2rem; }
+  .photos .ph { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem; margin-top: .8rem; }
+  .photo { aspect-ratio: 1; border-radius: .8rem; overflow: hidden; display: block; background: #1a2638; }
+  .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .cta { position: absolute; left: 1.6rem; right: 1.6rem; bottom: 1.6rem; text-align: center; padding: 1.5rem; border-radius: 1.4rem; font-weight: 800; font-size: 1.6rem; color: #1a1405; background: linear-gradient(180deg, var(--yellow-2), var(--yellow)); }
+  .notif { position: absolute; left: 70rem; top: 21rem; width: 38rem; padding: 2rem 2.2rem; background: #0f1a2b; border: 1px solid var(--line-2); border-radius: 1.4rem; }
+  .notif .label { color: var(--yellow-2); }
+  .notif h3 { margin: .6rem 0 .2rem; font-size: 2rem; letter-spacing: -.02em; }
+  .notif p { margin: 0; color: var(--ink-2); font-size: 1.3rem; }
+  .notif .thumbs { display: flex; gap: .6rem; margin-top: 1.4rem; }
+  .notif .thumbs img { width: 7.2rem; height: 5rem; object-fit: cover; border-radius: .6rem; display: block; }
+  .notif .delta { display: flex; justify-content: space-between; margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-size: 1.3rem; color: var(--ink-2); }
+  .notif .delta b { color: var(--ink); }
+
+  /* close-out */
+  .close { display: grid; grid-template-columns: 1fr 33rem; gap: 6rem; padding: 2.4rem 8rem 0; }
+  .docs { margin-top: 2.6rem; display: grid; gap: 1rem; width: 44rem; }
+  .docs .card { display: flex; align-items: center; justify-content: space-between; padding: 1.3rem 1.8rem; font-weight: 600; font-size: 1.4rem; }
+  .docs .card span { color: #5bd879; font-size: 1.15rem; font-weight: 700; }
+  .close .btns { margin-top: 2rem; }
+  .doc { width: 33rem; height: 42.4rem; background: #fbfaf7; color: #1b2230; border-radius: .4rem; padding: 2rem 2.4rem; font-size: .98rem; line-height: 1.4; }
+  .doc header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 1.2rem; border-bottom: 2px solid #1b2230; }
+  .doc header svg { width: 1.6rem; height: 1.8rem; display: block; margin-bottom: .6rem; }
+  .doc h4 { margin: 0; font-size: 1.8rem; letter-spacing: -.02em; line-height: 1.1; }
+  .doc header p { margin: 0; text-align: right; color: #5c6574; }
+  .doc dl { display: grid; grid-template-columns: 8rem 1fr; gap: .25rem 1rem; margin: 1.1rem 0 0; }
+  .doc dt { color: #5c6574; }
+  .doc dd { margin: 0; font-weight: 600; }
+  .doc h5 { margin: 1.2rem 0 .5rem; font-size: .95rem; letter-spacing: .16em; text-transform: uppercase; color: #5c6574; }
+  .doc ul { margin: 0; padding: 0; list-style: none; display: grid; gap: .3rem; }
+  .doc li { display: flex; gap: .8rem; align-items: center; }
+  .doc li::before { content: ""; width: 1.1rem; height: 1.1rem; border: 1.5px solid #1b2230; border-radius: .2rem; background: linear-gradient(#1b2230, #1b2230) center/.5rem .5rem no-repeat; }
+  .doc .pics { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+  .doc picture { display: block; height: 6.8rem; border-radius: .3rem; overflow: hidden; }
+  .doc picture img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .doc .sigs { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1rem; }
+  .doc .sig svg { width: 100%; height: 2.8rem; display: block; fill: none; stroke: #1b3a8a; stroke-width: 1.4; stroke-linecap: round; }
+  .doc .sig p { margin: .2rem 0 0; border-top: 1px solid #1b2230; padding-top: .4rem; color: #5c6574; }
+  .doc-sec { border-radius: .3rem; }
+
+  /* embedded in the site: nothing to click */
+  body { pointer-events: none; user-select: none; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage"><div id="screen"></div></div>
+<script type="module">
+import { createDemo, fit, calm, wait, countFrom, prepareBuild, runBuild, decode } from "./kit.js";
+
+/* ---------- pieces ---------- */
+const MARK = (() => {
+  const on = new Set(["0,3", "1,2", "1,3", "2,1", "2,2", "2,3"]);
+  let s = "";
+  for (let x = 0; x < 3; x++) for (let y = 0; y < 4; y++) s += `<rect x="${x * 18.45}" y="${y * 18.45}" width="14.5" height="14.5" rx="1.65" fill="${on.has(`${x},${y}`) ? "#ffd21a" : "#2a3242"}"/>`;
+  return `<svg viewBox="0 0 52 70" aria-hidden="true">${s}</svg>`;
+})();
+const PAPER_MARK = MARK.replaceAll("#2a3242", "#d9dce2");
+
+const T = {
+  sl: { projects: "Projekti", settings: "Nastavitve", newp: "Nov projekt", active: "Aktivno", tabs: ["Pregled", "Naročilnica", "Ure in dodatna dela", "Zaključek"] },
+  de: { projects: "Projekte", settings: "Einstellungen", newp: "Neues Projekt", active: "Aktiv", tabs: ["Übersicht", "Bestellung", "Stunden und Zusatzarbeiten", "Abschluss"] },
+};
+const lang = (l) => `<div class="lang">${["sl", "de", "en"].map((x) => `<b class="${x === l ? "on" : ""}" data-lang="${x}">${x.toUpperCase()}</b>`).join("")}</div>`;
+const chrome = `<div class="chrome"><i></i><i></i><i></i><span>belin-app.vercel.app</span></div>`;
+const KRANJ = "PSE Trgovski center Kranj";
+const bar = (l, crumb, right) => `<header class="appbar"><div class="logo">${MARK}BELIN</div><div class="crumb">${crumb}</div><span class="sp"></span>${right}</header>`;
+const projectBar = (l, where) => bar(l, KRANJ, `<span class="who">${where}</span><span class="navb">${T[l].projects}</span>${lang(l)}<span class="status">${T[l].active}</span>`);
+const tabs = (l, on) => `<nav class="tabs">${T[l].tabs.map((t, i) => `<a class="${i === on ? "on" : ""}" href="#">${t}</a>`).join("")}</nav>`;
+
+/* ---------- scenes: each renders the whole screen from data ---------- */
+const PROJECTS = [
+  { n: KRANJ, m: "Kranj · 245.7 kWp · AVESOL d.o.o.", a: "1 list ur · 1 zahteva · 2 zapleta", p: "58.3", s: "13 delovnih dni rezerve", w: "4.4rem", b: "on", bt: "Aktivno", focus: true },
+  { n: "Poslovni park Ljubljana Vzhod", m: "Ljubljana · 245.7 kWp · AVESOL d.o.o.", p: "0", b: "on", bt: "Aktivno" },
+  { n: "PSE Lidl Domžale", m: "Domžale · 265.2 kWp", p: "0", b: "draft", bt: "Osnutek" },
+  { n: "Poslovna cona Komenda", m: "Komenda · 180.4 kWp · AVESOL d.o.o.", p: "100", s: "4 delovni dnevi zamude", w: "1.2rem", late: true, b: "done", bt: "Zaključeno" },
+  { n: "Streha Gorenje Velenje", m: "Velenje · 412.8 kWp · Montaža Kos d.o.o.", p: "100", s: "1 delovni dan zamude", w: ".4rem", late: true, b: "done", bt: "Zaključeno" },
+  { n: "Logistični center Naklo", m: "Naklo · 96.6 kWp · Elektro Vrhnika d.o.o.", p: "100", s: "2 delovna dneva rezerve", w: ".8rem", b: "done", bt: "Zaključeno" },
+];
+
+function portfolio() {
+  return `<section class="win">${chrome}
+    ${bar("sl", "Projekti", `<span class="bell"><svg viewBox="0 0 16 16"><path d="M4 11V7a4 4 0 0 1 8 0v4l1 1.5H3zM6.5 14h3"/></svg></span>${lang("sl")}<span class="navb">Nastavitve</span><span class="newp">Nov projekt</span>`)}
+    <div class="body">
+      <p class="eyebrow">Prijavljeni kot Marko Golob</p>
+      <div class="kpis">
+        <div class="kpi"><span class="label">Skupaj izvedeno</span><span class="num">1.0<small>MWp · 4 zaključeni projekti</small></span></div>
+        <div class="kpi"><span class="label">V izvedbi</span><span class="num">491<small>kWp · 2 projekta v teku</small></span></div>
+        <div class="kpi"><span class="label">V pripravi</span><span class="num">265<small>kWp · še ni v izvedbi</small></span></div>
+      </div>
+      <div class="grid">${PROJECTS.map((p) => `
+        <article class="card pcard${p.focus ? " focus" : ""}">
+          <h3>${p.n}</h3><div class="meta">${p.m}</div><div class="alerts">${p.a ?? ""}</div>
+          <div class="row"><span class="num pct">${p.p}<small>%</small></span>${p.s ? `<span class="slack"><i class="${p.late ? "late" : ""}" style="--w:${p.w}"></i>${p.s}</span>` : ""}</div>
+          <span class="badge ${p.b}">${p.bt}</span>
+        </article>`).join("")}
+      </div>
+    </div></section>`;
+}
+
+const TEMPO = [3.9, 4.4, 5.6, 6.1, 6.0, 4.0, 2.6, 3.4, 5.2, 7.4, 6.8, 4.3, 3.5];
+function chartPath(w, h) {
+  const max = 8;
+  const pts = TEMPO.map((v, i) => [(i / (TEMPO.length - 1)) * w, h - (v / max) * h]);
+  let d = `M${pts[0][0]},${pts[0][1]}`;
+  for (let i = 1; i < pts.length; i++) {
+    const [x0, y0] = pts[i - 1], [x1, y1] = pts[i], cx = (x0 + x1) / 2;
+    d += ` C${cx},${y0} ${cx},${y1} ${x1},${y1}`;
+  }
+  return { d, last: pts.at(-1) };
+}
+
+function overview() {
+  const { d, last } = chartPath(1000, 90);
+  const need = 90 - (3.2 / 8) * 90;
+  return `<section class="win">${chrome}${projectBar("sl", "AVESOL d.o.o.")}${tabs("sl", 0)}
+    <div class="body">
+      <div class="hero">
+        <div>
+          <p class="eyebrow">Pregled projekta</p>
+          <h1 class="h1">PSE Trgovski center Kranj</h1>
+          <p class="sub">245.7 kWp · AVESOL d.o.o.</p>
+          <div class="chips">
+            <div class="kpi"><span class="label">Tempo</span><span class="num">5.9<small>%/dan</small></span></div>
+            <div class="kpi"><span class="label">Predviden zaključek</span><span class="num">25.08</span></div>
+            <div class="kpi"><span class="label">Ekipa</span><span class="num">6<small>na terenu</small></span></div>
+          </div>
+        </div>
+        <div class="ring">
+          <svg viewBox="0 0 220 220"><circle cx="110" cy="110" r="96" fill="none" stroke="#1c2738" stroke-width="12"/><circle class="arc" cx="110" cy="110" r="96" fill="none" stroke="url(#gy)" stroke-width="12" stroke-linecap="round" pathLength="100" stroke-dasharray="58 100"/><defs><linearGradient id="gy" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe27a"/><stop offset="1" stop-color="#ffc400"/></linearGradient></defs></svg>
+          <div><span class="num">58%</span><span class="label">Skupni napredek</span><p>izračunano iz 9 poročil in 6 fotografij</p></div>
+        </div>
+      </div>
+      <div class="card chart">
+        <h3>Dnevni tempo</h3>
+        <div class="big num">6,5 %/dan<small>potreben tempo 3,2</small></div>
+        <span class="pill">13 dni rezerve</span>
+        <svg viewBox="0 0 1000 90" preserveAspectRatio="none" aria-hidden="true">
+          <defs><linearGradient id="fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd21a" stop-opacity=".16"/><stop offset="1" stop-color="#ffd21a" stop-opacity="0"/></linearGradient></defs>
+          <path class="area" d="${d} L1000,90 L0,90 Z" fill="url(#fill)"/>
+          <line x1="0" x2="1000" y1="${need}" y2="${need}" stroke="#55627a" stroke-dasharray="6 6" vector-effect="non-scaling-stroke"/>
+          <path class="line" d="${d}" fill="none" stroke="#ffd21a" stroke-width="2.5" vector-effect="non-scaling-stroke" pathLength="100"/>
+          <circle class="dot" cx="${last[0]}" cy="${last[1]}" r="5" fill="#0b1524" stroke="#ffd21a" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+        </svg>
+      </div>
+    </div></section>`;
+}
+
+function phone() {
+  return `<section class="win phone"><div class="chrome"><span>15:37</span><b></b><span>5G</span></div>
+    <header class="appbar"><div class="logo">${MARK}BELIN</div><span class="sp"></span>${lang("sl")}<span class="status">Aktivno</span></header>
+    <div class="pbody">
+      <p class="sub">Cesta Staneta Žagarja 69, Kranj</p>
+      <div class="prog"><span class="label">Napredek projekta</span><span class="num" data-count>58.3<small>%</small></span></div>
+      <div class="pbtn"><span class="act no">Prijavi zaplet</span><span class="act">Zahtevaj</span></div>
+      <div class="card mat"><em>Material popoln</em>Preverjeno 13.08 ob 15:37</div>
+      <h2 class="h2">Današnje poročilo</h2>
+      <div class="card photos"><span class="label">Fotografije · 3</span>
+        <div class="ph">${["crew-panel", "crew-module", "crew-montage"].map((n) => `<span class="photo"><img src="../assets/media/belin-${n}.webp" alt=""></span>`).join("")}</div>
+      </div>
+    </div>
+    <span class="cta">Pošlji poročilo</span>
+  </section>
+  <aside class="notif" hidden>
+    <span class="label">Novo poročilo · 15:38</span>
+    <h3>${KRANJ}</h3>
+    <p>Matej Kovač · 6 na terenu · 3 fotografije</p>
+    <div class="thumbs">${["crew-panel", "crew-module", "crew-montage"].map((n) => `<img src="../assets/media/belin-${n}.webp" alt="">`).join("")}</div>
+    <div class="delta"><span>Napredek</span><span>58.3 % → <b>61.2 %</b></span></div>
+  </aside>`;
+}
+
+const HOURS = {
+  sl: { seg: ["Režijske ure", "Dodatna dela"], eyebrow: "Režijske ure", s2: "List št. 2 · skupaj 5 h", wait: "V odločanju", ok: "Potrjeno", due: "še 1 delovni dan", note: "Brez odziva v 6 delovnih dneh se list šteje za potrjen.", by: "Potrdil Marko Golob · 14. 08. 2026",
+        l2: [["10.08", "Čiščenje po neurju", "5 h"]], pdf: "Prenesi PDF", yes: "Potrdi", no: "Zavrni", s1: "List št. 1 · skupaj 14 h", m1: "Matej Kovač · 06. 08. 2026",
+        l1: [["04.08", "Dodatno pritrjevanje zaradi drugačne kritine", "8 h"], ["05.08", "Nadaljevanje pritrjevanja, južni del", "6 h"]] },
+  de: { seg: ["Regiestunden", "Zusatzarbeiten"], eyebrow: "Regiestunden", s2: "Liste Nr. 2 · gesamt 5 h", wait: "In Prüfung", ok: "Bestätigt", due: "noch 1 Arbeitstag", note: "Ohne Antwort in 6 Arbeitstagen gilt die Liste als bestätigt.", by: "Bestätigt von Marko Golob · 14.08.2026",
+        l2: [["10.08", "Aufräumen nach dem Unwetter", "5 h"]], pdf: "PDF herunterladen", yes: "Bestätigen", no: "Ablehnen", s1: "Liste Nr. 1 · gesamt 14 h", m1: "Matej Kovač · 06.08.2026",
+        l1: [["04.08", "Zusätzliche Befestigung wegen anderer Dacheindeckung", "8 h"], ["05.08", "Fortsetzung der Befestigung, Südteil", "6 h"]] },
+};
+const lines = (ls) => `<ul class="lines">${ls.map(([d, t, h]) => `<li><time>${d}</time><span>${t}</span><b>${h}</b></li>`).join("")}</ul>`;
+function hours(l, confirmed) {
+  const h = HOURS[l];
+  return `<section class="win">${chrome}${projectBar(l, "Kranj")}${tabs(l, 2)}
+    <div class="body">
+      <div class="seg"><span class="on">${h.seg[0]}${confirmed ? "" : "<em>1</em>"}</span><span>${h.seg[1]}</span></div>
+      <p class="eyebrow" style="margin-top:2rem">${h.eyebrow}</p>
+      <article class="card sheet s2">
+        <h3>${h.s2}</h3><span class="state ${confirmed ? "ok" : "wait"}">${confirmed ? h.ok : h.wait}</span>
+        ${confirmed ? `<p class="small" style="margin-top:.6rem">${h.by}</p>` : `<p class="due">${h.due}</p><p class="small">${h.note}</p>`}
+        ${lines(h.l2)}
+        <div class="btns"><span class="act">${h.pdf}</span>${confirmed ? "" : `<span class="act yes">${h.yes}</span><span class="act no">${h.no}</span>`}</div>
+      </article>
+      <article class="card sheet">
+        <h3>${h.s1}</h3><span class="state ok">${h.ok}</span><p class="small" style="margin-top:.6rem">${h.m1}</p>
+        ${lines(h.l1)}
+      </article>
+    </div></section>`;
+}
+
+function closeout() {
+  const sig = (d) => `<svg viewBox="0 0 160 34" aria-hidden="true"><path d="${d}"/></svg>`;
+  return `<section class="win">${chrome}${projectBar("de", "Kranj")}${tabs("de", 3)}
+    <div class="close">
+      <div>
+        <p class="eyebrow">Abschluss</p>
+        <h1 class="h1">Projekt abgeschlossen</h1>
+        <p class="sub">100 % · 13 Arbeitstage Reserve</p>
+        <div class="docs">
+          <div class="card">Abnahmeprotokoll<span>Unterschrieben</span></div>
+          <div class="card">Regiebericht · 19 h<span>Bestätigt</span></div>
+          <div class="card">Schlussrechnung<span>Versendet</span></div>
+        </div>
+        <div class="btns"><span class="act yes">PDF herunterladen</span><span class="act">Teilen</span></div>
+      </div>
+      <article class="doc">
+        <header class="doc-sec"><div>${PAPER_MARK}<h4>Abnahmeprotokoll</h4></div><p>Nr. 2026-014<br>25.08.2026</p></header>
+        <dl class="doc-sec">
+          <dt>Projekt</dt><dd>${KRANJ}</dd>
+          <dt>Anlage</dt><dd>245,7 kWp · 452 Module</dd>
+          <dt>Auftraggeber</dt><dd>AVESOL d.o.o.</dd>
+          <dt>Ausführung</dt><dd>Montaža Kos d.o.o.</dd>
+        </dl>
+        <h5>Prüfpunkte</h5>
+        <ul class="doc-sec"><li>Unterkonstruktion gemäß Plan montiert</li><li>Modulbelegung vollständig</li><li>DC-Verkabelung geprüft und beschriftet</li><li>Dachfläche gereinigt und übergeben</li></ul>
+        <h5>Fotodokumentation</h5>
+        <div class="pics"><picture><img src="../assets/media/belin-anlage-weit.webp" alt=""></picture><picture><img src="../assets/media/belin-crew-module.webp" alt=""></picture></div>
+        <div class="sigs">
+          <div class="sig">${sig("M6 24c10-18 16-20 14-6s8-12 18-10-6 16 6 12 14-14 24-10 4 12 14 6 18-8 26-4")}<p>Marko Golob, AVESOL</p></div>
+          <div class="sig">${sig("M8 20c6-12 14-14 12 0s10-16 20-8-4 12 8 6 10-12 22-6 6 10 18 2 14-6 24 0")}<p>Matej Kovač, Montaža Kos</p></div>
+        </div>
+      </article>
+    </div></section>`;
+}
+
+const SCENES = [
+  { id: "portfolio", device: "desktop", render: portfolio, settle: ".kpi, .pcard", hold: 2600 },
+  { id: "overview", device: "desktop", render: overview, via: ".pcard.focus", settle: ".body .eyebrow, .h1, .sub, .chips .kpi, .ring, .chart", hold: 2800 },
+  { id: "phone", device: "phone", render: phone, hold: 3200 },
+  { id: "hours", device: "desktop", render: () => hours("sl", false), hold: 2400 },
+  { id: "german", device: "desktop", render: () => hours("de", true), via: '[data-lang="de"]', hold: 2600 },
+  { id: "closeout", device: "desktop", render: closeout, via: ".tabs a:nth-child(4)", settle: ".close > div > *", hold: 4200 },
+];
+
+const RECIPE = [
+  { key: "win", select: ".win", kind: "panel" },
+  { key: "bar", select: ".appbar", within: "win", kind: "panel", region: "win" },
+  { key: "logo", select: ".logo", within: "bar" },
+  { key: "crumb", select: ".crumb", within: "bar" },
+  { key: "bell", select: ".bell, .who", within: "bar" },
+  { key: "navb", select: ".navb", within: "bar" },
+  { key: "lang", select: ".lang", within: "bar" },
+  { key: "status", select: ".status, .newp", within: "bar" },
+  { key: "tab", select: ".tabs a", within: "win", all: true },
+  { key: "seg", select: ".seg", within: "win" },
+  { key: "eyebrow", select: ".eyebrow", within: "win" },
+  { key: "h1", select: ".h1, .pcard.focus h3, .sheet.s2 h3", within: "win" },
+  { key: "sub", select: ".sub", within: "win" },
+  { key: "ring", select: ".ring, .pcard.focus .pct, .prog", within: "win" },
+  { key: "h2", select: ".h2", within: "win" },
+  { key: "doc", select: ".doc", within: "win", kind: "panel", region: "win" },
+  { key: "kpi", select: ".kpi", within: "win", all: true },
+  { key: "card", select: ".card", within: "win", all: true },
+  { key: "photo", select: ".photo", within: "win", all: true },
+  { key: "act", select: ".act", within: "win", all: true },
+  { key: "cta", select: ".cta", within: "win" },
+];
+
+const screen = document.getElementById("screen");
+fit();
+const countUp = (el, ms, suffix) => el?.firstChild && countFrom(el, 0, parseFloat(el.firstChild.nodeValue), ms, suffix);
+
+const BEATS = {
+  async portfolio(alive, kit) {
+    if (kit.build) { await runBuild(kit.build); kit.build = null; }
+    if (!alive()) return;
+    screen.querySelectorAll(".pcard .pct").forEach((el) => countUp(el, 900));
+  },
+  async overview() {
+    if (calm) return;
+    screen.querySelector(".arc").animate([{ strokeDasharray: "0 100" }, { strokeDasharray: "58 100" }], { duration: 1400, easing: "cubic-bezier(.3,0,.2,1)" });
+    countUp(screen.querySelector(".ring .num"), 1400, "%");
+    screen.querySelector(".line").animate([{ strokeDasharray: "0 100" }, { strokeDasharray: "100 0" }], { duration: 1600, easing: "cubic-bezier(.4,0,.2,1)" });
+    screen.querySelector(".area").animate([{ opacity: 0 }, { opacity: 1 }], { duration: 900, delay: 900, fill: "backwards" });
+    screen.querySelector(".dot").animate([{ opacity: 0, transform: "scale(0)" }, { opacity: 1, transform: "scale(1)" }], { duration: 300, delay: 1500, fill: "backwards", transformOrigin: "center", transformBox: "fill-box" });
+  },
+  async phone(alive, kit) {
+    await wait(600);
+    if (!alive()) return;
+    await kit.pointer.click(".cta");
+    if (!alive()) return;
+    const cta = screen.querySelector(".cta");
+    cta.textContent = "Poslano";
+    cta.animate([{ filter: "brightness(1.15)" }, { filter: "none" }], { duration: 500 });
+    countFrom(screen.querySelector("[data-count]"), 58.3, 61.2, 900);
+    const note = screen.querySelector(".notif");
+    note.hidden = false;
+    note.animate([{ opacity: 0, transform: "translateX(-3rem)" }, { opacity: 1, transform: "none" }], { duration: 650, easing: "cubic-bezier(.2,.8,.2,1)" });
+    kit.pointer.hide();
+  },
+  async hours(alive, kit) {
+    await wait(700);
+    if (!alive()) return;
+    await kit.pointer.click(".act.yes");
+    if (!alive()) return;
+    kit.pointer.hide();
+    const card = screen.querySelector(".s2");
+    const state = card.querySelector(".state");
+    state.className = "state ok";
+    state.textContent = HOURS.sl.ok;
+    card.querySelector(".due")?.remove();
+    const small = card.querySelector(".small");
+    small.textContent = HOURS.sl.by;
+    small.style.marginTop = ".6rem";
+    card.querySelectorAll(".act.yes, .act.no").forEach((b) => b.remove());
+    screen.querySelector(".seg em")?.remove();
+    state.animate([{ transform: "scale(.8)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 380, easing: "cubic-bezier(.2,.9,.3,1.3)" });
+  },
+  // Same screen, another language: the words shuffle into German, nothing else moves.
+  async german() {
+    if (calm) return;
+    screen.querySelectorAll(".tabs a, .seg span, .body .eyebrow, .sheet h3, .state, .small, .lines span, .act").forEach((el) => decode(el, 0, 520));
+  },
+  async closeout(alive, kit) {
+    if (!kit.build) return;
+    await runBuild(kit.build);
+    kit.build = null;
+  },
+};
+
+window.demo = createDemo({
+  name: "belin",
+  stage: document.getElementById("stage"),
+  screen,
+  scenes: SCENES,
+  recipe: RECIPE,
+  persist: [".win", ".chrome", ".appbar", ".tabs"],
+  beats: BEATS,
+  ring: "#ffd21a",
+  prepare: (s, first) => {
+    // On arrival the portfolio builds itself; the close-out protocol always writes itself.
+    if (s.id === "portfolio" && first) return prepareBuild(screen.querySelector(".win"), { calm, panels: ".appbar, .kpi, .card", boxes: ".kpi, .card, .newp, .badge" });
+    if (s.id === "closeout") return prepareBuild(screen.querySelector(".doc"), { calm, panels: ".doc-sec", boxes: "picture, .sig svg" });
+    return null;
+  },
+});
+</script>
+</body>
+</html>

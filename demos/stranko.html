@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stranko · demo</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Figtree:wght@300..900&display=swap" rel="stylesheet">
+<style>
+  /* 1rem = 10 design px on a 1280 × 650 stage; kit.js scales it to the frame. */
+  :root {
+    color-scheme: light;
+    --canvas: #eef3f4; --surface: #fff; --surface-2: #dfe8ea; --ink: #0f1f22; --ink-2: #3d5257; --ink-3: #53676c; --line: #cfdbde; --line-2: #b4c5c9;
+    --accent: #0d7a84; --accent-soft: #dbeef0; --ph: #fff1a8;
+    --display: "Bricolage Grotesque", system-ui, sans-serif; --ui: Figtree, system-ui, sans-serif;
+    --morph-screen: #0f1f22;
+    font-size: 10px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--canvas); color: var(--ink); overflow: hidden; }
+  body { font: 400 1.5rem/1.5 var(--ui); -webkit-font-smoothing: antialiased; }
+  button { font: inherit; color: inherit; }
+  .stage { position: absolute; left: 50%; top: 50%; width: 128rem; height: 65rem; transform: translate(-50%, -50%); background: var(--canvas); overflow: hidden; }
+
+  /* ---------- the browser window (and, in the last scene, a phone) ---------- */
+  .win { position: absolute; left: 4rem; top: 2.4rem; width: 120rem; height: 60rem; border-radius: 1.2rem; overflow: hidden; background: #fff; border: 1px solid var(--line-2); box-shadow: 0 2rem 4rem -2.4rem rgb(15 31 34 / .35); }
+  .chrome { height: 3.2rem; display: flex; align-items: center; gap: .6rem; padding: 0 1.2rem; background: #f6f9f9; border-bottom: 1px solid var(--line); }
+  .chrome i { width: .9rem; height: .9rem; border-radius: 50%; background: var(--line-2); }
+  .chrome span { margin: 0 auto; font-size: 1.15rem; color: var(--ink-3); background: #fff; border: 1px solid var(--line); border-radius: .6rem; padding: .2rem 2.4rem; transform: translateX(-2rem); }
+  .page { height: calc(100% - 3.2rem); overflow: hidden; }
+
+  /* Stranko's own landing (scene 1) */
+  .lp { background: var(--canvas); height: 100%; }
+  .lp .site-header { display: flex; align-items: center; gap: 2.8rem; height: 6.4rem; padding: 0 5.6rem; background: var(--canvas); border-bottom: 1px solid var(--line); }
+  .brand { display: flex; align-items: center; gap: .9rem; font-family: var(--display); font-weight: 700; font-size: 2.1rem; letter-spacing: -.02em; width: max-content; }
+  .lp .brand i { width: 1.2rem; height: 1.2rem; background: var(--accent); border-radius: .2rem; }
+  .nav { display: flex; gap: 2.4rem; font-size: 1.4rem; }
+  .nav a { color: inherit; text-decoration: none; }
+  .sp { flex: 1; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 4.4rem; padding: 0 2rem; border-radius: .8rem; font-weight: 600; font-size: 1.5rem; border: 1px solid transparent; width: max-content; }
+  .lp .btn.quiet { border-color: var(--line-2); background: #fff; min-height: 3.8rem; font-size: 1.4rem; }
+  .lp .btn.primary { background: var(--accent); color: #fff; }
+  .lp .hcta { min-height: 3.8rem; font-size: 1.4rem; }
+  .lp .hero { display: grid; grid-template-columns: 1fr 38rem; gap: 5.6rem; padding: 5.2rem 5.6rem 0; }
+  .lp h1 { font-family: var(--display); font-size: 6.6rem; line-height: 1; letter-spacing: -.035em; font-weight: 560; margin: 0; width: max-content; }
+  .lp .lead { font-size: 1.9rem; color: var(--ink-2); margin: 1.6rem 0 2.6rem; max-width: 50rem; }
+  .prompt { background: #fff; border: 1px solid var(--line-2); border-radius: 1.4rem; padding: 1.8rem 1.8rem 1.4rem; }
+  .prompt .typed { min-height: 11.4rem; font-size: 1.6rem; line-height: 1.5; color: var(--ink); }
+  .prompt .typed:empty::before { content: "Opišite podjetje …"; color: var(--ink-3); }
+  .prompt .caret { display: inline-block; width: 2px; height: 1.9rem; background: var(--ink); vertical-align: -.35rem; margin-left: 1px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .pbar { display: flex; align-items: center; gap: .8rem; margin-top: 1rem; }
+  .chip { border: 1px solid var(--line-2); border-radius: .8rem; padding: .7rem 1.2rem; font-size: 1.3rem; font-weight: 600; background: #fff; }
+  .under { margin: 1.2rem 0 0; color: var(--ink-3); font-size: 1.35rem; }
+  .steps { background: #fff; border: 1px solid var(--line); border-radius: 1.4rem; padding: 2.2rem 2.4rem; margin-top: 1rem; }
+  .steps h2 { margin: 0 0 1.4rem; font-family: var(--display); font-size: 2rem; font-weight: 600; letter-spacing: -.02em; }
+  .steps ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+  .steps li { display: flex; align-items: center; gap: 1.2rem; font-size: 1.5rem; color: var(--ink-3); padding: 1rem 1.2rem; border-radius: .8rem; background: #f4f8f8; }
+  .steps li::before { content: ""; width: 1.8rem; height: 1.8rem; border-radius: .4rem; border: 2px solid var(--line-2); flex: none; }
+  .steps li.now { color: var(--ink); }
+  .steps li.now::before { border-color: var(--accent); border-right-color: transparent; border-radius: 50%; animation: spin .8s linear infinite; }
+  .steps li.done { color: var(--ink); }
+  .steps li.done::before { border-color: var(--accent); background: var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat; }
+  .steps .time { margin-top: 1.4rem; font-size: 1.3rem; color: var(--ink-3); }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ---------- generated sites: one markup, a design per trade ---------- */
+  .site { height: 100%; background: var(--s-bg); color: var(--s-ink); font-family: var(--s-body, var(--ui)); }
+  .site .site-header { display: flex; align-items: center; gap: 2.8rem; height: 6.4rem; padding: 0 5.6rem; background: var(--s-head, var(--s-bg)); color: var(--s-head-ink, var(--s-ink)); }
+  .site .brand { font-family: var(--s-display); }
+  .site .nav { font-size: 1.35rem; font-weight: 600; }
+  .site .hcta { min-height: 3.6rem; padding: 0 1.4rem; font-size: 1.3rem; background: var(--s-acc); color: var(--s-acc-ink); border-radius: var(--s-r); }
+  .site .hero { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; padding: 4rem 5.6rem 3.2rem; height: 34rem; background: var(--s-hero, var(--s-bg)); }
+  .site .eyebrow { margin: 0 0 1.2rem; font-size: 1.3rem; font-weight: 600; color: var(--s-eyebrow, var(--s-acc)); width: max-content; }
+  .site h1 { margin: 0; font-family: var(--s-display); font-weight: var(--s-h1w, 800); font-size: var(--s-h1, 6rem); line-height: .98; letter-spacing: -.04em; max-width: 54rem; width: max-content; }
+  .site .lead { margin: 1.8rem 0 2.4rem; font-size: 1.55rem; line-height: 1.55; max-width: 44rem; color: var(--s-ink-2, inherit); }
+  .site .actions { display: flex; align-items: center; gap: 2rem; }
+  .site .actions .btn { background: var(--s-acc); color: var(--s-acc-ink); border-radius: var(--s-r); min-height: 4.4rem; font-size: 1.4rem; }
+  .site .actions .link { font-weight: 700; font-size: 1.4rem; text-decoration: underline; text-underline-offset: .4rem; text-decoration-thickness: 2px; width: max-content; }
+  .site picture { display: block; overflow: hidden; }
+  .site picture img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .site .s2 { padding: 2.6rem 5.6rem; background: var(--s-band); color: var(--s-band-ink); height: 20rem; }
+  .site .s2 h2 { margin: 0 0 1.4rem; font-family: var(--s-display); font-size: 3rem; letter-spacing: -.03em; font-weight: var(--s-h1w, 800); line-height: 1.05; width: max-content; }
+  .site .s2 ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
+  .site .s2 li { background: var(--s-item); color: var(--s-item-ink); border-radius: var(--s-r); padding: 1.4rem 1.6rem; font-size: 1.4rem; display: flex; flex-direction: column; gap: .2rem; }
+  .site .s2 li b { font-size: 1.8rem; font-family: var(--s-display); letter-spacing: -.02em; }
+
+  /* Frizerstvo Lana: white, wine, arched photos */
+  .t-lana { --s-bg: #fff; --s-ink: #2b1418; --s-acc: #7b2a37; --s-acc-ink: #fff; --s-display: "Bricolage Grotesque", sans-serif; --s-r: .3rem; --s-band: #7b2a37; --s-band-ink: #fff; --s-item: #fff; --s-item-ink: #2b1418; --s-ink-2: #5b4246; }
+  .t-lana .brand i { width: 1.9rem; height: 1.9rem; border-radius: 50%; background: #7b2a37; }
+  .t-lana .brand small { font-family: var(--ui); font-size: 1.1rem; font-weight: 500; color: #8a6a6f; margin-left: .3rem; }
+  .t-lana .hero .media { position: absolute; bottom: 3.2rem; border-radius: 99rem 99rem .3rem .3rem; }
+  .t-lana .hero .media:nth-of-type(1) { right: 39rem; width: 13rem; height: 19rem; }
+  .t-lana .hero .media:nth-of-type(2) { right: 22.4rem; width: 15rem; height: 26rem; }
+  .t-lana .hero .media:nth-of-type(3) { right: 5.6rem; width: 15rem; height: 21rem; }
+
+  /* Zobozdravstvo Lebar: white, teal, round photo with a tilted label */
+  .t-lebar { --s-bg: #fff; --s-ink: #12343b; --s-acc: #0f766e; --s-acc-ink: #fff; --s-display: "Bricolage Grotesque", sans-serif; --s-r: .8rem; --s-h1: 4.9rem; --s-h1w: 700; --s-band: #e3f3ef; --s-band-ink: #12343b; --s-item: #fff; --s-item-ink: #12343b; --s-ink-2: #46626a; }
+  .t-lebar .brand svg { width: 2.4rem; height: 1.4rem; }
+  .t-lebar .hero { grid-template-columns: 1.15fr .85fr; }
+  .t-lebar .hero .media { position: absolute; right: 9rem; top: 2.4rem; width: 31rem; height: 31rem; border-radius: 50%; border: 1.2rem solid #e3f3ef; }
+  .t-lebar .label-card { position: absolute; right: 33rem; top: 5.2rem; background: #12343b; color: #fff; font-size: 1.25rem; font-weight: 600; line-height: 1.3; padding: 1rem 1.4rem; border-radius: .8rem; transform: rotate(-5deg); width: 19rem; }
+
+  /* Avtoservis Mrak: photo-led, dark, uppercase wide type, a plate for the phone number */
+  .t-mrak { --s-bg: #121416; --s-ink: #fff; --s-acc: #facc15; --s-acc-ink: #121416; --s-display: Archivo, sans-serif; --s-r: .2rem; --s-h1: 6.2rem; --s-h1w: 900; --s-band: #facc15; --s-band-ink: #121416; --s-item: #121416; --s-item-ink: #fff; --s-head: #121416; --s-ink-2: #d4d7db; }
+  .t-mrak .brand { font-family: Archivo, sans-serif; font-variation-settings: "wdth" 112; font-weight: 900; text-transform: uppercase; font-size: 1.7rem; letter-spacing: .02em; }
+  .t-mrak .brand em { font-style: normal; color: #facc15; }
+  .t-mrak h1 { text-transform: uppercase; font-variation-settings: "wdth" 115; letter-spacing: -.01em; line-height: .95; max-width: 72rem; position: relative; }
+  .t-mrak .hero { grid-template-columns: 1fr; }
+  .t-mrak .copy { position: relative; }
+  .t-mrak .hero .media { position: absolute; inset: 0; }
+  .t-mrak .hero .media img { filter: brightness(.38) saturate(.7); }
+  .t-mrak .lead { max-width: 52rem; }
+  .t-mrak .plate { position: absolute; right: 5.6rem; bottom: 4rem; width: max-content; display: flex; align-items: stretch; background: #fff; color: #111; border: .35rem solid #111; border-radius: .8rem; outline: .3rem solid #fff; font-family: Archivo, sans-serif; font-weight: 800; font-size: 3.4rem; letter-spacing: .02em; }
+  .t-mrak .plate i { width: 2.6rem; background: #1d4ed8; border-radius: .4rem 0 0 .4rem; display: flex; align-items: flex-end; justify-content: center; color: #fff; font-style: normal; font-size: .9rem; padding-bottom: .4rem; }
+  .t-mrak .plate span { padding: .4rem 1.8rem; }
+  .t-mrak .s2 { clip-path: polygon(0 1.2rem, 2% 0, 4% 1.2rem, 6% 0, 8% 1.2rem, 10% 0, 12% 1.2rem, 14% 0, 16% 1.2rem, 18% 0, 20% 1.2rem, 22% 0, 24% 1.2rem, 26% 0, 28% 1.2rem, 30% 0, 32% 1.2rem, 34% 0, 36% 1.2rem, 38% 0, 40% 1.2rem, 42% 0, 44% 1.2rem, 46% 0, 48% 1.2rem, 50% 0, 52% 1.2rem, 54% 0, 56% 1.2rem, 58% 0, 60% 1.2rem, 62% 0, 64% 1.2rem, 66% 0, 68% 1.2rem, 70% 0, 72% 1.2rem, 74% 0, 76% 1.2rem, 78% 0, 80% 1.2rem, 82% 0, 84% 1.2rem, 86% 0, 88% 1.2rem, 90% 0, 92% 1.2rem, 94% 0, 96% 1.2rem, 98% 0, 100% 1.2rem, 100% 100%, 0 100%); padding-top: 3.4rem; }
+  .t-mrak .s2 h2 { text-transform: uppercase; font-variation-settings: "wdth" 115; }
+
+  /* Pekarna Kvas: dark brown, bread yellow, an arched photo and a round opening-hours badge */
+  .t-kvas { --s-bg: #2b1a10; --s-ink: #f6ead8; --s-acc: #f5b82e; --s-acc-ink: #2b1a10; --s-display: "Bricolage Grotesque", sans-serif; --s-r: .6rem; --s-h1: 6.4rem; --s-band: #3a2416; --s-band-ink: #f6ead8; --s-item: #4a3020; --s-item-ink: #f6ead8; --s-ink-2: #e1cfb6; }
+  .t-kvas .brand svg { width: 2.6rem; height: 1.8rem; }
+  .t-kvas .hero .media { position: absolute; right: 5.6rem; top: 3.2rem; width: 42rem; height: 32.4rem; border-radius: 21rem 21rem .6rem .6rem; }
+  .t-kvas .badge { position: absolute; right: 40rem; top: 21rem; width: 13rem; height: 13rem; border-radius: 50%; background: #f5b82e; color: #2b1a10; display: grid; place-items: center; text-align: center; transform: rotate(-12deg); font-weight: 700; font-size: 1.1rem; line-height: 1; }
+  .t-kvas .badge b { display: block; font-family: var(--display); font-size: 3.8rem; font-weight: 800; letter-spacing: -.04em; margin-top: .3rem; }
+  .t-kvas .s2 ul { grid-template-columns: repeat(3, 1fr); }
+  .site .s2 li .val { display: flex; gap: .8rem; align-items: baseline; }
+  .site .s2 li s { opacity: .55; font-size: 1.4rem; }
+  .site .s2 li mark { background: var(--ph); color: #2b1a10; border-radius: .3rem; padding: 0 .4rem; }
+
+  /* the editor scene: a narrower window beside the chat */
+  .win.narrow { width: 76rem; }
+  .narrow .site .site-header { padding: 0 3.2rem; gap: 2rem; }
+  .narrow .site .nav { display: none; }
+  .narrow .site .hero { padding: 3.6rem 3.2rem 3rem; height: 31.6rem; grid-template-columns: 1fr; }
+  .narrow .t-kvas h1 { font-size: 4.6rem; max-width: 36rem; }
+  .narrow .site .lead { max-width: 34rem; font-size: 1.4rem; margin: 1.4rem 0 2rem; }
+  .narrow .t-kvas .hero .media { right: 3.2rem; top: 3.2rem; width: 26rem; height: 25.2rem; border-radius: 13rem 13rem .6rem .6rem; }
+  .narrow .t-kvas .badge { right: 22rem; top: 19.6rem; width: 10.4rem; height: 10.4rem; font-size: .95rem; }
+  .narrow .t-kvas .badge b { font-size: 3rem; }
+  .narrow .site .s2 { padding: 2.8rem 3.2rem; height: 22rem; }
+  .chat { position: absolute; left: 82rem; top: 2.4rem; width: 42rem; height: 60rem; background: #fff; border: 1px solid var(--line-2); border-radius: 1.2rem; display: flex; flex-direction: column; overflow: hidden; }
+  .chat header { display: flex; align-items: center; justify-content: space-between; padding: 1.6rem 2rem; border-bottom: 1px solid var(--line); }
+  .chat header h3 { margin: 0; font-family: var(--display); font-size: 1.9rem; font-weight: 600; letter-spacing: -.02em; }
+  .chat header span { font-size: 1.2rem; color: var(--ink-3); }
+  .msgs { flex: 1; display: flex; flex-direction: column; gap: 1rem; padding: 2rem; justify-content: flex-end; }
+  .msg { max-width: 30rem; padding: 1.1rem 1.4rem; border-radius: 1.2rem; background: #f1f6f6; font-size: 1.4rem; line-height: 1.45; }
+  .msg.user { align-self: flex-end; background: var(--ink); color: #fff; }
+  .msg small { display: block; margin-top: .4rem; color: var(--ink-3); font-size: 1.15rem; }
+  .ibox { margin: 0 2rem 2rem; border: 1px solid var(--line-2); border-radius: 1.2rem; padding: 1.2rem 1.2rem 1.2rem 1.6rem; display: flex; align-items: center; gap: 1rem; font-size: 1.45rem; min-height: 5.6rem; }
+  .ibox .typed { flex: 1; }
+  .ibox .typed:empty::before { content: "Napišite, kaj naj spremenimo …"; color: var(--ink-3); }
+  .ibox .send { background: var(--accent); color: #fff; border-radius: .8rem; padding: .8rem 1.4rem; font-weight: 600; font-size: 1.3rem; }
+
+  /* the phone scene */
+  .win.phone { left: 34rem; top: 1.4rem; width: 30rem; height: 62rem; border-radius: 3.6rem; border: .6rem solid #0f1f22; box-shadow: 0 3rem 5rem -3rem rgb(15 31 34 / .5); }
+  .win.phone .chrome { height: 3rem; background: var(--s-bg, #2b1a10); border: 0; justify-content: space-between; padding: 0 2.4rem; color: #f6ead8; font-size: 1.15rem; font-weight: 600; }
+  .win.phone .chrome span { margin: 0; padding: 0; background: none; border: 0; transform: none; color: inherit; font-size: inherit; }
+  .win.phone .chrome b { width: 8rem; height: 2rem; border-radius: 2rem; background: #000; }
+  .win.phone .page { height: calc(100% - 3rem); position: relative; }
+  .phone .site .site-header { padding: 0 1.8rem; height: 5.6rem; }
+  .phone .site .nav, .phone .site .hcta { display: none; }
+  .phone .site .menu { font-weight: 700; font-size: 1.3rem; text-decoration: underline; text-underline-offset: .3rem; }
+  .phone .site .hero { display: block; padding: 1.6rem 1.8rem; height: auto; }
+  .phone .site .eyebrow { font-size: 1.15rem; margin-bottom: .8rem; }
+  .phone .t-kvas h1 { font-size: 3.4rem; max-width: 24rem; }
+  .phone .site .lead { font-size: 1.3rem; margin: 1rem 0 1.4rem; }
+  .phone .site .actions { flex-direction: column; align-items: stretch; gap: 1.2rem; }
+  .phone .site .actions .btn { width: auto; }
+  .phone .site .actions .link { align-self: flex-start; }
+  .phone .t-kvas .hero .media { position: relative; right: auto; top: auto; margin-top: 1.6rem; width: 100%; height: 17rem; border-radius: 12rem 12rem .6rem .6rem; }
+  .phone .t-kvas .badge { right: auto; left: 1.4rem; top: auto; bottom: 1.4rem; width: 8.8rem; height: 8.8rem; font-size: .85rem; }
+  .phone .t-kvas .badge b { font-size: 2.4rem; }
+  .phone .site .s2 { display: none; }
+  .callbar { position: absolute; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; padding: 1rem 1.2rem 1.6rem; background: #2b1a10; border-top: 1px solid #4a3020; }
+  .callbar span { text-align: center; padding: 1.1rem; border-radius: .6rem; font-weight: 700; font-size: 1.35rem; }
+  .callbar .call { background: #f5b82e; color: #2b1a10; }
+  .callbar .dir { border: 1px solid #f6ead8; color: #f6ead8; }
+  .calling { position: absolute; left: 72rem; top: 20rem; width: 34rem; padding: 2.4rem; background: var(--ink); color: #fff; border-radius: 1.6rem; }
+  .calling b { display: block; font-family: var(--display); font-size: 3rem; font-weight: 600; letter-spacing: -.03em; }
+  .calling span { display: block; color: #b4c5c9; font-size: 1.5rem; margin-top: .2rem; }
+  .calling p { margin: 2rem 0 0; padding-top: 1.6rem; border-top: 1px solid #2c4146; font-size: 1.35rem; color: #b4c5c9; }
+  .calling p em { font-style: normal; color: #8fd3d9; }
+
+  /* embedded in the site: no rail, nothing to click */
+  body { pointer-events: none; user-select: none; }
+  .chat { box-shadow: 0 2rem 4rem -2.4rem rgb(15 31 34 / .3); }
+</style>
+</head>
+<body>
+<div class="stage" id="stage"><div id="screen"></div></div>
+<script type="module">
+import { createDemo, fit, calm, wait, type, prepareBuild, runBuild, decode } from "./kit.js";
+
+/* ---------- the four example businesses (Stranko's own showcase trades) ---------- */
+const pic = (src, cls = "media") => `<picture class="${cls}"><img src="../assets/media/${src}" alt=""></picture>`;
+const LOAF = `<svg viewBox="0 0 26 18" aria-hidden="true"><ellipse cx="13" cy="10" rx="12" ry="7.5" fill="#f5b82e"/><path d="M7 6.5l2.5 5M12 5l2.5 6M17 5.5l2.5 5" stroke="#2b1a10" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+const SMILE = `<svg viewBox="0 0 24 14" aria-hidden="true"><path d="M2 3c4 8 16 8 20 0" fill="none" stroke="#f06e5a" stroke-width="3.2" stroke-linecap="round"/></svg>`;
+
+const TRADES = {
+  lana: {
+    url: "frizerstvo-lana.stranko.si", brand: `<i></i>LANA<small>frizerstvo</small>`, nav: ["Cenik", "Salon", "Odprto"], phone: "041 555 213",
+    eyebrow: "Stanetova ulica 14, Celje", h1: "Barvamo brez amoniaka",
+    lead: "Frizerstvo Lana že devet let striže ženske, moške in otroke. Barvanje, prameni in svečane pričeske za poroke in maturantske plese.",
+    acts: ["Naročite se", "Cenik"], media: ["sb-frizer-01.webp", "sb-frizer-02.webp", "sb-frizer-03.webp"],
+    s2: "Cenik", items: [["Žensko striženje", "32 €"], ["Moško striženje", "18 €"], ["Barvanje", "od 45 €"], ["Svečana pričeska", "40 €"]],
+  },
+  lebar: {
+    url: "zobozdravstvo-lebar.stranko.si", brand: `${SMILE}Zobozdravstvo Lebar`, nav: ["Ordinacijski čas", "Storitve", "Naročanje"], phone: "02 555 31 20",
+    eyebrow: "Gosposvetska cesta 36, Maribor", h1: "Prvi obisk je le pogovor in pregled, brez posegov",
+    lead: "Zasebna zobna ambulanta v središču Maribora. Posebej smo pozorni na paciente, ki jih je strah zobozdravnika.",
+    acts: ["Naročite se", "Pišite nam"], media: ["sb-zobozdravnik-01.webp"], extra: `<div class="label-card">Otroke sprejemamo od 3. leta starosti.</div>`,
+    s2: "Ordinacijski čas", items: [["Pon, sre", "7.00–14.00"], ["Tor, čet", "13.00–20.00"], ["Petek", "7.00–13.00"], ["Nujni primeri", "02 555 31 20"]],
+  },
+  mrak: {
+    url: "avtoservis-mrak.stranko.si", brand: `Avtoservis <em>Mrak</em>`, nav: ["Kaj delamo", "Cene", "Gume", "Kje smo"], phone: "041 555 730",
+    eyebrow: "Savska cesta 52, Kranj", h1: "Servis vseh znamk v Kranju",
+    lead: "Družinski servis od leta 2008. Osebna vozila vseh znamk in kombiji do 3,5 t. Pred popravilom dobite predračun, brez presenečenj.",
+    acts: ["Naročite servis"], media: ["sb-avtoservis-01.webp"], extra: `<div class="plate"><i>SLO</i><span>KR · 041 555 730</span></div>`,
+    s2: "Odprto", items: [["Pon–pet", "7.00–16.00"], ["Sobota", "po dogovoru"], ["Kje", "Savska cesta 52"], ["Predračun", "brezplačen"]],
+  },
+  kvas: {
+    url: "pekarna-kvas.stranko.si", brand: `${LOAF}Kvas`, nav: ["Ponudba", "Kako pečemo", "Odprto"], phone: "041 555 906",
+    eyebrow: "Pekarna Kvas, Šutna 30, Kamnik", h1: "Kruh z drožmi, ki vzhaja čez noč",
+    lead: "Mala družinska pekarna na začetku stare ulice. Vse je ročno delo, brez aditivov in brez zamrznjenega testa.",
+    acts: ["Poglejte ponudbo", "Naročite po telefonu"], media: ["sb-pekarna-01.webp"], extra: `<div class="badge"><span>pon–sob odprto od<b>6.30</b></span></div>`,
+    s2: "Delovni čas", items: [["Pon–pet", "6.30–18.00"], ["Sobota", "6.30–12.00"], ["Nedelja", "7.00–10.00"]],
+  },
+};
+
+function site(id, { saturday } = {}) {
+  const t = TRADES[id];
+  const items = t.items.map(([k, v]) => {
+    if (saturday && k === "Sobota") return `<li><span>${k}</span><b class="val">${saturday === "new" ? `<s>6.30–12.00</s><mark>7.00–12.00</mark>` : v}</b></li>`;
+    return `<li><span>${k}</span><b>${v}</b></li>`;
+  }).join("");
+  return `<div class="site t-${id}">
+    <header class="site-header"><div class="brand">${t.brand}</div><nav class="nav">${t.nav.map((n) => `<a href="#">${n}</a>`).join("")}</nav><span class="sp"></span><span class="btn hcta">${t.phone}</span><span class="menu" hidden>Meni</span></header>
+    <section class="hero">${id === "mrak" ? t.media.map((m) => pic(m)).join("") : ""}
+      <div class="copy"><p class="eyebrow">${t.eyebrow}</p><h1>${t.h1}</h1><p class="lead">${t.lead}</p>
+        <div class="actions">${t.acts.map((a, i) => i ? `<span class="link">${a}</span>` : `<span class="btn">${a}</span>`).join("")}</div></div>
+      ${id === "mrak" ? "" : t.media.map((m) => pic(m)).join("")}${t.extra ?? ""}
+    </section>
+    <section class="s2"><h2>${t.s2}</h2><ul>${items}</ul></section>
+  </div>`;
+}
+const browser = (url, inner, cls = "") => `<section class="win ${cls}"><div class="chrome"><i></i><i></i><i></i><span>${url}</span></div><div class="page">${inner}</div></section>`;
+
+/* ---------- scenes ---------- */
+const INTAKE = "Frizerstvo Lana, Stanetova ulica 14 v Celju. Strižemo ženske, moške in otroke, barvamo brez amoniaka. Odprto tor–pet 8.00–18.00, sobota 8.00–13.00. Naročila na 041 555 213.";
+const STEPS = ["Razumevanje opisa", "Oblikovna smer in barve", "Fotografije", "Besedila in postavitev"];
+function landing() {
+  return browser("stranko.si", `<div class="lp">
+    <header class="site-header"><div class="brand"><i></i>Stranko</div><nav class="nav"><a href="#">Kaj dobite</a><a href="#">Kako deluje</a><a href="#">Primer</a><a href="#">Cena</a></nav><span class="sp"></span><span class="btn quiet">Prijava</span><span class="btn primary hcta">Poskusite brezplačno</span></header>
+    <section class="hero">
+      <div><h1>Stran za vaše stranke.</h1><p class="lead">Opišite podjetje v nekaj stavkih. V minuti vidite svojo spletno stran.</p>
+        <div class="prompt"><div class="typed"></div><div class="pbar"><span class="chip">＋ Fotografije · 5</span><span class="chip">＋ Logotip</span><span class="sp"></span><span class="btn primary go">Ustvari stran</span></div></div>
+        <p class="under">Česar ne napišete, si ne izmislimo.</p></div>
+      <div class="steps"><h2>Pripravljamo stran</h2><ul>${STEPS.map((s) => `<li>${s}</li>`).join("")}</ul><p class="time">Običajno v 23 sekundah.</p></div>
+    </section></div>`);
+}
+const sitePage = (id) => browser(TRADES[id].url, site(id));
+function editor(after) {
+  return browser("pekarna-kvas.stranko.si · urejanje", site("kvas", { saturday: after ? "new" : "old" }), "narrow") + `
+  <aside class="chat">
+    <header><h3>Uredite s pogovorom</h3><span>${after ? "različica 14" : "različica 13"}</span></header>
+    <div class="msgs">
+      <div class="msg user">Dodaj pogosta vprašanja o naročanju potice</div>
+      <div class="msg">Dodali smo tri vprašanja pod Ponudbo. Preverite odgovore, preden objavite.<small>različica 13</small></div>
+      ${after ? `<div class="msg user">Ob sobotah odpiramo ob sedmih</div><div class="msg">Urejeno. Sobota je zdaj 7.00–12.00, povsod na strani.<small>različica 14</small></div>` : ""}
+    </div>
+    <div class="ibox"><span class="typed"></span><span class="send">Pošlji</span></div>
+  </aside>`;
+}
+function phone() {
+  return `<section class="win phone"><div class="chrome" style="--s-bg:#2b1a10"><span>8.02</span><b></b><span>5G</span></div><div class="page">${site("kvas")}
+    <div class="callbar"><span class="call">Pokliči</span><span class="dir">Navodila za pot</span></div></div></section>
+  <aside class="calling" hidden><b>Klicanje …</b><span>Pekarna Kvas · 041 555 906</span><p>Klic in pot sta na telefonu vedno na dnu zaslona, na vsaki strani. <em>Preverjeno pri 360 px.</em></p></aside>`;
+}
+
+
+const SCENES = [
+  { id: "prompt", device: "desktop", render: landing, hold: 600 },
+  { id: "build", device: "desktop", render: () => sitePage("lana"), hold: 2000 },
+  { id: "trades", device: "desktop", render: () => sitePage("lebar"), settle: ".hero .copy > *, .hero > picture, .s2 li", hold: 10000 },
+  { id: "edit", device: "desktop", render: () => editor(false), settle: ".chat", hold: 2400 },
+  { id: "phone", device: "phone", render: phone, hold: 3600 },
+];
+
+const RECIPE = [
+  { key: "win", select: ".win", kind: "panel" },
+  { key: "header", select: ".site-header", within: "win", kind: "panel", region: "win" },
+  { key: "brand", select: ".brand", within: "header" },
+  { key: "nav", select: ".nav a", within: "header", all: true },
+  { key: "quiet", select: ".btn.quiet", within: "header" },
+  { key: "hcta", select: ".hcta", within: "header" },
+  { key: "hero", select: ".hero", within: "win", kind: "panel", region: "win" },
+  { key: "card", select: ".label-card, .badge, .plate", within: "hero" },
+  { key: "eyebrow", select: ".eyebrow", within: "hero" },
+  { key: "h1", select: "h1", within: "hero" },
+  { key: "lead", select: ".lead", within: "hero" },
+  { key: "prompt", select: ".prompt", within: "hero" },
+  { key: "under", select: ".under", within: "hero" },
+  { key: "act", select: ".actions > *", within: "hero", all: true },
+  { key: "media", select: "picture.media", within: "hero", all: true },
+  { key: "s2", select: ".s2, .steps", within: "win", kind: "panel" },
+  { key: "s2title", select: "h2", within: "s2" },
+  { key: "s2i", select: "ul", within: "s2", children: 6 },
+  { key: "chat", select: ".chat", kind: "panel" },
+  { key: "msg", select: ".msg", within: "chat", all: true },
+  { key: "ibox", select: ".ibox", within: "chat" },
+  { key: "bar", select: ".callbar > *", within: "win", all: true },
+];
+
+const screen = document.getElementById("screen");
+fit();
+
+const BEATS = {
+  async prompt(alive, kit) {
+    await wait(500);
+    await type(screen.querySelector(".prompt .typed"), INTAKE, alive);
+    if (!alive()) return;
+    await wait(300);
+    await kit.pointer.click(".go");
+    if (!alive()) return;
+    kit.pointer.hide();
+    for (const l of screen.querySelectorAll(".steps li")) {
+      l.className = "now";
+      await wait(calm ? 100 : 560);
+      if (!alive()) return;
+      l.className = "done";
+    }
+  },
+  async build(alive, kit) {
+    if (!kit.build) return;
+    await runBuild(kit.build);
+    kit.build = null;
+  },
+  // Every trade gets its own design: the window stays, the site inside it changes.
+  async trades(alive, kit) {
+    const order = ["mrak", "kvas", "lana", "lebar"];
+    for (let n = 0; ; n = (n + 1) % order.length) {
+      await wait(2300);
+      if (!alive()) return;
+      await kit.swap(alive, () => sitePage(order[n]), SCENES[2].settle);
+      if (!alive()) return;
+      const url = screen.querySelector(".chrome span");
+      if (url && !calm) decode(url, 0, 420);
+    }
+  },
+  async edit(alive, kit) {
+    await wait(500);
+    await type(screen.querySelector(".ibox .typed"), "Ob sobotah odpiramo ob sedmih", alive, 30);
+    if (!alive()) return;
+    await kit.pointer.click(".send");
+    if (!alive()) return;
+    kit.pointer.hide();
+    await kit.swap(alive, () => editor(true), ".msg:nth-last-child(-n+2)");
+    if (!alive()) return;
+    screen.querySelector(".s2 mark")?.animate([{ backgroundColor: "#f5b82e" }, { backgroundColor: "#fff1a8" }], { duration: 900 });
+  },
+  async phone(alive, kit) {
+    screen.querySelectorAll(".phone .menu").forEach((m) => (m.hidden = false));
+    await wait(700);
+    if (!alive()) return;
+    await kit.pointer.click(".callbar .call");
+    if (!alive()) return;
+    const c = screen.querySelector(".calling");
+    c.hidden = false;
+    c.animate([{ opacity: 0, transform: "translateY(2rem)" }, { opacity: 1, transform: "none" }], { duration: 600, easing: "cubic-bezier(.2,.8,.2,1)" });
+    kit.pointer.hide();
+  },
+};
+
+window.demo = createDemo({
+  name: "stranko",
+  stage: document.getElementById("stage"),
+  screen,
+  scenes: SCENES,
+  recipe: RECIPE,
+  persist: [".win", ".chrome", ".chat"],
+  beats: BEATS,
+  ring: "#0d7a84",
+  // The first site is held back, so it lands as bare structure and then builds itself.
+  prepare: (s) => {
+    if (s.id === "phone") screen.querySelectorAll(".phone .menu").forEach((m) => (m.hidden = false));
+    return s.id === "build" ? prepareBuild(screen.querySelector(".site"), { calm, panels: ".site-header, .hero, .s2", boxes: "picture, .btn, .link, .s2 li" }) : null;
+  },
+});
+</script>
+</body>
+</html>

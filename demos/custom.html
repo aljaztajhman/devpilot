@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Custom website · demo</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..900&family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<style>
+  /* A sample site for a fictional installer, in two layouts and two languages. 1rem = 10 design px on a 1280 × 650 stage. */
+  :root {
+    color-scheme: light;
+    --stage: #e9e6df; --bg: #f4f1ea; --paper: #fffdf8; --ink: #15211b; --ink-2: #44514a; --muted: #6b766f; --line: #d9d4c8;
+    --acc: #1d5c3f; --acc-ink: #fff; --sun: #f2a33a;
+    --display: "Schibsted Grotesk", system-ui, sans-serif; --ui: Inter, system-ui, sans-serif;
+    --morph-screen: #15211b;
+    font-size: 10px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--stage); color: var(--ink); overflow: hidden; }
+  body { font: 400 1.5rem/1.5 var(--ui); -webkit-font-smoothing: antialiased; pointer-events: none; user-select: none; }
+  .stage { position: absolute; left: 50%; top: 50%; width: 128rem; height: 65rem; transform: translate(-50%, -50%); background: var(--stage); overflow: hidden; }
+
+  .win { position: absolute; left: 4rem; top: 2.4rem; width: 120rem; height: 60rem; border-radius: 1.2rem; overflow: hidden; background: var(--bg); border: 1px solid #cfc9bb; box-shadow: 0 2rem 4rem -2.4rem rgb(21 33 27 / .35); }
+  .chrome { height: 3.2rem; display: flex; align-items: center; gap: .6rem; padding: 0 1.2rem; background: #f8f6f1; border-bottom: 1px solid var(--line); }
+  .chrome i { width: .9rem; height: .9rem; border-radius: 50%; background: #cfc9bb; }
+  .chrome span { margin: 0 auto; font-size: 1.15rem; color: var(--muted); background: #fff; border: 1px solid var(--line); border-radius: .6rem; padding: .2rem 2.4rem; transform: translateX(-2rem); }
+  .page { position: relative; height: calc(100% - 3.2rem); overflow: hidden; }
+
+  .head { display: flex; align-items: center; gap: 3.2rem; height: 7.2rem; padding: 0 5.6rem; border-bottom: 1px solid var(--line); }
+  .logo { display: flex; align-items: center; gap: 1rem; font-family: var(--display); font-weight: 800; font-size: 2.2rem; letter-spacing: -.03em; width: max-content; }
+  .logo svg { width: 2.8rem; height: 2.8rem; display: block; }
+  .logo small { font-family: var(--ui); font-weight: 500; font-size: 1.15rem; letter-spacing: 0; color: var(--muted); margin-left: .2rem; }
+  .nav { display: flex; gap: 2.6rem; font-size: 1.4rem; font-weight: 500; }
+  .nav a { color: inherit; text-decoration: none; width: max-content; }
+  .sp { flex: 1; }
+  .lang { display: flex; gap: .2rem; font-size: 1.15rem; font-weight: 700; letter-spacing: .04em; color: var(--muted); border: 1px solid var(--line); border-radius: 99rem; padding: .3rem; }
+  .lang b { padding: .4rem .9rem; border-radius: 99rem; }
+  .lang b.on { background: var(--ink); color: #fff; }
+  .hcta { background: var(--acc); color: var(--acc-ink); border-radius: 99rem; padding: 1.1rem 2rem; font-weight: 600; font-size: 1.35rem; width: max-content; }
+  .menu { display: none; font-weight: 700; font-size: 1.3rem; text-decoration: underline; text-underline-offset: .3rem; }
+
+  .hero { display: grid; grid-template-columns: 1fr 46rem; gap: 4.8rem; align-items: start; padding: 4.4rem 5.6rem 0; height: 38.4rem; }
+  .eyebrow { display: flex; align-items: center; gap: 1rem; margin: 0 0 1.8rem; font-size: 1.3rem; font-weight: 600; color: var(--acc); width: max-content; }
+  .eyebrow::before { content: ""; width: 1rem; height: 1rem; border-radius: 50%; background: var(--sun); }
+  h1 { margin: 0; font-family: var(--display); font-weight: 800; font-size: 5.8rem; line-height: .96; letter-spacing: -.045em; max-width: 60rem; }
+  .lead { margin: 1.8rem 0 2.6rem; font-size: 1.65rem; line-height: 1.55; color: var(--ink-2); max-width: 48rem; }
+  .actions { display: flex; align-items: center; gap: 2.4rem; }
+  .btn { background: var(--ink); color: #fff; border-radius: 99rem; padding: 1.4rem 2.4rem; font-weight: 600; font-size: 1.45rem; width: max-content; }
+  .link { font-weight: 600; font-size: 1.45rem; border-bottom: 2px solid var(--sun); padding-bottom: .2rem; width: max-content; }
+  .media { position: relative; display: block; border-radius: 1.6rem; overflow: hidden; height: 32rem; }
+  .media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .tag { position: absolute; left: 1.6rem; bottom: 1.6rem; background: var(--paper); border-radius: 1rem; padding: 1.1rem 1.4rem; font-size: 1.2rem; color: var(--muted); line-height: 1.35; width: max-content; }
+  .tag b { display: block; color: var(--ink); font-size: 1.4rem; }
+
+  .facts { list-style: none; margin: 0; padding: 0 5.6rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.4rem; }
+  .facts li { border-top: 2px solid var(--ink); padding-top: 1.2rem; font-size: 1.3rem; color: var(--muted); }
+  .facts b { display: block; font-family: var(--display); font-size: 2.4rem; font-weight: 700; letter-spacing: -.03em; color: var(--ink); line-height: 1.1; }
+
+  .callbar { display: none; }
+
+  /* ---------- the phone ---------- */
+  .win.phone { left: 49rem; top: 1.4rem; width: 30rem; height: 62rem; border-radius: 3.6rem; border: .6rem solid var(--ink); background: var(--bg); }
+  .phone .chrome { height: 3rem; background: var(--bg); border: 0; justify-content: space-between; padding: 0 2.4rem; font-size: 1.15rem; font-weight: 600; }
+  .phone .chrome span { margin: 0; padding: 0; background: none; border: 0; transform: none; color: var(--ink); font-size: inherit; }
+  .phone .chrome b { width: 8rem; height: 2rem; border-radius: 2rem; background: #000; }
+  .phone .page { height: calc(100% - 3rem); }
+  .phone .head { height: 5.6rem; padding: 0 1.8rem; gap: 1rem; }
+  .phone .logo { font-size: 1.8rem; }
+  .phone .logo svg { width: 2.2rem; height: 2.2rem; }
+  .phone .logo small, .phone .nav, .phone .hcta { display: none; }
+  .phone .lang { font-size: 1rem; }
+  .phone .lang b { padding: .3rem .6rem; }
+  .phone .menu { display: block; }
+  .phone .hero { display: block; height: auto; padding: 2rem 1.8rem 0; }
+  .phone .eyebrow { font-size: 1.1rem; margin-bottom: 1rem; }
+  .phone h1 { font-size: 3.6rem; }
+  .phone .lead { font-size: 1.3rem; margin: 1.2rem 0 1.4rem; }
+  .phone .actions { display: none; }
+  .phone .media { height: 15rem; border-radius: 1.2rem; }
+  .phone .tag { left: 1rem; bottom: 1rem; padding: .7rem 1rem; font-size: 1rem; }
+  .phone .tag b { font-size: 1.15rem; }
+  .phone .facts { display: none; }
+  .phone .callbar { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; position: absolute; left: 0; right: 0; bottom: 0; padding: 1rem 1.2rem 1.6rem; background: var(--paper); border-top: 1px solid var(--line); }
+  .callbar span { text-align: center; padding: 1.1rem; border-radius: 99rem; font-weight: 600; font-size: 1.3rem; }
+  .callbar .call { background: var(--acc); color: #fff; }
+  .callbar .quote { border: 1px solid var(--ink); }
+
+  /* notes beside the phone */
+  .note { position: absolute; width: 30rem; font-size: 1.3rem; color: var(--ink-2); }
+  .note b { display: block; font-family: var(--display); font-size: 1.8rem; letter-spacing: -.02em; color: var(--ink); margin-bottom: .4rem; }
+  .note::before { content: ""; display: block; width: 4rem; height: 2px; background: var(--ink); margin-bottom: 1.2rem; }
+  .note.l { left: 12rem; top: 18rem; }
+  .note.r { left: 88rem; top: 36rem; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage"><div id="screen"></div></div>
+<script type="module">
+import { createDemo, fit, calm, decode } from "./kit.js";
+
+const SUN = `<svg viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="6" fill="#f2a33a"/><g stroke="#1d5c3f" stroke-width="2.4" stroke-linecap="round"><path d="M14 2.5v3M14 22.5v3M2.5 14h3M22.5 14h3M5.9 5.9l2.1 2.1M20 20l2.1 2.1M5.9 22.1L8 20M20 8l2.1-2.1"/></g></svg>`;
+
+const COPY = {
+  de: {
+    sub: "Photovoltaik · Graz", nav: ["Leistungen", "Referenzen", "Ablauf", "Kontakt"], cta: "Angebot anfragen", menu: "Menü",
+    eyebrow: "Photovoltaik für Gewerbe- und Hallendächer", h1: "Strom vom eigenen Hallendach.",
+    lead: "Wir planen, montieren und warten PV-Anlagen ab 30 kWp in der Steiermark und in Kärnten. Mit eigenen Teams, festem Termin und einem Ansprechpartner bis zur Abnahme.",
+    acts: ["Dach prüfen lassen", "Referenzen"], tag: ["Logistikzentrum Graz-Süd", "412 kWp · 2025"],
+    facts: [["Angebot", "in 5 Werktagen"], ["Montage", "mit eigenen Teams"], ["Wartung", "10 Jahre inklusive"]], bar: ["Anrufen", "Angebot"],
+    notes: [["Eine Spalte", "Gleiche Inhalte, neu angeordnet. Nichts wird nur verkleinert."], ["Daumen-Abstand", "Anrufen und Angebot liegen auf jeder Seite unten."]],
+  },
+  en: {
+    sub: "Solar · Graz", nav: ["Services", "Projects", "Process", "Contact"], cta: "Request a quote", menu: "Menu",
+    eyebrow: "Solar for commercial and warehouse roofs", h1: "Power from your own warehouse roof.",
+    lead: "We design, install and maintain PV systems from 30 kWp in Styria and Carinthia. With our own crews, a fixed date and one contact through to sign-off.",
+    acts: ["Book a roof check", "Projects"], tag: ["Logistics centre Graz South", "412 kWp · 2025"],
+    facts: [["Quote", "in 5 working days"], ["Installation", "by our own crews"], ["Maintenance", "10 years included"]], bar: ["Call", "Quote"],
+    notes: [["One column", "Same content, rearranged. Nothing is simply shrunk."], ["Within thumb reach", "Call and quote sit at the bottom of every page."]],
+  },
+};
+
+function site(l, device) {
+  const c = COPY[l];
+  const chrome = device === "phone" ? `<div class="chrome"><span>9.41</span><b></b><span>5G</span></div>` : `<div class="chrome"><i></i><i></i><i></i><span>sonnwerk.example${l === "en" ? "/en" : ""}</span></div>`;
+  const notes = device === "phone" ? c.notes.map(([b, t], i) => `<p class="note ${i ? "r" : "l"}"><b>${b}</b>${t}</p>`).join("") : "";
+  return `<section class="win ${device === "phone" ? "phone" : ""}">${chrome}<div class="page">
+    <header class="head"><div class="logo">${SUN}Sonnwerk<small>${c.sub}</small></div>
+      <nav class="nav">${c.nav.map((n) => `<a href="#">${n}</a>`).join("")}</nav><span class="sp"></span>
+      <div class="lang">${["de", "en"].map((x) => `<b class="${x === l ? "on" : ""}" data-lang="${x}">${x.toUpperCase()}</b>`).join("")}</div>
+      <span class="hcta">${c.cta}</span><span class="menu">${c.menu}</span></header>
+    <section class="hero"><div class="copy"><p class="eyebrow">${c.eyebrow}</p><h1>${c.h1}</h1><p class="lead">${c.lead}</p>
+      <div class="actions"><span class="btn">${c.acts[0]}</span><span class="link">${c.acts[1]}</span></div></div>
+      <picture class="media"><img src="../assets/media/belin-anlage-weit.webp" alt=""><span class="tag"><b>${c.tag[0]}</b>${c.tag[1]}</span></picture></section>
+    <ul class="facts">${c.facts.map(([k, v]) => `<li><b>${k}</b>${v}</li>`).join("")}</ul>
+    <div class="callbar"><span class="call">${c.bar[0]}</span><span class="quote">${c.bar[1]}</span></div>
+  </div></section>${notes}`;
+}
+
+const SCENES = ["de", "en"].flatMap((l) => ["desktop", "phone"].map((d) => ({ id: `${d}-${l}`, device: d, render: () => site(l, d), hold: 3000 })));
+// Standalone order: desktop → phone → phone in English → desktop in English.
+[SCENES[2], SCENES[3]] = [SCENES[3], SCENES[2]];
+
+const RECIPE = [
+  { key: "win", select: ".win", kind: "panel" },
+  { key: "head", select: ".head", within: "win", kind: "panel", region: "win" },
+  { key: "logo", select: ".logo", within: "head" },
+  { key: "nav", select: ".nav a", within: "head", all: true },
+  { key: "lang", select: ".lang", within: "head" },
+  { key: "hcta", select: ".hcta, .menu", within: "head" },
+  { key: "eyebrow", select: ".eyebrow", within: "win" },
+  { key: "h1", select: "h1", within: "win" },
+  { key: "lead", select: ".lead", within: "win" },
+  { key: "act", select: ".actions > *", within: "win", all: true },
+  { key: "media", select: ".media", within: "win" },
+  { key: "fact", select: ".facts", within: "win", children: 3 },
+  { key: "bar", select: ".callbar > *", within: "win", all: true },
+  { key: "note", select: ".note", all: true },
+];
+
+const screen = document.getElementById("screen");
+let lang = "";
+fit();
+
+window.demo = createDemo({
+  name: "custom",
+  stage: document.getElementById("stage"),
+  screen,
+  scenes: SCENES,
+  recipe: RECIPE,
+  persist: [".win", ".chrome", ".head", ".media"],
+  ring: "#1d5c3f",
+  beats: Object.fromEntries(SCENES.map((s) => [s.id, async () => {
+    // A language change keeps the layout; only the words shuffle into the new language.
+    const l = s.id.slice(-2), changed = lang && lang !== l;
+    lang = l;
+    if (!changed || calm) return;
+    screen.querySelectorAll(".eyebrow, h1, .lead, .nav a, .hcta, .menu, .actions > *, .tag, .facts li, .callbar span, .logo small, .note").forEach((el) => decode(el, 0, 560));
+  }])),
+});
+</script>
+</body>
+</html>
