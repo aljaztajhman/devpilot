@@ -5,16 +5,19 @@ const $$ = (s, c = document) => (c ? [...c.querySelectorAll(s)] : []);
 const reduce = matchMedia("(prefers-reduced-motion: reduce)");
 const narrow = matchMedia("(max-width: 1000px)");
 
-/* ---------- Ljubljana clock ---------- */
-const clock = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Ljubljana", hour: "2-digit", minute: "2-digit", timeZoneName: "short" });
+/* ---------- Ljubljana clock (+ Contour full HH:MM:SS for HUD) ---------- */
+const clockShort = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Ljubljana", hour: "2-digit", minute: "2-digit", timeZoneName: "short" });
+const clockFull = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Ljubljana", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
 const tick = () => {
-  const parts = clock.formatToParts(new Date());
-  const get = (t) => parts.find((p) => p.type === t)?.value ?? "";
-  const text = `${get("hour")}:${get("minute")} ${get("timeZoneName").replace("GMT+1", "CET").replace("GMT+2", "CEST")}`;
-  $$("[data-clock]").forEach((t) => (t.textContent = text));
+  const now = new Date();
+  const sp = clockShort.formatToParts(now);
+  const get = (parts, t) => parts.find((p) => p.type === t)?.value ?? "";
+  const short = `${get(sp, "hour")}:${get(sp, "minute")} ${get(sp, "timeZoneName").replace("GMT+1", "CET").replace("GMT+2", "CEST")}`;
+  const full = clockFull.format(now);
+  $$("[data-clock]").forEach((t) => { t.textContent = t.hasAttribute("data-clock-full") ? full : short; });
 };
 tick();
-setInterval(tick, 20_000);
+setInterval(tick, 1_000);
 
 /* ---------- headline: words rise into place, once ---------- */
 for (const el of $$("[data-split]")) {
@@ -42,8 +45,10 @@ for (const el of $$("[data-split]")) {
 /* ---------- nav: text roll, state over dark sections, current section, mobile menu ---------- */
 const nav = $("#nav");
 for (const a of $$(".nav-links a")) {
-  const t = a.textContent;
-  a.innerHTML = `<span class="roll"><span data-t="${t}">${t}</span></span>`;
+  const sup = a.querySelector("sup");
+  const label = (sup ? a.childNodes[0].textContent : a.textContent).trim();
+  const roll = `<span class="roll"><span data-t="${label}">${label}</span></span>`;
+  a.innerHTML = sup ? `${roll}<sup>${sup.textContent}</sup>` : roll;
 }
 const menuBtn = $(".menu-btn");
 menuBtn?.addEventListener("click", () => {
@@ -58,6 +63,7 @@ $$(".nav-links a").forEach((a) => a.addEventListener("click", () => {
 }));
 const darks = $$("[data-theme=dark]");
 const sections = $$(".nav-links a").map((a) => [a, $(a.hash)]).filter(([, s]) => s);
+const altEl = $("[data-alt]");
 function navState() {
   if (!nav) return;
   nav.classList.toggle("scrolled", scrollY > 8);
@@ -70,6 +76,10 @@ function navState() {
     const r = s.getBoundingClientRect();
     a.toggleAttribute("aria-current", r.top <= mid && r.bottom > mid);
     if (a.hasAttribute("aria-current")) a.setAttribute("aria-current", "true");
+  }
+  if (altEl) {
+    const m = document.documentElement.scrollHeight - innerHeight;
+    altEl.textContent = ("00" + (m > 0 ? Math.round((scrollY / m) * 100) : 0)).slice(-3);
   }
 }
 
