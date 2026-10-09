@@ -1,0 +1,34 @@
+{
+  "tip": "798266f",
+  "when": "2026-10-10T01:12+02",
+  "formFactor": "desktop-no-throttle",
+  "scores": {
+    "performance": 100,
+    "accessibility": 93,
+    "best-practices": 100,
+    "seo": 100
+  },
+  "metrics": {
+    "first-contentful-paint": "0.5\u00a0s",
+    "largest-contentful-paint": "0.5\u00a0s",
+    "total-blocking-time": "0\u00a0ms",
+    "cumulative-layout-shift": "0.001",
+    "speed-index": "0.5\u00a0s",
+    "interactive": "0.6\u00a0s",
+    "total-byte-weight": "Total size was 399\u00a0KiB"
+  },
+  "mobile": {
+    "scores": {
+      "performance": 94
+    },
+    "metrics": {
+      "first-contentful-paint": "2.0\u00a0s",
+      "largest-contentful-paint": "2.0\u00a0s",
+      "total-blocking-time": "210\u00a0ms",
+      "cumulative-layout-shift": "0.002",
+      "speed-index": "2.5\u00a0s",
+      "interactive": "3.1\u00a0s",
+      "total-byte-weight": "Total size was 328\u00a0KiB"
+    }
+  }
+}

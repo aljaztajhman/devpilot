@@ -163,7 +163,7 @@ p { margin: 0; text-wrap: pretty; }
 .segs button[aria-current="step"]::before { opacity: 1; background: var(--ign); }
 
 .steps { list-style: none; margin: 0; padding: 0; }
-.step { min-height: 72vh; padding: 0 0 48px; opacity: .28; transition: opacity .5s var(--ease); }
+.step { min-height: 72vh; padding: 0 0 48px; opacity: .48; transition: opacity .5s var(--ease); } /* overnight a11y: inactive contrast (was .28) */
 .step:last-child { min-height: 60vh; }
 .step.on { opacity: 1; }
 .step .n { display: flex; justify-content: space-between; color: var(--mute); padding-top: 16px; border-top: 1px solid var(--line); position: relative; }

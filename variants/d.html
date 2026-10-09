@@ -8,11 +8,17 @@
 <meta property="og:title" content="Devpilot · Software that ships.">
 <meta property="og:description" content="Web applications, internal tools and websites, designed, built and run by one accountable company.">
 <meta name="theme-color" content="#0D0D0D">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://devpilotbot.github.io/devpilot/variants/d.html">
+<meta property="og:locale" content="en_GB">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://devpilotbot.github.io/devpilot/variants/d.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23ECE8E3'/%3E%3Cpath d='M0 0H16A16 16 0 0 1 16 32H11.325V21.3125H16A5.3125 5.3125 0 1 0 10.6875 16V20.675H0Z' fill='%230D0D0D'/%3E%3C/svg%3E">
 <!-- Contour D first fold: board-locked Jan hero (Zulip 630402395, 2026-10-09; supersedes 630400016). Mechanical port + zoom→#main handoff — see assets/contour/board/ -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600&family=Geist+Mono:wght@400&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
+<!-- Self-hosted Geist / Inter Tight (latin + latin-ext, display=swap) — same files Google served; no third-party font round-trip -->
+<link rel="preload" href="../assets/fonts/gyByhwUxId8gMEwcGFU.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/NGSnv5HMAFg6IuGlBNMjxJEL2VmU3NS7Z2mjPQ-aWy5S.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/fonts/d-fonts.css">
 <link rel="stylesheet" href="../assets/d.css">
 <link rel="stylesheet" href="../assets/contour/board/hero.css">
 <script>document.documentElement.classList.add("js")</script>
@@ -68,9 +74,9 @@
         </div>
         <div class="stage-plate" aria-hidden="true">
           <i class="cross tl"></i><i class="cross tr"></i><i class="cross bl"></i><i class="cross br"></i>
-          <figure class="shot s-stranko" data-shot="stranko" style="--d:0"><img src="../assets/previews/stranko.webp" alt="" width="1600" height="800"></figure>
-          <figure class="shot s-belin" data-shot="belin" style="--d:1"><img src="../assets/previews/belin.webp" alt="" width="1600" height="800"></figure>
-          <figure class="shot s-custom" data-shot="custom" style="--d:2"><img src="../assets/previews/custom-phone.webp" alt="" width="600" height="1240"></figure>
+          <figure class="shot s-stranko" data-shot="stranko" style="--d:0"><img src="../assets/previews/stranko.webp" alt="" width="1600" height="800" decoding="async" fetchpriority="low"></figure>
+          <figure class="shot s-belin" data-shot="belin" style="--d:1"><img src="../assets/previews/belin.webp" alt="" width="1600" height="800" decoding="async" fetchpriority="low"></figure>
+          <figure class="shot s-custom" data-shot="custom" style="--d:2"><img src="../assets/previews/custom-phone.webp" alt="" width="600" height="1240" decoding="async" fetchpriority="low"></figure>
         </div>
       </div>
     </div>
@@ -353,7 +359,7 @@
       <div class="wrap foot-in mono">
         <span>© 2026 Devpilot · Ljubljana, Slovenia</span>
         <span>Ljubljana <time data-clock>--:--</time></span>
-        <span class="foot-links"><a href="#">Imprint</a><a href="#">Privacy</a></span>
+        <span class="foot-links"><a href="mailto:info@devpilot.si?subject=Imprint">Imprint</a><a href="mailto:info@devpilot.si?subject=Privacy">Privacy</a></span>
       </div>
     </footer>
   </section>
