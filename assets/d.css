@@ -84,26 +84,98 @@ a:hover > .roll > span, a:focus-visible > .roll > span { transform: translateY(-
 /* ---------- opening: the void, the mark as terrain ---------- */
 .opening { position: relative; overflow: clip; }
 .opening::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0; background: repeating-linear-gradient(to right, transparent 0 calc(25% - 1px), rgb(236 233 226 / .045) calc(25% - 1px) 25%); }
-.hero { position: relative; z-index: 1; padding: calc(var(--nav-h) + 20px) 0 clamp(40px, 5vw, 72px); }
-.contour { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
-  mask-image: radial-gradient(75% 85% at 78% 42%, #000 30%, transparent 100%);
-  -webkit-mask-image: radial-gradient(75% 85% at 78% 42%, #000 30%, transparent 100%);
-  opacity: .95; }
-.hud .notch { display: inline-block; width: 7px; height: 7px; margin-right: 8px; background: var(--ign); vertical-align: 0; }
-.hero-foot { display: flex; align-items: center; gap: 16px; margin-top: clamp(28px, 4vh, 48px); padding-top: 14px; border-top: 1px solid var(--ash); color: var(--steel); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
-.hero-foot-mid { flex: 1; height: 1px; background: var(--ash); }
-.hud { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding: 14px 0 0; border-top: 1px solid var(--ash); color: var(--steel); }
-.hud .kicker { margin: 0; }
+/* Desktop Contour hero: full-bleed SVG mark (www Contour mechanical port). Mobile overrides below. */
+.hero {
+  position: relative; z-index: 1;
+  min-height: 100svh; height: 100svh;
+  padding: 0; overflow: hidden;
+  background: var(--void);
+}
+.hero-field {
+  position: absolute; inset: 0; z-index: 0;
+  pointer-events: none; overflow: hidden;
+  background: var(--void);
+}
+.hero-poster {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: 70% 50%;
+  max-width: none;
+  /* LCP underlay; SVG sits opaque on top once loaded */
+  opacity: 1;
+}
+.contour {
+  /* Oversized + right-shifted so huge D dominates right (www Contour lock) */
+  position: absolute;
+  top: 50%; right: -2%;
+  width: auto; height: 157%;
+  max-width: none;
+  transform: translateY(-50%);
+  object-fit: contain; object-position: right center;
+  pointer-events: none;
+  opacity: 1;
+}
+.hero-ui {
+  position: relative; z-index: 2;
+  height: 100%; min-height: 100svh;
+  display: flex; flex-direction: column;
+  padding-top: calc(var(--nav-h) + 16px);
+  padding-bottom: 24px;
+  box-sizing: border-box;
+  color: var(--bone);
+  /* www Contour: HUD/claim read over the mark */
+  mix-blend-mode: difference;
+}
+.hud .notch { display: inline-block; width: 7px; height: 7px; margin-right: 8px; background: var(--ign); vertical-align: 0; mix-blend-mode: normal; }
+.hud { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding: 14px 0 0; border-top: 1px solid rgb(236 233 226 / .22); color: inherit; opacity: .92; }
+.hud .kicker { margin: 0; color: inherit; }
 .hud-r { display: flex; gap: 24px; }
-.hero-title { position: relative; margin-top: clamp(40px, 7vh, 96px); font-size: clamp(42px, 7vw, 120px); line-height: .9; letter-spacing: -.055em; font-weight: 560; max-width: 9.5em; color: var(--bone); }
-.hero-row { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(24px, 4vw, 64px); margin-top: clamp(28px, 4vh, 48px); align-items: end; }
-.hero-lead { font-size: clamp(17px, 1.3vw, 20px); line-height: 1.45; color: #C6C3BB; max-width: 32em; }
-.hero-lead a { color: var(--bone); text-decoration: none; border-bottom: 1px solid var(--steel); transition: border-color .3s var(--ease), color .3s var(--ease); }
+/* Claim lower-left over Contour D — www Contour lock */
+.hero-title {
+  position: absolute;
+  left: var(--gutter); right: var(--gutter);
+  bottom: clamp(64px, 10vh, 120px);
+  margin: 0;
+  font-size: clamp(56px, 9.5vw, 152px);
+  line-height: .84; letter-spacing: -.06em; font-weight: 560;
+  max-width: none; color: inherit;
+  pointer-events: none;
+}
+.hero-title .ln:nth-child(2),
+.hero-title [data-line="1"] { padding-left: 0; }
+/* Short www sub on the D curve (desktop); long studio blurb mobile-only */
+.hero-row {
+  position: absolute;
+  right: var(--gutter); left: auto;
+  top: calc(var(--nav-h) + 20px + 5.5em);
+  margin: 0; gap: 0;
+  grid-template-columns: 1fr;
+  max-width: 320px; width: min(320px, 28vw);
+  align-items: start;
+  display: grid;
+}
+.hero-lead { font-size: 15px; line-height: 1.45; color: inherit; max-width: none; opacity: .92; }
+.hero-lead a { color: inherit; text-decoration: none; border-bottom: 1px solid rgb(236 233 226 / .35); transition: border-color .3s var(--ease), color .3s var(--ease); }
 .hero-lead a:hover, .hero-lead a:focus-visible { color: var(--ign); border-color: var(--ign); }
-.cta-row { display: flex; flex-wrap: wrap; gap: 12px; justify-self: end; }
+.hero-lead-long { display: none; }
+.cta-row { display: none; } /* CTAs live in nav + contact; first fold matches www Contour */
+.hero-foot {
+  display: flex; align-items: center; gap: 16px;
+  margin-top: auto; padding-top: 14px;
+  border-top: 1px solid rgb(236 233 226 / .22);
+  color: inherit; font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  opacity: .85;
+}
+.hero-foot-mid { flex: 1; height: 1px; background: rgb(236 233 226 / .22); }
+.hero-scroll { opacity: .75; }
+.hero-stage {
+  position: relative; z-index: 1;
+  padding: clamp(40px, 6vw, 72px) 0 clamp(24px, 3vw, 40px);
+  background: var(--void);
+}
 
 /* the build stage: one graphite plate, three products, a mono bar that lights each one */
-.hero-visual { position: relative; margin-top: clamp(40px, 6vw, 88px); background: var(--graphite); border: 1px solid var(--ash); display: grid; grid-template-rows: auto 1fr; }
+.hero-visual { position: relative; margin-top: 0; background: var(--graphite); border: 1px solid var(--ash); display: grid; grid-template-rows: auto 1fr; }
 .plate-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px; padding: 12px 16px; border-bottom: 1px solid var(--ash); color: var(--steel); }
 .plate-bar .gap { margin-right: 2px; }
 .plate-bar a { color: var(--steel); text-decoration: none; display: inline-flex; gap: 8px; transition: color .25s; }
@@ -295,7 +367,8 @@ details[open]::details-content { block-size: auto; }
 .js .hud { animation-delay: 0s; }
 .js .hero-visual { animation: fade 1.2s var(--ease) both; animation-delay: .5s; }
 .js .hero-visual .shot { animation: shot 1.2s var(--ease) both; animation-delay: calc(.7s + var(--d) * .12s); }
-.js .contour { animation: fade 1.6s var(--ease) both; }
+.js .hero-field { animation: fade 1.2s var(--ease) both; }
+.js .contour { opacity: 1; }
 @keyframes fade { from { opacity: 0; } }
 @keyframes shot { from { opacity: 0; translate: 0 36px; } }
 
@@ -388,51 +461,68 @@ details[open]::details-content { block-size: auto; }
 }
 
 /* Contour D mobile: mark-first (mirror www v2 / Jan board JPEG 2026-10-09).
-   Large Contour field+D upper; claim lower; blurb on D curve. Uniform scale only — never non-uniform stretch. */
+   Large Contour field+D upper; claim lower; blurb on curve. Uniform scale only — never non-uniform stretch.
+   LOCKED — do not change framing without CEO/board. Desktop ≥641 uses full-bleed Contour above. */
 @media (max-width: 640px) {
-  .opening { min-height: 100svh; }
   .hero {
-    min-height: 100svh; padding: 0 0 28px;
+    min-height: 100svh; height: auto;
+    padding: 0 0 28px;
     display: flex; flex-direction: column;
+    overflow: visible;
+  }
+  .hero-field {
+    position: absolute; inset: auto 0 auto 0;
+    top: 0; height: 58%;
+    width: 100%;
+  }
+  .hero-poster {
+    object-position: 0% 16%;
+    object-fit: cover;
+    opacity: 1;
   }
   .contour {
-    mask-image: none;
-    -webkit-mask-image: none;
-    opacity: 1;
+    /* Mark-first: D owns upper half — uniform scale, Jan JPEG framing */
+    top: 0; right: auto; left: 0; bottom: auto;
+    width: 100%; height: 100%;
     transform: none;
-    /* Pull back framing vs prior tight crop — more of Contour D visible (Jan JPEG) */
-    height: 58%;
-    top: 0; bottom: auto;
+    object-fit: cover;
+    object-position: 72% 18%;
   }
-  .hero > .wrap {
+  .hero-ui {
+    mix-blend-mode: normal;
     position: relative; z-index: 1;
     flex: 1; display: flex; flex-direction: column;
     min-height: 100svh;
+    height: auto;
     padding-top: calc(var(--nav-h) + 10px);
+    padding-bottom: 0;
     box-sizing: border-box;
   }
-  .hud { order: 1; margin-bottom: 0; border-top: 0; padding-top: 8px; }
+  .hud { order: 1; margin-bottom: 0; border-top: 0; padding-top: 8px; opacity: 1; }
   .hud-r { display: flex; font-size: 10px; }
   .hud .kicker { font-size: 10px; letter-spacing: .04em; text-transform: uppercase; }
   /* blurb on lower-right curve of D */
   .hero-row {
-    order: 2; position: absolute; right: 0; left: auto;
+    order: 2; position: absolute; right: var(--gutter); left: auto;
     top: 36%; margin-top: 0; gap: 0;
     grid-template-columns: 1fr; max-width: 11.8em; width: 42%;
   }
-  .hero-lead { font-size: 12.5px; line-height: 1.4; max-width: none; color: var(--bone); }
+  .hero-lead-short { display: none; }
+  .hero-lead-long { display: block; font-size: 12.5px; line-height: 1.4; max-width: none; color: var(--bone); opacity: 1; mix-blend-mode: difference; }
   .cta-row { display: none; }
   .hero-title {
-    order: 3; margin-top: auto; margin-bottom: 10px;
+    order: 3; position: relative; left: auto; right: auto; bottom: auto;
+    margin-top: auto; margin-bottom: 10px;
     font-size: clamp(52px, 15.5vw, 72px); max-width: none;
     letter-spacing: -.06em; line-height: .82;
+    pointer-events: auto;
   }
   .hero-foot {
     order: 4; margin-top: 12px; flex-wrap: nowrap; gap: 8px 12px; font-size: 10px;
-    justify-content: space-between;
+    justify-content: space-between; opacity: 1;
   }
-  .hero-foot-mid { display: none; }
-  .hero-visual { order: 5; margin-top: 28px; }
+  .hero-foot-mid, .hero-scroll { display: none; }
+  .hero-stage { padding: 28px 0 0; }
   .menu-btn {
     width: 44px; height: 44px; padding: 0; font-size: 0; color: inherit;
     background: linear-gradient(currentColor,currentColor) center 15px/22px 2px no-repeat,
