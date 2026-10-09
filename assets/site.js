@@ -1,4 +1,4 @@
-/* Nextgen site behaviour. Ordinary interactions stay quiet (fades, a text roll, a line reveal); the product demos
+/* Devpilot site behaviour. Ordinary interactions stay quiet (fades, a text roll, a line reveal); the product demos
  * do the presenting, and only a device change in a demo gets the full morph. */
 const $ = (s, c = document) => (c ? c.querySelector(s) : null);
 const $$ = (s, c = document) => (c ? [...c.querySelectorAll(s)] : []);

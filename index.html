@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Nextgen · Stranko, Belin and custom websites</title>
-<meta name="description" content="Three homepage directions for Nextgen, a two-founder software studio in Ljubljana. Pick a variant at the top.">
+<title>Devpilot · Stranko, Belin and custom websites</title>
+<meta name="description" content="Three homepage directions for Devpilot, a two-founder software studio in Ljubljana. Pick a variant at the top.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -34,7 +34,7 @@
 
 
 <div class="bar" role="toolbar" aria-label="Variant picker">
-  <span class="tag mono">Nextgen · 3 directions</span>
+  <span class="tag mono">Devpilot · 3 directions</span>
   <div class="seg" id="seg">
     <button type="button" data-v="a" aria-pressed="true"><b>A</b><span>Paper</span></button>
     <button type="button" data-v="b" aria-pressed="false"><b>B</b><span>Blueprint</span></button>
@@ -61,14 +61,14 @@
     page.title = `Variant ${v.toUpperCase()} · ${V[v][0]}`;
     desc.textContent = `${v.toUpperCase()} · ${V[v][1]}`;
     open.href = `variants/${v}.html`;
-    try { localStorage.setItem("nextgen-variant", v); } catch {}
+    try { localStorage.setItem("devpilot-variant", v); } catch {}
     if (push) { try { history.replaceState(null, "", `#${v}`); } catch {} }
   }
   seg.addEventListener("click", (e) => { const b = e.target.closest("button[data-v]"); if (b) show(b.dataset.v, true); });
   addEventListener("keydown", (e) => { if (e.target.closest("input, textarea")) return; const k = { 1: "a", 2: "b", 3: "c" }[e.key]; if (k) show(k, true); });
   addEventListener("hashchange", () => { const h = location.hash.slice(1); if (V[h]) show(h, false); });
   let start = location.hash.slice(1);
-  if (!V[start]) { try { start = localStorage.getItem("nextgen-variant") || ""; } catch {} }
+  if (!V[start]) { try { start = localStorage.getItem("devpilot-variant") || ""; } catch {} }
   show(V[start] ? start : "a", false);
 </script>
 </body>

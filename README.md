@@ -1,6 +1,6 @@
-# Nextgen studio site
+# Devpilot studio site
 
-Three homepage directions for Nextgen, a two-founder software studio in Ljubljana, behind one variant picker.
+Three homepage directions for Devpilot, a two-founder software studio in Ljubljana, behind one variant picker.
 
 - `index.html`: the picker. A strip at the top switches the full page beneath it (keys 1, 2, 3 work too).
 - `variants/a.html` · Paper: warm paper, Geist, products demoed in place.
