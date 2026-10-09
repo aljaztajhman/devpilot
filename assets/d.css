@@ -92,11 +92,10 @@ a:hover > .roll > span, a:focus-visible > .roll > span { transform: translateY(-
 .hud .notch { display: inline-block; width: 7px; height: 7px; margin-right: 8px; background: var(--ign); vertical-align: 0; }
 .hero-foot { display: flex; align-items: center; gap: 16px; margin-top: clamp(28px, 4vh, 48px); padding-top: 14px; border-top: 1px solid var(--ash); color: var(--steel); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
 .hero-foot-mid { flex: 1; height: 1px; background: var(--ash); }
-.hero-title { font-weight: 560; letter-spacing: -.055em; }
 .hud { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding: 14px 0 0; border-top: 1px solid var(--ash); color: var(--steel); }
 .hud .kicker { margin: 0; }
 .hud-r { display: flex; gap: 24px; }
-.hero-title { position: relative; margin-top: clamp(40px, 7vh, 96px); font-size: clamp(38px, 6.1vw, 108px); line-height: .94; letter-spacing: -.05em; font-weight: 500; max-width: 13.6em; color: var(--bone); }
+.hero-title { position: relative; margin-top: clamp(40px, 7vh, 96px); font-size: clamp(42px, 7vw, 120px); line-height: .9; letter-spacing: -.055em; font-weight: 560; max-width: 9.5em; color: var(--bone); }
 .hero-row { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(24px, 4vw, 64px); margin-top: clamp(28px, 4vh, 48px); align-items: end; }
 .hero-lead { font-size: clamp(17px, 1.3vw, 20px); line-height: 1.45; color: #C6C3BB; max-width: 32em; }
 .hero-lead a { color: var(--bone); text-decoration: none; border-bottom: 1px solid var(--steel); transition: border-color .3s var(--ease), color .3s var(--ease); }
