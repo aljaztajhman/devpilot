@@ -134,7 +134,10 @@ const boardHero = $("#board-stage") && $("#hero");
 function parallax() {
   const y = Math.max(scrollY - geo.heroRun, 0);
   if (reduce.matches || y > geo.vh * 1.4) return;
-  for (const [el, k] of drift) el.style.transform = `translateY(${(y * k).toFixed(1)}px)`;
+  for (const [el, k] of drift) {
+    const next = `translateY(${(y * k).toFixed(1)}px)`;
+    if (el.style.transform !== next) el.style.transform = next;
+  }
 }
 
 /* ---------- demos: messages to and from the frames ---------- */
@@ -315,3 +318,17 @@ document.fonts?.ready.then(remeasure);
 stageHeights();
 measure();
 frame();
+
+/* Prefetch the first product demo after idle — Contour D keeps iframes lazy; this warms the cache without competing with hero. */
+const warmDemo = () => {
+  const iframe = $("[data-demo=stranko] iframe");
+  if (!iframe?.src) return;
+  const link = document.createElement("link");
+  link.rel = "prefetch";
+  link.href = iframe.getAttribute("src");
+  link.as = "document";
+  document.head.append(link);
+};
+if ("requestIdleCallback" in window) requestIdleCallback(warmDemo, { timeout: 4000 });
+else setTimeout(warmDemo, 2000);
+

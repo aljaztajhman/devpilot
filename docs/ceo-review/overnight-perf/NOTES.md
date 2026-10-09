@@ -18,3 +18,6 @@ Baseline tip: `798266f` (jank fix). Local Lighthouse:
 - Demo iframes still pull `morph.js` (~30KB) when near viewport — expected.
 - `assets/contour/img` hero-fallbacks unused by board D (~520KB in repo, not on D network path).
 - www DNS / publish still board.
+
+## Later same night
+- Tip2+: FAQ polish, svc a11y, OG, default D, imprint/privacy stubs, 404, apple-touch, parallax write-on-change, idle prefetch Stranko demo.
