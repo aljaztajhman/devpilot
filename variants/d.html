@@ -3,11 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Devpilot · D · Contour</title>
-<meta name="description" content="Devpilot designs and builds apps and websites end-to-end, from first brief to live release. Software studio in Ljubljana.">
+<title>Devpilot · Software and web development, Ljubljana</title>
+<meta name="description" content="Devpilot designs, builds and runs web applications, internal tools and websites. Written scope, agreed price per phase, and code you own.">
+<meta property="og:title" content="Devpilot · Software that ships.">
+<meta property="og:description" content="Web applications, internal tools and websites, designed, built and run by one accountable company.">
 <meta name="theme-color" content="#0D0D0D">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23ECE8E3'/%3E%3Cpath d='M0 0H16A16 16 0 0 1 16 32H11.325V21.3125H16A5.3125 5.3125 0 1 0 10.6875 16V20.675H0Z' fill='%230D0D0D'/%3E%3C/svg%3E">
-<!-- Contour D first fold: board-locked Jan hero (Zulip 630400016, 2026-10-09). Mechanical port — see assets/contour/board/ -->
+<!-- Contour D first fold: board-locked Jan hero (Zulip 630402395, 2026-10-09; supersedes 630400016). Mechanical port + zoom→#main handoff — see assets/contour/board/ -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600&family=Geist+Mono:wght@400&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
@@ -18,35 +20,33 @@
 <body id="top">
 <a class="skip" href="#main">Skip to content</a>
 
-<!-- ============ BOARD HERO (Jan locked) ============ -->
+<!-- ============ BOARD HERO (Jan locked, Zulip 630402395) ============ -->
 <section class="hero board-hero" id="hero" aria-label="Intro">
   <div class="board-stage" id="board-stage">
     <canvas id="field" aria-hidden="true"></canvas>
-<svg class="d-fallback" viewBox="0 0 1280 1280" aria-hidden="true"><path fill="#ECE8E3" d="M0 0H640A640 640 0 0 1 640 1280H453V852.5H640A212.5 212.5 0 1 0 427.5 640V827H0Z"/></svg>
+    <svg class="d-fallback" id="dfb" aria-hidden="true"><path id="dfbPath" fill="#ECE8E3"/></svg>
 
-    <a class="x brand" href="../" aria-label="Devpilot home">
-<svg viewBox="0 0 4944 1280" aria-hidden="true"><g fill="currentColor"><path d="M0 0H640A640 640 0 0 1 640 1280H453V852.5H640A212.5 212.5 0 1 0 427.5 640V827H0Z"/><path d="M1780 912.5V367.5H1968.1Q2100.9 367.5 2172.2 438.5Q2243.6 509.5 2243.6 640.8Q2243.6 771.3 2173.4 841.9Q2103.2 912.5 1972.7 912.5ZM1896.7 814.2H1968.1Q2047.1 814.2 2085.1 771.6Q2123.1 729 2123.1 640Q2123.1 551 2085.1 508.4Q2047.1 465.8 1968.1 465.8H1896.7ZM2508.5 921.7Q2445.5 921.7 2399.1 895.2Q2352.6 868.7 2326.9 820.4Q2301.2 772 2301.2 706.8Q2301.2 641.5 2326.9 593.6Q2352.6 545.6 2398.7 518.7Q2444.7 491.9 2507.7 491.9Q2569.1 491.9 2614.4 518.7Q2659.7 545.6 2684.6 595.5Q2709.6 645.4 2709.6 714.5V737.5H2420.2Q2422.5 786.6 2446.7 810.4Q2470.8 834.2 2510.8 834.2Q2539.9 834.2 2559.5 821.9Q2579.1 809.6 2587.5 784.3L2703.4 791.2Q2687.3 852.6 2635.1 887.2Q2582.9 921.7 2508.5 921.7ZM2420.2 666.9H2591.4Q2589.1 621.6 2566.4 599.3Q2543.8 577.1 2507.7 577.1Q2471.6 577.1 2448.2 600.5Q2424.8 623.9 2420.2 666.9ZM2903.8 912.5 2753.3 501.1H2873.8L2971.3 796.6L3068 501.1H3188.6L3037.3 912.5ZM3255.3 1027.6V501.1H3365.9L3368.2 587.8L3359 584Q3374.3 539.4 3408.9 515.6Q3443.4 491.9 3489.5 491.9Q3547 491.9 3585.4 520.3Q3623.8 548.7 3643.4 597.4Q3662.9 646.1 3662.9 706.8Q3662.9 766.7 3643.4 815.8Q3623.8 864.9 3585 893.3Q3546.3 921.7 3488.7 921.7Q3458.8 921.7 3432.7 910.6Q3406.6 899.5 3387.8 879.5Q3368.9 859.5 3360.5 831.9L3370.5 825.8V1027.6ZM3457.2 833.4Q3497.9 833.4 3521.3 799.7Q3544.7 765.9 3544.7 706.8Q3544.7 647.7 3521.3 613.9Q3497.9 580.1 3457.2 580.1Q3430.4 580.1 3410.8 594.3Q3391.2 608.5 3380.8 636.9Q3370.5 665.3 3370.5 706.8Q3370.5 748.2 3380.8 776.6Q3391.2 805 3410.8 819.2Q3430.4 833.4 3457.2 833.4ZM3742 912.5V501.1H3857.1V912.5ZM3739.7 450.4V358.3H3858.7V450.4ZM4065.2 912.5Q4014.5 912.5 3986.1 887.2Q3957.7 861.8 3957.7 805V367.5H4072.8V792.8Q4072.8 811.2 4081.3 818.9Q4089.7 826.5 4105.8 826.5H4133.5V912.5ZM4384.5 921.7Q4321.5 921.7 4274.7 895.2Q4227.9 868.7 4201.8 820.4Q4175.7 772 4175.7 706.8Q4175.7 641.5 4201.8 593.6Q4227.9 545.6 4274.7 518.7Q4321.5 491.9 4384.5 491.9Q4447.4 491.9 4494.3 518.7Q4541.1 545.6 4567.2 593.6Q4593.3 641.5 4593.3 706.8Q4593.3 772 4567.2 820.4Q4541.1 868.7 4494.3 895.2Q4447.4 921.7 4384.5 921.7ZM4384.5 833.4Q4427.5 833.4 4451.3 800Q4475.1 766.7 4475.1 706.8Q4475.1 646.9 4451.3 613.5Q4427.5 580.1 4384.5 580.1Q4341.5 580.1 4317.7 613.5Q4293.9 646.9 4293.9 706.8Q4293.9 766.7 4317.7 800Q4341.5 833.4 4384.5 833.4ZM4842.7 912.5Q4779 912.5 4749.1 882.9Q4719.2 853.4 4719.2 788.9V404.3H4834.3V775.1Q4834.3 805 4847 815.8Q4859.6 826.5 4885 826.5H4942.5V912.5ZM4653.1 587V501.1H4942.5V587Z"/></g></svg>
-    </a>
-
-    <div class="x mono clock" aria-hidden="true"><span>LJU <span data-clock data-clock-full>11:04:38</span></span><span>ALT <span id="alt">000</span></span></div>
-
-    <nav class="x nav" aria-label="Main">
-      <a href="#work">Work<sup>13</sup></a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
+    <div class="layer ink" id="ink">
+      <a class="x brand" href="../" aria-label="Devpilot home">
+        <svg viewBox="0 0 4944 1280" aria-hidden="true"><g fill="currentColor"><path d="M0 0H640A640 640 0 0 1 640 1280H453V852.5H640A212.5 212.5 0 1 0 427.5 640V827H0Z"/><path d="M1780 912.5V367.5H1968.1Q2100.9 367.5 2172.2 438.5Q2243.6 509.5 2243.6 640.8Q2243.6 771.3 2173.4 841.9Q2103.2 912.5 1972.7 912.5ZM1896.7 814.2H1968.1Q2047.1 814.2 2085.1 771.6Q2123.1 729 2123.1 640Q2123.1 551 2085.1 508.4Q2047.1 465.8 1968.1 465.8H1896.7ZM2508.5 921.7Q2445.5 921.7 2399.1 895.2Q2352.6 868.7 2326.9 820.4Q2301.2 772 2301.2 706.8Q2301.2 641.5 2326.9 593.6Q2352.6 545.6 2398.7 518.7Q2444.7 491.9 2507.7 491.9Q2569.1 491.9 2614.4 518.7Q2659.7 545.6 2684.6 595.5Q2709.6 645.4 2709.6 714.5V737.5H2420.2Q2422.5 786.6 2446.7 810.4Q2470.8 834.2 2510.8 834.2Q2539.9 834.2 2559.5 821.9Q2579.1 809.6 2587.5 784.3L2703.4 791.2Q2687.3 852.6 2635.1 887.2Q2582.9 921.7 2508.5 921.7ZM2420.2 666.9H2591.4Q2589.1 621.6 2566.4 599.3Q2543.8 577.1 2507.7 577.1Q2471.6 577.1 2448.2 600.5Q2424.8 623.9 2420.2 666.9ZM2903.8 912.5 2753.3 501.1H2873.8L2971.3 796.6L3068 501.1H3188.6L3037.3 912.5ZM3255.3 1027.6V501.1H3365.9L3368.2 587.8L3359 584Q3374.3 539.4 3408.9 515.6Q3443.4 491.9 3489.5 491.9Q3547 491.9 3585.4 520.3Q3623.8 548.7 3643.4 597.4Q3662.9 646.1 3662.9 706.8Q3662.9 766.7 3643.4 815.8Q3623.8 864.9 3585 893.3Q3546.3 921.7 3488.7 921.7Q3458.8 921.7 3432.7 910.6Q3406.6 899.5 3387.8 879.5Q3368.9 859.5 3360.5 831.9L3370.5 825.8V1027.6ZM3457.2 833.4Q3497.9 833.4 3521.3 799.7Q3544.7 765.9 3544.7 706.8Q3544.7 647.7 3521.3 613.9Q3497.9 580.1 3457.2 580.1Q3430.4 580.1 3410.8 594.3Q3391.2 608.5 3380.8 636.9Q3370.5 665.3 3370.5 706.8Q3370.5 748.2 3380.8 776.6Q3391.2 805 3410.8 819.2Q3430.4 833.4 3457.2 833.4ZM3742 912.5V501.1H3857.1V912.5ZM3739.7 450.4V358.3H3858.7V450.4ZM4065.2 912.5Q4014.5 912.5 3986.1 887.2Q3957.7 861.8 3957.7 805V367.5H4072.8V792.8Q4072.8 811.2 4081.3 818.9Q4089.7 826.5 4105.8 826.5H4133.5V912.5ZM4384.5 921.7Q4321.5 921.7 4274.7 895.2Q4227.9 868.7 4201.8 820.4Q4175.7 772 4175.7 706.8Q4175.7 641.5 4201.8 593.6Q4227.9 545.6 4274.7 518.7Q4321.5 491.9 4384.5 491.9Q4447.4 491.9 4494.3 518.7Q4541.1 545.6 4567.2 593.6Q4593.3 641.5 4593.3 706.8Q4593.3 772 4567.2 820.4Q4541.1 868.7 4494.3 895.2Q4447.4 921.7 4384.5 921.7ZM4384.5 833.4Q4427.5 833.4 4451.3 800Q4475.1 766.7 4475.1 706.8Q4475.1 646.9 4451.3 613.5Q4427.5 580.1 4384.5 580.1Q4341.5 580.1 4317.7 613.5Q4293.9 646.9 4293.9 706.8Q4293.9 766.7 4317.7 800Q4341.5 833.4 4384.5 833.4ZM4842.7 912.5Q4779 912.5 4749.1 882.9Q4719.2 853.4 4719.2 788.9V404.3H4834.3V775.1Q4834.3 805 4847 815.8Q4859.6 826.5 4885 826.5H4942.5V912.5ZM4653.1 587V501.1H4942.5V587Z"/></g></svg>
+      </a>
+      <div class="x mono clock" aria-hidden="true"><span>LJU <span data-clock data-clock-full>11:04:38</span></span><span>ALT <span data-hero-alt>000</span></span></div>
+      <nav class="x nav" aria-label="Main">
+        <a href="#work">Work<sup>13</sup></a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <p class="x mono tag fade">Software &amp; web studio · Ljubljana</p>
+      <p class="x mono coords fade" aria-hidden="true">46.05°N 14.51°E · Ljubljana<br>LJU <span data-clock data-clock-full>11:04:38</span></p>
+      <p class="x lede fade">Devpilot designs and builds apps and websites end-to-end, from first brief to live release.</p>
+      <h1 class="x fade"><span>Software</span><span class="l2">that ships.</span></h1>
+      <p class="x mono index fade">Index: 2 apps / 11 websites</p>
+      <p class="x mono scroll fade" aria-hidden="true">Scroll to fly in</p>
+      <p class="x mono contour" aria-hidden="true">(<span data-lvl>00</span>) Contour</p>
+    </div>
+    <!-- .inv copy of #ink is created by hero.js -->
 
     <span class="sq fade" aria-hidden="true"></span>
-    <p class="x mono tag fade">Software &amp; web studio · Ljubljana</p>
-    <p class="x mono coords fade" aria-hidden="true">46.05°N 14.51°E · Ljubljana<br>LJU <span data-clock data-clock-full>11:04:38</span></p>
-
-    <p class="x lede fade">Devpilot designs and builds apps and websites end-to-end, from first brief to live release.</p>
-
-    <h1 class="x fade"><span>Software</span><span class="l2">that ships.</span></h1>
-
-    <p class="x mono index fade">Index: 2 apps / 11 websites</p>
-    <p class="x mono scroll fade" aria-hidden="true">Scroll to fly in</p>
-    <p class="x mono contour" aria-hidden="true">(<span id="lvl">00</span>) Contour</p>
   </div>
 </section>
 
@@ -76,13 +76,13 @@
     </div>
   </div>
 
-  <div class="facts mono" aria-label="Studio facts">
+  <div class="facts mono" aria-label="Company facts">
     <div class="wrap facts-in">
-      <span>2 products of our own in production</span>
+      <span>Two products of our own, in production</span>
       <span>Slovenian, German, English</span>
-      <span>Ljubljana, Central European Time</span>
+      <span>Ljubljana · Central European Time</span>
       <span>Next.js · Supabase · Vercel</span>
-      <span>Hosting in the EU</span>
+      <span>Hosted in the EU</span>
       <span>You own the code</span>
     </div>
   </div>
@@ -92,31 +92,32 @@
     <div class="wrap">
       <header class="sec-head rv">
         <div class="sec-row mono"><p class="kicker">What we build</p><span class="idx">01 / 06</span></div>
-        <h2 id="services-title">Software for one company, or a product for a whole market. Each is proven by something we run ourselves.</h2>
+        <h2 id="services-title">Software for one company, or a product for a whole market.</h2>
+        <p class="sec-note">Every service below is backed by software we run in production ourselves.</p>
       </header>
       <dl class="svc">
         <div class="rv">
           <span class="mono n">01</span>
-          <dt>Web apps and products</dt>
-          <dd>A product for your market, from the first screen to paying customers. Multi-company, trilingual, on a stack we run in production ourselves.</dd>
+          <dt>Web applications and products</dt>
+          <dd>A product for your market, from the first screen to paying customers. Multi-company, multilingual, on the same stack our own products run on.</dd>
           <a href="#belin">Proof: Belin <span aria-hidden="true">→</span></a>
         </div>
         <div class="rv">
           <span class="mono n">02</span>
           <dt>Internal tools and field apps</dt>
-          <dd>Replace the spreadsheet and the phone calls with one app your team uses on site, on a phone, on a weak signal. No account, no app store.</dd>
+          <dd>Replace the spreadsheet and the phone calls with one app your team uses on site: on a phone, on a weak signal, with no account and no app store.</dd>
           <a href="#belin">Proof: the crew app in Belin <span aria-hidden="true">→</span></a>
         </div>
         <div class="rv">
           <span class="mono n">03</span>
-          <dt>AI inside the product</dt>
-          <dd>Generation that never invents a fact. Every price, name and opening hour comes from your data, and anything missing is marked instead of guessed.</dd>
+          <dt>AI features inside your product</dt>
+          <dd>Generation that never invents a fact. Prices, names and opening hours come only from your data, and anything missing is flagged instead of guessed.</dd>
           <a href="#stranko">Proof: Stranko <span aria-hidden="true">→</span></a>
         </div>
         <div class="rv">
           <span class="mono n">04</span>
           <dt>Websites</dt>
-          <dd>Designed around your company, in the languages your clients speak, on static pages that load on a building site. You own the domain and the code.</dd>
+          <dd>Designed around your company, in the languages your clients speak, on static pages that load fast on a building site. The domain and the code are yours.</dd>
           <a href="#custom">Proof: a sample site <span aria-hidden="true">→</span></a>
         </div>
       </dl>
@@ -133,6 +134,7 @@
     <header class="sec-head rv">
       <div class="sec-row mono"><p class="kicker">Work</p><span class="idx">02 / 06</span></div>
       <h2 id="index-title">What we’ve shipped.</h2>
+      <p class="sec-note">Two products we own and run, and websites built for other companies.</p>
     </header>
     <a class="row rv" href="#stranko">
       <span class="mono n">01</span><span class="name"><i></i>Stranko</span>
@@ -175,11 +177,11 @@
           <div class="stage-bar"><span class="mono count"><b>01</b> / 05</span><span class="cap"></span><span class="segs"></span></div>
         </div>
         <ol class="steps">
-          <li class="step" data-scene="prompt"><span class="mono n">01</span><h3>Describe the business</h3><p>Name, address, what you do, opening hours. Add a logo and a few photos. That’s the whole form.</p></li>
-          <li class="step" data-scene="build"><span class="mono n">02</span><h3>A finished homepage in under a minute</h3><p>Brief, design direction, photos and Slovenian copy, checked on a phone and a desktop before the owner sees it.</p></li>
-          <li class="step" data-scene="trades"><span class="mono n">03</span><h3>Every trade gets its own design</h3><p>Type, palette, hero and rhythm follow the business, so a dental practice doesn’t look like a salon. Prices, hours and names come only from the owner. Anything missing is marked and blocks publishing until it’s filled in.</p></li>
-          <li class="step" data-scene="edit"><span class="mono n">04</span><h3>Changes in plain words</h3><p>“We open at seven on Saturdays” becomes a checked edit, everywhere on the site. Every earlier version can be restored with one click.</p></li>
-          <li class="step" data-scene="phone"><span class="mono n">05</span><h3>Made for the phone in a pocket</h3><p>The same site rebuilds itself for a small screen. Call and directions are one tap away on every page, and static pages load on a weak signal.</p></li>
+          <li class="step" data-scene="prompt"><span class="mono n">01</span><h3>Describe the business.</h3><p>Name, address, services, opening hours. Add a logo and a few photos. That is the whole form.</p></li>
+          <li class="step" data-scene="build"><span class="mono n">02</span><h3>A finished homepage, checked before the owner sees it.</h3><p>Structure, design direction, photos and Slovenian copy, on phone and desktop.</p></li>
+          <li class="step" data-scene="trades"><span class="mono n">03</span><h3>Each trade gets its own design.</h3><p>Type, palette and rhythm follow the business, so a dental practice doesn’t look like a salon. Prices, hours and names come only from the owner; anything missing is flagged and blocks publishing until it’s filled in.</p></li>
+          <li class="step" data-scene="edit"><span class="mono n">04</span><h3>Changes in plain words.</h3><p>“We open at seven on Saturdays” becomes a checked edit everywhere on the site. Any earlier version can be restored in one click.</p></li>
+          <li class="step" data-scene="phone"><span class="mono n">05</span><h3>Built for the phone in a pocket.</h3><p>The site rebuilds itself for a small screen. Call and directions are one tap away on every page.</p></li>
         </ol>
       </div>
     </div>
@@ -195,9 +197,9 @@
           <h2 id="belin-title">The crew reports from the roof in 30&nbsp;seconds. The office sees it before they’ve climbed down.</h2>
         </div>
         <div class="ch-side rv">
-          <p class="ch-lead">Belin connects solar EPCs with the subcontractors who mount their panels. Progress, extra hours and the handover paperwork all come out of one daily report, in Slovenian, German and English.</p>
+          <p class="ch-lead">Belin connects solar EPC contractors with the subcontractors who mount their panels. Progress, extra hours and handover paperwork all come from one daily report, in Slovenian, German and English.</p>
           <dl class="meta mono">
-            <div><dt>Shows</dt><dd>A trilingual app for several companies at once, used on phones</dd></div>
+            <div><dt>Shows</dt><dd>A multilingual, multi-company app used on phones</dd></div>
             <div><dt>Sector</dt><dd>Energy, construction</dd></div>
             <div><dt>Markets</dt><dd>Slovenia, Austria, Germany</dd></div>
             <div><dt>Stack</dt><dd>Next.js, Supabase, Vercel</dd></div>
@@ -210,12 +212,12 @@
           <div class="stage-bar"><span class="mono count"><b>01</b> / 06</span><span class="cap"></span><span class="segs"></span></div>
         </div>
         <ol class="steps">
-          <li class="step" data-scene="portfolio"><span class="mono n">01</span><h3>Every site on one screen</h3><p>The EPC sees progress, slack and open items across all subcontractors, without a single phone call.</p></li>
-          <li class="step" data-scene="overview"><span class="mono n">02</span><h3>Progress nobody has to estimate</h3><p>Computed from daily reports and photos, against the pace needed to finish on time.</p></li>
-          <li class="step" data-scene="phone"><span class="mono n">03</span><h3>Reported from the roof</h3><p>The crew opens a link, adds photos and headcount, and sends. No account, no app store.</p></li>
-          <li class="step" data-scene="hours"><span class="mono n">04</span><h3>On the office screen a second later</h3><p>Extra hours arrive as a written sheet. They get an answer within six working days, or count as confirmed.</p></li>
-          <li class="step" data-scene="german"><span class="mono n">05</span><h3>Slovenian, German, English</h3><p>Each person reads Belin in their own language. The paperwork follows.</p></li>
-          <li class="step" data-scene="closeout"><span class="mono n">06</span><h3>The handover writes itself</h3><p>Acceptance protocol, hours report and invoice, signed and filed per project.</p></li>
+          <li class="step" data-scene="portfolio"><span class="mono n">01</span><h3>Every site on one screen.</h3><p>The contractor sees progress, delays and open items across all subcontractors without a phone call.</p></li>
+          <li class="step" data-scene="overview"><span class="mono n">02</span><h3>Progress nobody has to estimate.</h3><p>Calculated from daily reports and photos, against the pace needed to finish on time.</p></li>
+          <li class="step" data-scene="phone"><span class="mono n">03</span><h3>Reported from the roof.</h3><p>The crew opens a link, adds photos and headcount, and sends. No account, no app store.</p></li>
+          <li class="step" data-scene="hours"><span class="mono n">04</span><h3>On the office screen a second later.</h3><p>Extra hours arrive as a written sheet the office can answer.</p></li>
+          <li class="step" data-scene="german"><span class="mono n">05</span><h3>Slovenian, German, English.</h3><p>Everyone reads Belin in their own language, and the paperwork follows.</p></li>
+          <li class="step" data-scene="closeout"><span class="mono n">06</span><h3>The handover writes itself.</h3><p>Acceptance protocol, hours report and invoice, signed and filed per project.</p></li>
         </ol>
       </div>
     </div>
@@ -232,7 +234,7 @@
           <h2 id="custom-title">When a site builder isn’t enough, we design the website around your company.</h2>
         </div>
         <div class="ch-side rv">
-          <p class="ch-lead">We design and build sites for companies with more to say than a template allows. Written with you, in the languages your clients speak, on the same fast static stack as our products. You own the result.</p>
+          <p class="ch-lead">For companies with more to say than a template allows. Written with you, in the languages your clients speak, on the same fast static stack as our products. You own the result.</p>
         </div>
       </header>
 
@@ -252,12 +254,12 @@
       </div>
 
       <dl class="sheet">
-        <div class="rv"><dt>Design</dt><dd>Made for your company, not adapted from a theme. Desktop and phone are designed together, not one squeezed into the other.</dd></div>
-        <div class="rv"><dt>Copy</dt><dd>Written or edited with you, in Slovenian, German and English. Each version reads as if it was written in that language.</dd></div>
+        <div class="rv"><dt>Design</dt><dd>Made for your company, not adapted from a theme. Desktop and phone are designed together.</dd></div>
+        <div class="rv"><dt>Copy</dt><dd>Written or edited with you in Slovenian, German and English. Each version reads as if it was written in that language.</dd></div>
         <div class="rv"><dt>Build</dt><dd>Static pages on a CDN: fast on a weak signal, with accessibility and search basics built in.</dd></div>
-        <div class="rv"><dt>Editing</dt><dd>Change texts and photos yourself, or send us an email.</dd></div>
-        <div class="rv"><dt>Ownership</dt><dd>Domain, code and accounts in your name. Hosting in the EU.</dd></div>
-        <div class="rv"><dt>After launch</dt><dd>We stay on for updates and small changes.</dd></div>
+        <div class="rv"><dt>Editing</dt><dd>Change text and photos yourself, or send us an email.</dd></div>
+        <div class="rv"><dt>Ownership</dt><dd>Domain, code and accounts in your name. Hosted in the EU.</dd></div>
+        <div class="rv"><dt>After launch</dt><dd>Updates and changes on request, for as long as you need them.</dd></div>
       </dl>
     </div>
   </section>
@@ -271,51 +273,44 @@
     <div class="wrap">
       <header class="sec-head rv">
         <div class="sec-row mono"><p class="kicker">How a project runs</p><span class="idx">03 / 06</span></div>
-        <h2 id="process-title">A written scope, a fixed price, and a preview link from the first week.</h2>
-        <p class="sec-note">About five weeks from first call to launch for a website. Software goes live in phases, each with its own scope and price, so something useful ships early.</p>
+        <h2 id="process-title">A written scope, an agreed price, and a preview link in the first weeks.</h2>
+        <p class="sec-note">A website usually takes about five weeks from first call to launch. Software goes live in phases, each with its own scope and price, so something useful ships early.</p>
       </header>
       <ol class="timeline">
-        <li class="rv"><span class="mono n">01</span><h3>First call</h3><span class="mono when">30 minutes</span><p>You tell us what the software has to do. We tell you whether we’re the right team for it.</p></li>
-        <li class="rv"><span class="mono n">02</span><h3>Scope</h3><span class="mono when">Week 1</span><p>A written scope with a fixed price and a launch date.</p></li>
-        <li class="rv"><span class="mono n">03</span><h3>Design</h3><span class="mono when">Week 2</span><p>The key screens, on desktop and phone, with real copy. You click through them before anything is built.</p></li>
-        <li class="rv"><span class="mono n">04</span><h3>Build</h3><span class="mono when">Weeks 3–4</span><p>A preview link from day one. You watch it grow and comment on the real thing.</p></li>
+        <li class="rv"><span class="mono n">01</span><h3>First call</h3><span class="mono when">30 minutes</span><p>You tell us what the software has to do. We tell you whether we’re the right company for it.</p></li>
+        <li class="rv"><span class="mono n">02</span><h3>Scope</h3><span class="mono when">Week 1</span><p>A written scope with price and a launch date.</p></li>
+        <li class="rv"><span class="mono n">03</span><h3>Design</h3><span class="mono when">Week 2</span><p>The key screens on desktop and phone, with real copy. You click through them before anything is built.</p></li>
+        <li class="rv"><span class="mono n">04</span><h3>Build</h3><span class="mono when">Weeks 3–4</span><p>A preview link from the first day of build. You review the real thing, not screenshots.</p></li>
         <li class="rv"><span class="mono n">05</span><h3>Launch</h3><span class="mono when">Week 5</span><p>Go-live, domain, analytics and a handover call.</p></li>
-        <li class="rv"><span class="mono n">06</span><h3>Run</h3><span class="mono when">After</span><p>Hosting, updates and new features, by email.</p></li>
+        <li class="rv"><span class="mono n">06</span><h3>Run</h3><span class="mono when">After launch</span><p>Hosting, updates and new features, on request.</p></li>
       </ol>
     </div>
   </section>
 
   <div class="seam" aria-hidden="true"></div>
 
-  <!-- ============ STUDIO ============ -->
+  <!-- ============ COMPANY ============ -->
   <section class="section studio" id="about" aria-labelledby="about-title">
     <div class="wrap">
       <header class="sec-head rv">
-        <div class="sec-row mono"><p class="kicker">Studio</p><span class="idx">04 / 06</span></div>
-        <h2 id="about-title">Two founders. The person you talk to writes the code.</h2>
+        <div class="sec-row mono"><p class="kicker">Company</p><span class="idx">04 / 06</span></div>
+        <h2 id="about-title">The people you speak to are the people who build it.</h2>
+        <p class="sec-note">No account managers between you and the engineers. The person on the first call is accountable for the scope, the code and the launch.</p>
       </header>
-      <div class="studio-grid">
-        <article class="founder rv">
-          <div class="plate-f" aria-hidden="true"><span>A</span><small class="mono">Product &amp; front-end</small><i class="gap"></i></div>
-          <h3>Aljaž</h3>
-          <p class="mono role">Co-founder · Builds Stranko</p>
-          <p>Designs and ships the interfaces people touch: editors, onboarding, and the websites themselves.</p>
-          <p class="links mono"><a href="#">GitHub</a><a href="#">LinkedIn</a></p>
-        </article>
-        <article class="founder rv">
-          <div class="plate-f" aria-hidden="true"><span>P</span><small class="mono">Platform &amp; data</small></div>
-          <h3>Partner name</h3>
-          <p class="mono role">Co-founder · Builds Belin</p>
-          <p>The data model, the Supabase stack in Frankfurt, sync, and the field app crews use on roofs.</p>
-          <p class="links mono"><a href="#">GitHub</a><a href="#">LinkedIn</a></p>
-        </article>
-        <dl class="id-table mono rv" aria-label="Studio facts">
-          <div><dt>Base</dt><dd>Ljubljana, Slovenia</dd></div>
-          <div><dt>Clients</dt><dd>Slovenia, Austria, Germany</dd></div>
+      <div class="studio-grid company-grid">
+        <dl class="principles rv" aria-label="How we work">
+          <div><dt>Written down.</dt><dd>Scope, price and dates are in writing before work starts.</dd></div>
+          <div><dt>Shown early.</dt><dd>You see working software from the first weeks, not slide decks.</dd></div>
+          <div><dt>Yours.</dt><dd>Domain, accounts and repository are in your name from day one.</dd></div>
+          <div><dt>Kept running.</dt><dd>We host, maintain and extend what we build.</dd></div>
+        </dl>
+        <dl class="id-table mono rv" aria-label="Company facts">
+          <div><dt>Based in</dt><dd>Ljubljana, Slovenia</dd></div>
+          <div><dt>Clients in</dt><dd>Slovenia, Austria, Germany</dd></div>
           <div><dt>Languages</dt><dd>Slovenian, German, English</dd></div>
-          <div><dt>Own products</dt><dd>Stranko, Belin</dd></div>
+          <div><dt>Own products</dt><dd>Stranko, Belin, both in production</dd></div>
           <div><dt>Stack</dt><dd>Next.js, Supabase, Vercel</dd></div>
-          <div><dt>Hosting</dt><dd>EU, Frankfurt</dd></div>
+          <div><dt>Hosting</dt><dd>EU</dd></div>
         </dl>
       </div>
     </div>
@@ -326,15 +321,15 @@
     <div class="wrap faq-grid">
       <header class="sec-head rv">
         <div class="sec-row mono"><p class="kicker">Questions</p><span class="idx">05 / 06</span></div>
-        <h2 id="faq-title">What people ask before the first call.</h2>
+        <h2 id="faq-title">What clients ask before the first call.</h2>
       </header>
       <div class="qa">
-        <details class="rv"><summary>What does it cost?</summary><p>A website gets one fixed price after the first call. Software is scoped in phases, each with its own fixed price and launch date. You know the number before we start, and that is the number you pay.</p></details>
-        <details class="rv"><summary>How long does it take?</summary><p>About five weeks for most websites, from the signed scope to launch. Software goes live in phases, so the first useful version is in your hands early and the rest follows on a schedule we agree in writing.</p></details>
+        <details class="rv"><summary>What does it cost?</summary><p>A website gets a written price after the first call. Software is scoped in phases, each with its own price and launch date. You know the number before we start.</p></details>
+        <details class="rv"><summary>How long does it take?</summary><p>About five weeks for most websites, from signed scope to launch. Software goes live in phases, so the first useful version reaches you early and the rest follows on a schedule agreed in writing.</p></details>
         <details class="rv"><summary>Who owns the code?</summary><p>You do. The domain, the accounts and the repository are in your name from the start, and you can take them anywhere at any time.</p></details>
-        <details class="rv"><summary>Can you take over software someone else built?</summary><p>Usually. We read the code before we quote and tell you on the call whether it makes sense to continue it or to rebuild it.</p></details>
-        <details class="rv"><summary>Can our company use Stranko or Belin?</summary><p>Stranko is for small businesses in Slovenia. Belin is for solar EPCs and the crews who work for them. Write to us and we’ll show you either one on a call.</p></details>
-        <details class="rv"><summary>Which languages do you work in?</summary><p>Slovenian, German and English: for meetings, for the copy and for the product.</p></details>
+        <details class="rv"><summary>Can you take over software someone else built?</summary><p>Usually. We read the code before we quote and tell you whether it makes sense to continue it or rebuild it.</p></details>
+        <details class="rv"><summary>Can our company use Stranko or Belin?</summary><p>Stranko is for small businesses in Slovenia. Belin is for solar EPC contractors and the crews who work for them. Write to us and we’ll show you either one on a call.</p></details>
+        <details class="rv"><summary>Which languages do you work in?</summary><p>Slovenian, German and English, for meetings, copy and the product itself.</p></details>
       </div>
     </div>
   </section>
@@ -347,19 +342,18 @@
       <p class="kicker mono">Contact · 06 / 06</p>
       <h2 id="contact-title" class="rv">Tell us what you need built.</h2>
       <div class="email-row rv">
-        <a class="email" href="mailto:hello@example.com">hello@example.com</a>
-        <button class="copy mono" type="button" data-copy="hello@example.com" aria-label="Copy the email address">Copy</button>
+        <a class="email" href="mailto:info@devpilot.si">info@devpilot.si</a>
+        <button class="copy mono" type="button" data-copy="info@devpilot.si" aria-label="Copy the email address">Copy</button>
       </div>
       <div class="contact-row rv">
-        <p>A few sentences about your company and what the software has to do is enough. We reply within one working day, from Ljubljana. If we’re not the right team for it, we’ll say so.</p>
-        <a class="btn ign" href="#">Book a 30-minute call <span aria-hidden="true">↗</span></a>
+        <p>A few sentences about your company and what the software has to do are enough. We reply within one working day. If we’re not the right company for it, we’ll say so.</p>
       </div>
     </div>
     <footer class="foot">
       <div class="wrap foot-in mono">
         <span>© 2026 Devpilot · Ljubljana, Slovenia</span>
         <span>Ljubljana <time data-clock>--:--</time></span>
-        <span class="foot-links"><a href="#">Imprint</a><a href="#">Privacy</a><a href="#">LinkedIn</a></span>
+        <span class="foot-links"><a href="#">Imprint</a><a href="#">Privacy</a></span>
       </div>
     </footer>
   </section>

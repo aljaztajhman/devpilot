@@ -9,55 +9,60 @@
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600&family=Geist+Mono:wght@400&family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#ECE8E3;          /* D fill + all type */
-    --bg:#0D0D0D;           /* page */
-    --signal:#F3410B;       /* the one orange square */
+    --ink:#ECE8E3;          /* D fill + light type */
+    --ink-inv:#050505;      /* type where it sits on the D */
+    --bg:#0D0D0D;
+    --signal:#F3410B;
     --pad:26px; --pad-r:35px;
     --sans:"Geist",ui-sans-serif,system-ui,sans-serif;
     --display:"Inter Tight","Geist",ui-sans-serif,system-ui,sans-serif;
     --mono:"Geist Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
-    /* D geometry, written by JS (CSS px) */
-    --cx:927px; --cy:367px; --R:320px;
+    /* composition, written by JS in CSS px */
+    --cx:927px; --cy:367px; --R:320px; --F:187px; --hx:26px; --htop:384px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{background:var(--bg);color:var(--ink)}
   body{font-family:var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
   a{color:inherit;text-decoration:none}
-  a:focus-visible{outline:1px solid var(--ink);outline-offset:4px}
+  a:focus-visible{outline:1px solid currentColor;outline-offset:4px}
 
-  /* scroll runway for the fly-in */
   .hero{position:relative;height:260vh}
   .stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--bg)}
 
   #field{position:absolute;inset:0;width:100%;height:100%;display:block}
-  .d-fallback{position:absolute;display:none;left:calc(var(--cx) - var(--R));top:calc(var(--cy) - var(--R));width:calc(var(--R) * 2);height:calc(var(--R) * 2)}
+  .d-fallback{position:absolute;display:none;left:0;top:0;width:1px;height:1px;overflow:visible}
   .no-gl .d-fallback{display:block}
 
-  /* every piece of type is inverted against what sits under it */
-  .x{position:absolute;color:var(--ink);mix-blend-mode:difference}
+  /* Two identical type layers.
+     .ink  = light type everywhere (difference blend where supported, so contour lines show through letters)
+     .inv  = dark copy, clipped to the D's exact outline by JS -> type turns dark wherever it crosses the D.
+     The clip does the colour change on its own, so it works in every browser. */
+  .layer{position:absolute;inset:0;pointer-events:none}
+  .layer a{pointer-events:auto}
+  .ink{color:var(--ink);mix-blend-mode:difference}
+  .inv{color:var(--ink-inv)}
+  .inv a{pointer-events:none}
 
+  .x{position:absolute}
   .mono{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;line-height:1.3;white-space:nowrap}
 
   .brand{top:13px;left:var(--pad);display:flex;align-items:center;height:28px}
   .brand svg{height:26px;width:auto;display:block}
-
   .clock{top:18px;left:50%;transform:translateX(-50%);display:flex;gap:2.3em}
-
   .nav{top:14px;right:var(--pad-r);display:flex;gap:34px;font-size:16px;font-weight:500;letter-spacing:.005em}
   .nav sup{font-size:9px;font-weight:400;margin-left:6px;vertical-align:9px;opacity:.85}
 
-  .tag{top:84px;left:calc(var(--pad) + 14px)}
   .sq{position:absolute;top:87px;left:var(--pad);width:7px;height:7px;background:var(--signal)}
-
+  .tag{top:84px;left:calc(var(--pad) + 14px)}
   .coords{top:82px;right:var(--pad-r);text-align:right;line-height:1.42}
 
   .lede{left:calc(var(--cx) + var(--R) * .05);top:calc(var(--cy) - var(--R) * .63);
         max-width:calc(var(--R) * .98);
-        font-size:clamp(12px, calc(var(--R) * .044), 17px);line-height:1.6;letter-spacing:.003em}
+        font-size:calc(var(--R) * .044);line-height:1.6;letter-spacing:.003em}
+  .lede-below .lede{left:var(--pad);top:calc(var(--htop) + var(--F) * 2.05);max-width:34ch;font-size:14px;line-height:1.5}
 
-  h1.x{left:calc(var(--pad) + 4px);bottom:9.6vh;
-       font-family:var(--display);font-weight:500;
-       font-size:min(14.32vw, 23.6vh);line-height:.89;letter-spacing:-.01em}
+  h1.x{left:var(--hx);top:var(--htop);font-family:var(--display);font-weight:500;
+       font-size:var(--F);line-height:.89;letter-spacing:-.01em;white-space:nowrap}
   h1 span{display:block}
   h1 .l2{margin-left:.87em}
 
@@ -66,17 +71,12 @@
   .scroll::before{content:"";position:absolute;left:0;top:-13px;bottom:-12px;width:1.5px;background:currentColor}
   .contour{bottom:12px;right:var(--pad-r)}
 
-  .fade{transition:none}
-
   @media (max-width:760px){
     :root{--pad:18px; --pad-r:18px}
-    .clock,.coords{display:none}
+    .clock,.coords,.scroll{display:none}
     .nav{gap:20px;font-size:14px}
     .tag{top:64px}.sq{top:67px}
-    .lede{left:var(--pad);top:calc(var(--cy) + var(--R) + 22px);max-width:30ch;font-size:14px}
-    h1.x{font-size:19.5vw;bottom:76px;line-height:.9}
-    h1 .l2{margin-left:.5em}
-    .scroll{display:none}
+    h1 .l2{margin-left:.35em}
   }
   @media (prefers-reduced-motion:reduce){ .hero{height:100vh} }
 </style>
@@ -85,31 +85,29 @@
 <section class="hero" id="hero">
   <div class="stage" id="stage">
     <canvas id="field" aria-hidden="true"></canvas>
-    <svg class="d-fallback" viewBox="0 0 1280 1280" aria-hidden="true"><path fill="#ECE8E3" d="M0 0H640A640 640 0 0 1 640 1280H453V852.5H640A212.5 212.5 0 1 0 427.5 640V827H0Z"/></svg>
+    <svg class="d-fallback" id="dfb" aria-hidden="true"><path id="dfbPath" fill="#ECE8E3"/></svg>
 
-    <a class="x brand" href="/" aria-label="Devpilot home">
-      <svg viewBox="0 0 4944 1280" aria-hidden="true"><g fill="currentColor"><path d="M0 0H640A640 640 0 0 1 640 1280H453V852.5H640A212.5 212.5 0 1 0 427.5 640V827H0Z"/><path d="M1780 912.5V367.5H1968.1Q2100.9 367.5 2172.2 438.5Q2243.6 509.5 2243.6 640.8Q2243.6 771.3 2173.4 841.9Q2103.2 912.5 1972.7 912.5ZM1896.7 814.2H1968.1Q2047.1 814.2 2085.1 771.6Q2123.1 729 2123.1 640Q2123.1 551 2085.1 508.4Q2047.1 465.8 1968.1 465.8H1896.7ZM2508.5 921.7Q2445.5 921.7 2399.1 895.2Q2352.6 868.7 2326.9 820.4Q2301.2 772 2301.2 706.8Q2301.2 641.5 2326.9 593.6Q2352.6 545.6 2398.7 518.7Q2444.7 491.9 2507.7 491.9Q2569.1 491.9 2614.4 518.7Q2659.7 545.6 2684.6 595.5Q2709.6 645.4 2709.6 714.5V737.5H2420.2Q2422.5 786.6 2446.7 810.4Q2470.8 834.2 2510.8 834.2Q2539.9 834.2 2559.5 821.9Q2579.1 809.6 2587.5 784.3L2703.4 791.2Q2687.3 852.6 2635.1 887.2Q2582.9 921.7 2508.5 921.7ZM2420.2 666.9H2591.4Q2589.1 621.6 2566.4 599.3Q2543.8 577.1 2507.7 577.1Q2471.6 577.1 2448.2 600.5Q2424.8 623.9 2420.2 666.9ZM2903.8 912.5 2753.3 501.1H2873.8L2971.3 796.6L3068 501.1H3188.6L3037.3 912.5ZM3255.3 1027.6V501.1H3365.9L3368.2 587.8L3359 584Q3374.3 539.4 3408.9 515.6Q3443.4 491.9 3489.5 491.9Q3547 491.9 3585.4 520.3Q3623.8 548.7 3643.4 597.4Q3662.9 646.1 3662.9 706.8Q3662.9 766.7 3643.4 815.8Q3623.8 864.9 3585 893.3Q3546.3 921.7 3488.7 921.7Q3458.8 921.7 3432.7 910.6Q3406.6 899.5 3387.8 879.5Q3368.9 859.5 3360.5 831.9L3370.5 825.8V1027.6ZM3457.2 833.4Q3497.9 833.4 3521.3 799.7Q3544.7 765.9 3544.7 706.8Q3544.7 647.7 3521.3 613.9Q3497.9 580.1 3457.2 580.1Q3430.4 580.1 3410.8 594.3Q3391.2 608.5 3380.8 636.9Q3370.5 665.3 3370.5 706.8Q3370.5 748.2 3380.8 776.6Q3391.2 805 3410.8 819.2Q3430.4 833.4 3457.2 833.4ZM3742 912.5V501.1H3857.1V912.5ZM3739.7 450.4V358.3H3858.7V450.4ZM4065.2 912.5Q4014.5 912.5 3986.1 887.2Q3957.7 861.8 3957.7 805V367.5H4072.8V792.8Q4072.8 811.2 4081.3 818.9Q4089.7 826.5 4105.8 826.5H4133.5V912.5ZM4384.5 921.7Q4321.5 921.7 4274.7 895.2Q4227.9 868.7 4201.8 820.4Q4175.7 772 4175.7 706.8Q4175.7 641.5 4201.8 593.6Q4227.9 545.6 4274.7 518.7Q4321.5 491.9 4384.5 491.9Q4447.4 491.9 4494.3 518.7Q4541.1 545.6 4567.2 593.6Q4593.3 641.5 4593.3 706.8Q4593.3 772 4567.2 820.4Q4541.1 868.7 4494.3 895.2Q4447.4 921.7 4384.5 921.7ZM4384.5 833.4Q4427.5 833.4 4451.3 800Q4475.1 766.7 4475.1 706.8Q4475.1 646.9 4451.3 613.5Q4427.5 580.1 4384.5 580.1Q4341.5 580.1 4317.7 613.5Q4293.9 646.9 4293.9 706.8Q4293.9 766.7 4317.7 800Q4341.5 833.4 4384.5 833.4ZM4842.7 912.5Q4779 912.5 4749.1 882.9Q4719.2 853.4 4719.2 788.9V404.3H4834.3V775.1Q4834.3 805 4847 815.8Q4859.6 826.5 4885 826.5H4942.5V912.5ZM4653.1 587V501.1H4942.5V587Z"/></g></svg>
-    </a>
-
-    <div class="x mono clock" aria-hidden="true"><span>LJU <span data-clock>11:04:38</span></span><span>ALT <span id="alt">000</span></span></div>
-
-    <nav class="x nav" aria-label="Main">
-      <a href="#work">Work<sup>13</sup></a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
+    <div class="layer ink" id="ink">
+      <a class="x brand" href="/" aria-label="Devpilot home">
+        <svg viewBox="0 0 4944 1280" aria-hidden="true"><g fill="currentColor"><path d="M0 0H640A640 640 0 0 1 640 1280H453V852.5H640A212.5 212.5 0 1 0 427.5 640V827H0Z"/><path d="M1780 912.5V367.5H1968.1Q2100.9 367.5 2172.2 438.5Q2243.6 509.5 2243.6 640.8Q2243.6 771.3 2173.4 841.9Q2103.2 912.5 1972.7 912.5ZM1896.7 814.2H1968.1Q2047.1 814.2 2085.1 771.6Q2123.1 729 2123.1 640Q2123.1 551 2085.1 508.4Q2047.1 465.8 1968.1 465.8H1896.7ZM2508.5 921.7Q2445.5 921.7 2399.1 895.2Q2352.6 868.7 2326.9 820.4Q2301.2 772 2301.2 706.8Q2301.2 641.5 2326.9 593.6Q2352.6 545.6 2398.7 518.7Q2444.7 491.9 2507.7 491.9Q2569.1 491.9 2614.4 518.7Q2659.7 545.6 2684.6 595.5Q2709.6 645.4 2709.6 714.5V737.5H2420.2Q2422.5 786.6 2446.7 810.4Q2470.8 834.2 2510.8 834.2Q2539.9 834.2 2559.5 821.9Q2579.1 809.6 2587.5 784.3L2703.4 791.2Q2687.3 852.6 2635.1 887.2Q2582.9 921.7 2508.5 921.7ZM2420.2 666.9H2591.4Q2589.1 621.6 2566.4 599.3Q2543.8 577.1 2507.7 577.1Q2471.6 577.1 2448.2 600.5Q2424.8 623.9 2420.2 666.9ZM2903.8 912.5 2753.3 501.1H2873.8L2971.3 796.6L3068 501.1H3188.6L3037.3 912.5ZM3255.3 1027.6V501.1H3365.9L3368.2 587.8L3359 584Q3374.3 539.4 3408.9 515.6Q3443.4 491.9 3489.5 491.9Q3547 491.9 3585.4 520.3Q3623.8 548.7 3643.4 597.4Q3662.9 646.1 3662.9 706.8Q3662.9 766.7 3643.4 815.8Q3623.8 864.9 3585 893.3Q3546.3 921.7 3488.7 921.7Q3458.8 921.7 3432.7 910.6Q3406.6 899.5 3387.8 879.5Q3368.9 859.5 3360.5 831.9L3370.5 825.8V1027.6ZM3457.2 833.4Q3497.9 833.4 3521.3 799.7Q3544.7 765.9 3544.7 706.8Q3544.7 647.7 3521.3 613.9Q3497.9 580.1 3457.2 580.1Q3430.4 580.1 3410.8 594.3Q3391.2 608.5 3380.8 636.9Q3370.5 665.3 3370.5 706.8Q3370.5 748.2 3380.8 776.6Q3391.2 805 3410.8 819.2Q3430.4 833.4 3457.2 833.4ZM3742 912.5V501.1H3857.1V912.5ZM3739.7 450.4V358.3H3858.7V450.4ZM4065.2 912.5Q4014.5 912.5 3986.1 887.2Q3957.7 861.8 3957.7 805V367.5H4072.8V792.8Q4072.8 811.2 4081.3 818.9Q4089.7 826.5 4105.8 826.5H4133.5V912.5ZM4384.5 921.7Q4321.5 921.7 4274.7 895.2Q4227.9 868.7 4201.8 820.4Q4175.7 772 4175.7 706.8Q4175.7 641.5 4201.8 593.6Q4227.9 545.6 4274.7 518.7Q4321.5 491.9 4384.5 491.9Q4447.4 491.9 4494.3 518.7Q4541.1 545.6 4567.2 593.6Q4593.3 641.5 4593.3 706.8Q4593.3 772 4567.2 820.4Q4541.1 868.7 4494.3 895.2Q4447.4 921.7 4384.5 921.7ZM4384.5 833.4Q4427.5 833.4 4451.3 800Q4475.1 766.7 4475.1 706.8Q4475.1 646.9 4451.3 613.5Q4427.5 580.1 4384.5 580.1Q4341.5 580.1 4317.7 613.5Q4293.9 646.9 4293.9 706.8Q4293.9 766.7 4317.7 800Q4341.5 833.4 4384.5 833.4ZM4842.7 912.5Q4779 912.5 4749.1 882.9Q4719.2 853.4 4719.2 788.9V404.3H4834.3V775.1Q4834.3 805 4847 815.8Q4859.6 826.5 4885 826.5H4942.5V912.5ZM4653.1 587V501.1H4942.5V587Z"/></g></svg>
+      </a>
+      <div class="x mono clock" aria-hidden="true"><span>LJU <span data-clock>11:04:38</span></span><span>ALT <span data-alt>000</span></span></div>
+      <nav class="x nav" aria-label="Main">
+        <a href="#work">Work<sup>13</sup></a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <p class="x mono tag fade">Software &amp; web studio · Ljubljana</p>
+      <p class="x mono coords fade" aria-hidden="true">46.05°N 14.51°E · Ljubljana<br>LJU <span data-clock>11:04:38</span></p>
+      <p class="x lede fade">Devpilot designs and builds apps and websites end-to-end, from first brief to live release.</p>
+      <h1 class="x fade"><span>Software</span><span class="l2">that ships.</span></h1>
+      <p class="x mono index fade">Index: 2 apps / 11 websites</p>
+      <p class="x mono scroll fade" aria-hidden="true">Scroll to fly in</p>
+      <p class="x mono contour" aria-hidden="true">(<span data-lvl>00</span>) Contour</p>
+    </div>
+    <!-- .inv copy of #ink is created by the script -->
 
     <span class="sq fade" aria-hidden="true"></span>
-    <p class="x mono tag fade">Software &amp; web studio · Ljubljana</p>
-    <p class="x mono coords fade" aria-hidden="true">46.05°N 14.51°E · Ljubljana<br>LJU <span data-clock>11:04:38</span></p>
-
-    <p class="x lede fade">Devpilot designs and builds apps and websites end-to-end, from first brief to live release.</p>
-
-    <h1 class="x fade"><span>Software</span><span class="l2">that ships.</span></h1>
-
-    <p class="x mono index fade">Index: 2 apps / 11 websites</p>
-    <p class="x mono scroll fade" aria-hidden="true">Scroll to fly in</p>
-    <p class="x mono contour" aria-hidden="true">(<span id="lvl">00</span>) Contour</p>
   </div>
 </section>
 
@@ -127,32 +125,64 @@
   const stage = document.getElementById('stage');
   const hero  = document.getElementById('hero');
   const canvas = document.getElementById('field');
-  const altEl = document.getElementById('alt');
-  const lvlEl = document.getElementById('lvl');
-  const fades = [...document.querySelectorAll('.fade')];
+  const ink = document.getElementById('ink');
+  const dfbPath = document.getElementById('dfbPath');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* dark copy of every piece of type, clipped to the D */
+  const inv = ink.cloneNode(true);
+  inv.id = ''; inv.className = 'layer inv'; inv.setAttribute('aria-hidden','true');
+  inv.querySelectorAll('a').forEach(a => a.tabIndex = -1);
+  inv.querySelectorAll('[aria-label]').forEach(e => e.removeAttribute('aria-label'));
+  ink.after(inv);
+
+  const fades  = [...stage.querySelectorAll('.fade')];
+  const alts   = stage.querySelectorAll('[data-alt]');
+  const lvls   = stage.querySelectorAll('[data-lvl]');
+  const clocks = stage.querySelectorAll('[data-clock]');
 
   let W, H, base = {cx:0, cy:0, R:0}, view = {cx:0, cy:0, R:0};
 
+  /* The whole composition (D + headline + paragraph) scales as one unit,
+     so the headline always crosses the D the way it does in the design.
+     Reference frame: 1306 x 793 CSS px, D radius 320.2. */
   function layout(){
     W = stage.clientWidth; H = stage.clientHeight;
-    let R, cx, cy;
+    const css = getComputedStyle(document.documentElement);
+    const pad = parseFloat(css.getPropertyValue('--pad'));
+    let s, R, cx, cy, hx;
     if (W > 760){
-      R  = Math.min(0.2452 * W, 0.4041 * H);
-      cx = W - 0.045 * W - R;
-      cy = 0.059 * H + R;
+      s  = Math.min(W/1306, H/793);
+      R  = 320.2*s;
+      const dx = Math.max(0, (W - 1306*s)/2);       // very wide screens: centre the composition
+      cx = W - dx - 59*s - R;
+      cy = Math.max(0, (H - 793*s)/2) + 46.75*s + R;
+      hx = dx + pad;
     } else {
-      R  = Math.min(0.40 * W, 0.26 * H);
-      cx = W - 18 - R;
-      cy = 96 + R;
+      s  = (W - 2*pad) / 870;                       // "that ships." fills the width
+      R  = 320.2*s;
+      cx = W - pad - R;
+      const block = 700*s + 120;                    // D + headline + paragraph
+      cy = Math.max(96, (H - block)/2) + R;
+      hx = pad;
     }
+    const F = 187*s;
+    const htop = cy + 0.5403*R - 0.834*F + 4*s;     // first baseline sits 0.54R below the centre
     base = {cx, cy, R};
-    stage.style.setProperty('--cx', cx + 'px');
-    stage.style.setProperty('--cy', cy + 'px');
-    stage.style.setProperty('--R',  R  + 'px');
+    const set = (k,v) => stage.style.setProperty(k, v + 'px');
+    set('--cx',cx); set('--cy',cy); set('--R',R); set('--F',F); set('--hx',hx); set('--htop',htop);
+    stage.classList.toggle('lede-below', R < 250);
   }
 
-  /* JS twin of the shader field, used for the (NN) contour readout */
+  /* D outline in stage pixels (for the clip and the no-WebGL fallback) */
+  function dPath(cx, cy, R){
+    const k = R/640, x0 = cx - R, y0 = cy - R, r = 212.5*k, n = v => v.toFixed(2);
+    return `M${n(x0)} ${n(y0)}H${n(cx)}A${n(R)} ${n(R)} 0 0 1 ${n(cx)} ${n(cy+R)}`
+         + `H${n(x0+453*k)}V${n(y0+852.5*k)}H${n(cx)}A${n(r)} ${n(r)} 0 1 0 ${n(x0+427.5*k)} ${n(cy)}`
+         + `V${n(y0+827*k)}H${n(x0)}Z`;
+  }
+
+  /* JS twin of the shader field, for the (NN) contour readout */
   function sdBox(px, py, bx, by){ const dx=Math.abs(px)-bx, dy=Math.abs(py)-by;
     return Math.hypot(Math.max(dx,0),Math.max(dy,0)) + Math.min(Math.max(dx,dy),0); }
   function field(x, y){
@@ -184,9 +214,9 @@
       float vn(float x){float i=floor(x),f=fract(x);f=f*f*(3.-2.*f);return mix(h(i),h(i+1.),f);}
       void main(){
         vec2 p=vec2(gl_FragCoord.x, uRes.y-gl_FragCoord.y);
-        float d=field((p-uC)/uR)*uR;                     /* signed distance, device px */
+        float d=field((p-uC)/uR)*uR;
         float sp=SP*uR, off=OFF*uR;
-        float k=abs(fract((d-off)/sp+.5)-.5)*sp;          /* px to nearest contour */
+        float k=abs(fract((d-off)/sp+.5)-.5)*sp;
         float hw=.8*uDpr;
         float line=(1.-smoothstep(hw-.6,hw+.6,k))*step(off-.5*sp,d);
         float a=.125*exp(-max(d,0.)/(FADE*uR))+.012;
@@ -214,7 +244,10 @@
   }
 
   function draw(){
-    if (!prog) return;
+    const d = dPath(view.cx, view.cy, view.R);
+    inv.style.clipPath = `path('${d}')`;
+    inv.style.webkitClipPath = `path('${d}')`;
+    if (!prog){ dfbPath.setAttribute('d', d); return; }
     const dpr = Math.min(devicePixelRatio || 1, 2);
     const w = Math.round(W*dpr), h = Math.round(H*dpr);
     if (canvas.width !== w || canvas.height !== h){ canvas.width = w; canvas.height = h; }
@@ -241,10 +274,11 @@
     view.cy = base.cy + (H/2 - base.cy) * e;
     const o = 1 - sstep(0, .3, p);
     fades.forEach(el => el.style.opacity = o);
-    altEl.textContent = String(Math.round(e*120)).padStart(3,'0');
+    const alt = String(Math.round(e*120)).padStart(3,'0');
+    alts.forEach(a => a.textContent = alt);
     const d = field((W/2 - view.cx)/view.R, (H/2 - view.cy)/view.R);
-    const lvl = d < OFF ? 0 : Math.floor((d - OFF)/SP) + 1;
-    lvlEl.textContent = String(lvl).padStart(2,'0');
+    const lvl = String(d < OFF ? 0 : Math.floor((d - OFF)/SP) + 1).padStart(2,'0');
+    lvls.forEach(l => l.textContent = lvl);
     draw();
   }
 
@@ -254,10 +288,10 @@
   addEventListener('resize', () => { layout(); request(); });
   reduce.addEventListener?.('change', request);
   layout(); update();
+  document.fonts?.ready.then(() => { layout(); update(); });
 
   /* ---------- Ljubljana clock ---------- */
   const fmt = new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Ljubljana',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
-  const clocks = document.querySelectorAll('[data-clock]');
   const tick = () => { const t = fmt.format(new Date()); clocks.forEach(c => c.textContent = t); };
   tick(); setInterval(tick, 1000);
 })();

@@ -1,43 +1,77 @@
 (() => {
-  /* Board-locked Contour hero WebGL — mechanical from Jan devpilot-hero.html (630400016). */
-  const RH  = 212.5 / 640;
-  const A   = 187   / 640;
-  const SP  = 0.04263;
-  const OFF = 0.02342;
-  const FADE = 0.73;
+  /* Board-locked Contour hero — mechanical from Jan devpilot-hero.html (Zulip 630402395).
+     Adapted only for D's DOM (#board-stage, ALT as [data-hero-alt] so site.js's [data-alt]
+     page readout does not grab it) plus the zoom -> #main handoff further down. */
+
+  /* ---------- D geometry (unit R = 1, origin = circle centre, y down) ---------- */
+  const RH  = 212.5 / 640;   // hole radius
+  const A   = 187   / 640;   // bottom-left cut-out offset
+  const SP  = 0.04263;       // contour spacing  (x R)
+  const OFF = 0.02342;       // first contour distance from the edge (x R)
+  const FADE = 0.73;         // contour falloff length (x R)
 
   const stage = document.getElementById('board-stage');
   const hero  = document.getElementById('hero');
   const canvas = document.getElementById('field');
-  const altEl = document.getElementById('alt');
-  const lvlEl = document.getElementById('lvl');
-  if (!stage || !hero || !canvas) return;
-  const fades = [...hero.querySelectorAll('.fade')];
+  const ink = document.getElementById('ink');
+  const dfbPath = document.getElementById('dfbPath');
+  const main = document.getElementById('main');
+  if (!stage || !hero || !canvas || !ink) return;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* dark copy of every piece of type, clipped to the D */
+  const inv = ink.cloneNode(true);
+  inv.id = ''; inv.className = 'layer inv'; inv.setAttribute('aria-hidden','true');
+  inv.querySelectorAll('a').forEach(a => a.tabIndex = -1);
+  inv.querySelectorAll('[aria-label]').forEach(e => e.removeAttribute('aria-label'));
+  ink.after(inv);
+
+  const fades  = [...stage.querySelectorAll('.fade')];
+  const alts   = stage.querySelectorAll('[data-hero-alt]');
+  const lvls   = stage.querySelectorAll('[data-lvl]');
+  const clocks = stage.querySelectorAll('[data-clock]');
 
   let W, H, base = {cx:0, cy:0, R:0}, view = {cx:0, cy:0, R:0};
 
+  /* The whole composition (D + headline + paragraph) scales as one unit,
+     so the headline always crosses the D the way it does in the design.
+     Reference frame: 1306 x 793 CSS px, D radius 320.2. */
   function layout(){
     W = stage.clientWidth; H = stage.clientHeight;
-    let R, cx, cy;
+    const pad = parseFloat(getComputedStyle(stage).getPropertyValue('--pad'));
+    let s, R, cx, cy, hx;
     if (W > 760){
-      R  = Math.min(0.2452 * W, 0.4041 * H);
-      cx = W - 0.045 * W - R;
-      cy = 0.059 * H + R;
+      s  = Math.min(W/1306, H/793);
+      R  = 320.2*s;
+      const dx = Math.max(0, (W - 1306*s)/2);       // very wide screens: centre the composition
+      cx = W - dx - 59*s - R;
+      cy = Math.max(0, (H - 793*s)/2) + 46.75*s + R;
+      hx = dx + pad;
     } else {
-      R  = Math.min(0.40 * W, 0.26 * H);
-      cx = W - 18 - R;
-      cy = 96 + R;
+      s  = (W - 2*pad) / 870;                       // "that ships." fills the width
+      R  = 320.2*s;
+      cx = W - pad - R;
+      const block = 700*s + 120;                    // D + headline + paragraph
+      cy = Math.max(96, (H - block)/2) + R;
+      hx = pad;
     }
+    const F = 187*s;
+    const htop = cy + 0.5403*R - 0.834*F + 4*s;     // first baseline sits 0.54R below the centre
     base = {cx, cy, R};
-    stage.style.setProperty('--cx', cx + 'px');
-    stage.style.setProperty('--cy', cy + 'px');
-    stage.style.setProperty('--R',  R  + 'px');
-    hero.style.setProperty('--cx', cx + 'px');
-    hero.style.setProperty('--cy', cy + 'px');
-    hero.style.setProperty('--R',  R  + 'px');
+    const set = (k,v) => stage.style.setProperty(k, v + 'px');
+    set('--cx',cx); set('--cy',cy); set('--R',R); set('--F',F); set('--hx',hx); set('--htop',htop);
+    stage.classList.toggle('lede-below', R < 250);
   }
 
+  /* D outline in stage pixels (for the clip and the no-WebGL fallback) */
+  function dPath(cx, cy, R){
+    const k = R/640, x0 = cx - R, y0 = cy - R, r = 212.5*k, n = v => v.toFixed(2);
+    return `M${n(x0)} ${n(y0)}H${n(cx)}A${n(R)} ${n(R)} 0 0 1 ${n(cx)} ${n(cy+R)}`
+         + `H${n(x0+453*k)}V${n(y0+852.5*k)}H${n(cx)}A${n(r)} ${n(r)} 0 1 0 ${n(x0+427.5*k)} ${n(cy)}`
+         + `V${n(y0+827*k)}H${n(x0)}Z`;
+  }
+
+  /* JS twin of the shader field, for the (NN) contour readout */
   function sdBox(px, py, bx, by){ const dx=Math.abs(px)-bx, dy=Math.abs(py)-by;
     return Math.hypot(Math.max(dx,0),Math.max(dy,0)) + Math.min(Math.max(dx,dy),0); }
   function field(x, y){
@@ -48,9 +82,10 @@
     return Math.max(outer, -hole, -cut);
   }
 
+  /* ---------- WebGL contour field ---------- */
   const gl = canvas.getContext('webgl', {antialias:false, premultipliedAlpha:false});
   let prog, loc = {};
-  if (!gl){ stage.classList.add('no-gl'); hero.classList.add('no-gl'); }
+  if (!gl){ stage.classList.add('no-gl'); }
   else {
     const vs = `attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}`;
     const fs = `precision highp float;
@@ -94,11 +129,14 @@
       const ap = gl.getAttribLocation(prog,'p'); gl.enableVertexAttribArray(ap);
       gl.vertexAttribPointer(ap,2,gl.FLOAT,false,0,0);
       ['uRes','uC','uR','uDpr'].forEach(n=>loc[n]=gl.getUniformLocation(prog,n));
-    }catch(e){ console.warn(e); stage.classList.add('no-gl'); hero.classList.add('no-gl'); prog=null; }
+    }catch(e){ console.warn(e); stage.classList.add('no-gl'); prog=null; }
   }
 
   function draw(){
-    if (!prog) return;
+    const d = dPath(view.cx, view.cy, view.R);
+    inv.style.clipPath = `path('${d}')`;
+    inv.style.webkitClipPath = `path('${d}')`;
+    if (!prog){ dfbPath.setAttribute('d', d); return; }
     const dpr = Math.min(devicePixelRatio || 1, 2);
     const w = Math.round(W*dpr), h = Math.round(H*dpr);
     if (canvas.width !== w || canvas.height !== h){ canvas.width = w; canvas.height = h; }
@@ -110,12 +148,56 @@
     gl.drawArrays(gl.TRIANGLES, 0, 3);
   }
 
+  /* ---------- zoom -> page handoff ----------
+     hero.css pulls #main up over the last screen of the runway, so #main's top reaches the
+     top of the viewport exactly when the stage lets go (scrollY = main.offsetTop). Until then
+     #main is pinned to the viewport (translateY), clipped to the D's hole and scaled up from
+     inside it, while the stage dissolves into the shared #0D0D0D ground. At the end every
+     transform is identity, so dropping the styles is invisible and the page simply scrolls on.
+     The hole outgrows the viewport at p ~ .5, so the handoff starts while the hole is still
+     framed by the D's rim (HAND_P0); a start at p ~ .72 would be a hard cut. */
+  const HAND_P0 = 0.30;      // fly-in progress where #main starts to show through the hole
+  const S0 = 0.42;           // #main scale when it first shows in the hole
+  let handing = false;
+  function clearHandoff(){
+    if (!handing) return;
+    handing = false;
+    main.classList.remove('handoff');
+    main.style.transform = main.style.transformOrigin = main.style.clipPath = main.style.webkitClipPath = main.style.opacity = '';
+    stage.style.opacity = '';
+  }
+  function handoff(run){
+    if (!main) return;
+    const endY = main.offsetTop;                    // scrollY where #main's top meets the viewport top
+    const nat = endY - scrollY;                     // #main's untransformed top, in viewport px
+    if (reduce.matches || run <= 0 || nat <= 0){ clearHandoff(); return; }
+    const hand = sstep(hero.offsetTop + HAND_P0 * run, endY, scrollY);
+    if (hand <= 0){ clearHandoff(); return; }       // untouched: #main is still below the fold
+    handing = true;
+    main.classList.add('handoff');
+    const s = S0 + (1 - S0) * hand;
+    const hx = view.cx, hy = view.cy, hr = RH * view.R;
+    const cover = Math.hypot(Math.max(hx, W - hx), Math.max(hy, H - hy));
+    main.style.transformOrigin = `${hx}px ${hy}px`;
+    main.style.transform = `translateY(${-nat}px) scale(${s})`;
+    /* the clip lives in #main's own (pre-scale) coordinates: hole radius / scale, about the same point */
+    main.style.clipPath = main.style.webkitClipPath =
+      hr >= cover ? 'none' : `circle(${(hr / s).toFixed(1)}px at ${hx.toFixed(1)}px ${hy.toFixed(1)}px)`;
+    main.style.opacity = sstep(0, .22, hand);
+    stage.style.opacity = 1 - sstep(.35, 1, hand);
+  }
+  /* keyboard focus landing inside #main mid-flight: finish the flight first */
+  main?.addEventListener('focusin', () => {
+    if (!reduce.matches && scrollY < main.offsetTop - 1){ scrollTo({top: main.offsetTop, behavior: 'instant'}); update(); }
+  });
+
+  /* ---------- scroll: fly into the hole ---------- */
   const ease = t => t*t*(3-2*t);
   const sstep = (a,b,t) => { t=Math.min(Math.max((t-a)/(b-a),0),1); return t*t*(3-2*t); };
   function update(){
-    let p = 0;
+    let p = 0, run = 0;
     if (!reduce.matches){
-      const run = hero.offsetHeight - innerHeight;
+      run = hero.offsetHeight - innerHeight;
       p = run > 0 ? Math.min(Math.max(-hero.getBoundingClientRect().top / run, 0), 1) : 0;
     }
     const e = ease(p), z = 1 + 13*e;
@@ -124,10 +206,12 @@
     view.cy = base.cy + (H/2 - base.cy) * e;
     const o = 1 - sstep(0, .3, p);
     fades.forEach(el => el.style.opacity = o);
-    if (altEl) altEl.textContent = String(Math.round(e*120)).padStart(3,'0');
+    const alt = String(Math.round(e*120)).padStart(3,'0');
+    alts.forEach(a => a.textContent = alt);
     const d = field((W/2 - view.cx)/view.R, (H/2 - view.cy)/view.R);
-    const lvl = d < OFF ? 0 : Math.floor((d - OFF)/SP) + 1;
-    if (lvlEl) lvlEl.textContent = String(lvl).padStart(2,'0');
+    const lvl = String(d < OFF ? 0 : Math.floor((d - OFF)/SP) + 1).padStart(2,'0');
+    lvls.forEach(l => l.textContent = lvl);
+    handoff(run);
     draw();
   }
 
@@ -137,9 +221,10 @@
   addEventListener('resize', () => { layout(); request(); });
   reduce.addEventListener?.('change', request);
   layout(); update();
+  document.fonts?.ready.then(() => { layout(); update(); });
 
+  /* ---------- Ljubljana clock ---------- */
   const fmt = new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Ljubljana',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
-  const clocks = hero.querySelectorAll('[data-clock]');
   const tick = () => { const t = fmt.format(new Date()); clocks.forEach(c => c.textContent = t); };
   tick(); setInterval(tick, 1000);
 })();

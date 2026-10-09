@@ -199,8 +199,13 @@ p { margin: 0; text-wrap: pretty; }
 .timeline .when { display: inline-block; color: var(--bone); background: var(--graphite); border: 1px solid var(--ash-2); border-radius: 2px; padding: 3px 7px; margin-bottom: 14px; }
 .timeline p { color: var(--fg-2); font-size: 15px; }
 
-/* ---------- studio ---------- */
+/* ---------- studio / company ---------- */
 .studio-grid { display: grid; grid-template-columns: 1fr 1fr 1.1fr; gap: clamp(28px, 4vw, 56px); align-items: start; }
+.company-grid { grid-template-columns: 1.6fr 1fr; }
+.principles { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 22px 28px; }
+.principles div { margin: 0; padding: 0; border-top: 1px solid var(--line); padding-top: 16px; }
+.principles dt { font-size: 20px; letter-spacing: -.03em; font-weight: 500; margin: 0 0 8px; }
+.principles dd { margin: 0; color: var(--fg-2); }
 .plate-f { aspect-ratio: 4 / 3; background: var(--void); color: var(--bone); position: relative; overflow: hidden; margin-bottom: 22px; border: 1px solid var(--ash); }
 .plate-f::before { content: ""; position: absolute; inset: 0; background: repeating-radial-gradient(circle at 78% 72%, transparent 0 26px, rgb(236 233 226 / .09) 26px 27px); mask-image: radial-gradient(60% 80% at 75% 70%, #000 30%, transparent 100%); -webkit-mask-image: radial-gradient(60% 80% at 75% 70%, #000 30%, transparent 100%); }
 .plate-f span { position: absolute; right: 6%; bottom: -14%; font-size: clamp(140px, 15vw, 240px); line-height: 1; font-weight: 500; letter-spacing: -.07em; }
@@ -282,6 +287,7 @@ details[open]::details-content { block-size: auto; }
   .timeline { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 20px; }
   .timeline li { margin-top: 0; }
   .studio-grid { grid-template-columns: 1fr 1fr; }
+  .company-grid { grid-template-columns: 1fr; }
   .id-table { grid-column: 1 / -1; }
 }
 @media (max-width: 1000px) {
@@ -328,6 +334,7 @@ details[open]::details-content { block-size: auto; }
   .timeline .when { margin: 0; grid-column: 3; grid-row: 1; }
   .timeline p { grid-column: 2 / -1; }
   .studio-grid { grid-template-columns: 1fr; }
+  .principles { grid-template-columns: 1fr; }
   summary { font-size: 18px; }
   .seam, .seam.flip { height: 28px; }
 }
