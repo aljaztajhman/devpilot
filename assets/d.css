@@ -66,10 +66,9 @@ a:hover > .roll > span, a:focus-visible > .roll > span { transform: translateY(-
 
 /* ---------- nav: bone over the void at the top; flips with the ground beneath it ---------- */
 .nav { position: fixed; inset: 0 0 auto; z-index: 50; height: var(--nav-h); color: var(--bone); border-bottom: 1px solid transparent; transition: background .4s var(--ease), color .4s var(--ease), border-color .4s var(--ease); }
-.nav.scrolled { background: color-mix(in srgb, var(--bone) 92%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--ink); border-color: #D3CFC5; }
+.nav.scrolled { background: var(--bone); color: var(--ink); border-color: #D3CFC5; }
 .nav.on-dark, .nav.scrolled.on-dark { color: var(--bone); }
-.nav.scrolled.on-dark { background: color-mix(in srgb, var(--void) 86%, transparent); border-color: var(--ash); }
-.nav.scrolled.on-dark.on-ink { background: color-mix(in srgb, var(--void) 94%, transparent); }
+.nav.scrolled.on-dark { background: var(--void); border-color: var(--ash); }
 .nav-in { height: 100%; display: flex; align-items: center; gap: 28px; }
 .wordmark { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 17px; letter-spacing: -.03em; text-decoration: none; }
 .wordmark .mark { width: 22px; height: 22px; display: block; --cut: var(--void); }
@@ -122,7 +121,7 @@ a:hover > .roll > span, a:focus-visible > .roll > span { transform: translateY(-
 .facts { position: relative; z-index: 1; border-block: 1px solid var(--ash); color: var(--steel); }
 .facts-in { display: flex; flex-wrap: wrap; gap: 8px 0; padding-block: 14px; }
 .facts-in span { display: flex; align-items: center; }
-.facts-in span + span::before { content: ""; width: 4px; height: 4px; background: var(--ash-2); margin: 0 18px; }
+.facts-in span + span::before { content: ""; width: 4px; height: 4px; background: var(--ash-2); margin: 0 13px; }
 
 /* ---------- services: four instruments in a row ---------- */
 .services { position: relative; z-index: 1; padding-block: clamp(64px, 8vw, 128px) clamp(64px, 8vw, 120px); }
@@ -323,7 +322,8 @@ details[open]::details-content { block-size: auto; }
   .nav.open.on-dark { background: var(--void); color: var(--bone); border-color: var(--ash); }
   .nav.open .wordmark .mark { --cut: var(--bone); }
   .nav.open.on-dark .wordmark .mark { --cut: var(--void); }
-  .nav.open .nav-links { display: flex; position: absolute; top: var(--nav-h); left: 0; right: 0; flex-direction: column; gap: 0; margin: 0; padding: 8px var(--gutter) 20px; background: inherit; border-bottom: 1px solid color-mix(in srgb, currentColor 18%, transparent); font-size: 20px; }
+  .nav.open .nav-links { display: flex; position: absolute; top: var(--nav-h); left: 0; right: 0; flex-direction: column; gap: 0; margin: 0; padding: 8px var(--gutter) 20px; background: var(--bone); border-bottom: 1px solid color-mix(in srgb, currentColor 18%, transparent); font-size: 20px; }
+  .nav.open.on-dark .nav-links { background: var(--void); }
   .nav.open .nav-links a { padding: 12px 0; border-bottom: 1px solid color-mix(in srgb, currentColor 14%, transparent); opacity: 1; }
   .nav.open .nav-links a[aria-current="true"]::after { bottom: 50%; left: auto; right: 0; transform: translateY(50%); }
   .hud-r .coords { display: none; }
