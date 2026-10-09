@@ -1,0 +1,91 @@
+/* Board-locked Contour hero (Jan Zulip 630402395, 2026-10-09; supersedes 630400016).
+ * Mechanical port of board devpilot-hero.html styles, scoped under #hero
+ * so they do not fight variant D below-fold (.stage demos, .index, etc.).
+ * Only addition: the zoom -> #main handoff block at the bottom (see hero.js). */
+#hero{
+  --ink:#ECE8E3;          /* D fill + light type */
+  --ink-inv:#050505;      /* type where it sits on the D */
+  --bg:#0D0D0D;
+  --signal:#F3410B;
+  --pad:26px; --pad-r:35px;
+  --sans:"Geist",ui-sans-serif,system-ui,sans-serif;
+  --display:"Inter Tight","Geist",ui-sans-serif,system-ui,sans-serif;
+  --mono:"Geist Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  /* composition, written by JS in CSS px */
+  --cx:927px; --cy:367px; --R:320px; --F:187px; --hx:26px; --htop:384px;
+  position:relative;height:260vh;
+  box-sizing:border-box;margin:0;padding:0;
+  background:var(--bg);color:var(--ink);
+  font-family:var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  /* board page inherits UA defaults; D's body sets 17px/1.5 */
+  font-size:16px;line-height:normal;
+}
+#hero *,#hero *::before,#hero *::after{box-sizing:border-box;margin:0;padding:0}
+#hero a{color:inherit;text-decoration:none}
+#hero a:focus-visible{outline:1px solid currentColor;outline-offset:4px;border-radius:0}
+
+#hero .board-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--bg)}
+
+#hero #field{position:absolute;inset:0;width:100%;height:100%;display:block;max-width:none}
+#hero .d-fallback{position:absolute;display:none;left:0;top:0;width:1px;height:1px;overflow:visible;max-width:none}
+#hero .no-gl .d-fallback,#hero.no-gl .d-fallback{display:block}
+
+/* Two identical type layers.
+   .ink  = light type everywhere (difference blend where supported, so contour lines show through letters)
+   .inv  = dark copy, clipped to the D's exact outline by JS -> type turns dark wherever it crosses the D. */
+#hero .layer{position:absolute;inset:0;pointer-events:none}
+#hero .layer a{pointer-events:auto}
+#hero .ink{color:var(--ink);mix-blend-mode:difference}
+#hero .inv{color:var(--ink-inv)}
+#hero .inv a{pointer-events:none}
+
+#hero .x{position:absolute}
+#hero .mono{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;line-height:1.3;white-space:nowrap;font-weight:400;font-variant-numeric:normal}
+
+#hero .brand{top:13px;left:var(--pad);display:flex;align-items:center;height:28px}
+#hero .brand svg{height:26px;width:auto;display:block;max-width:none}
+#hero .clock{top:18px;left:50%;transform:translateX(-50%);display:flex;gap:2.3em}
+#hero .nav{top:14px;right:var(--pad-r);display:flex;gap:34px;font-size:16px;font-weight:500;letter-spacing:.005em}
+#hero .nav sup{font-size:9px;font-weight:400;margin-left:6px;vertical-align:9px;opacity:.85}
+
+#hero .sq{position:absolute;top:87px;left:var(--pad);width:7px;height:7px;background:var(--signal)}
+#hero .tag{top:84px;left:calc(var(--pad) + 14px)}
+#hero .coords{top:82px;right:var(--pad-r);text-align:right;line-height:1.42}
+
+#hero .lede{left:calc(var(--cx) + var(--R) * .05);top:calc(var(--cy) - var(--R) * .63);
+      max-width:calc(var(--R) * .98);
+      font-size:calc(var(--R) * .044);line-height:1.6;letter-spacing:.003em}
+#hero .lede-below .lede{left:var(--pad);top:calc(var(--htop) + var(--F) * 2.05);max-width:34ch;font-size:14px;line-height:1.5}
+
+#hero h1.x{left:var(--hx);top:var(--htop);font-family:var(--display);font-weight:500;
+     font-size:var(--F);line-height:.89;letter-spacing:-.01em;white-space:nowrap}
+#hero h1 span{display:block}
+#hero h1 .l2{margin-left:.87em}
+
+#hero .index{bottom:12px;left:var(--pad)}
+#hero .scroll{bottom:17px;left:50%;transform:translateX(-50%);padding-left:12px}
+#hero .scroll::before{content:"";position:absolute;left:0;top:-13px;bottom:-12px;width:1.5px;background:currentColor}
+#hero .contour{bottom:12px;right:var(--pad-r)}
+
+@media (max-width:760px){
+  #hero{--pad:18px; --pad-r:18px}
+  #hero .clock,#hero .coords,#hero .scroll{display:none}
+  #hero .nav{gap:20px;font-size:14px}
+  #hero .tag{top:64px}#hero .sq{top:67px}
+  #hero h1 .l2{margin-left:.35em}
+}
+@media (prefers-reduced-motion:reduce){ #hero{height:100vh} }
+
+/* ---------- zoom -> page handoff (Zulip 630402395) ----------
+   #main overlaps the last screen of the runway, so the moment the sticky stage lets go
+   #main's top is already at the top of the viewport. While the D flies in, hero.js pins
+   #main to the viewport, clips it to the D's hole and grows it from inside the hole. */
+.js #hero.board-hero{margin-bottom:-100vh;margin-bottom:-100svh}
+.js #hero.board-hero + #main{position:relative;z-index:1}
+#main.handoff{background:#0D0D0D;will-change:transform,clip-path,opacity}
+/* the pin itself is compositor-side: sticky with bottom = viewport - #main height (--pin, set by
+   hero.js) holds #main's top at the viewport top while its natural top is still below it.
+   Selector matches the specificity of the position:relative rule above. */
+.js #hero.board-hero + #main.handoff{position:sticky;bottom:var(--pin,0px);transform-origin:0 0}
+#hero.handing .board-stage{will-change:opacity}
+@media (prefers-reduced-motion:reduce){ .js #hero.board-hero{margin-bottom:0} }

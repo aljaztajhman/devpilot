@@ -3,13 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Devpilot · Stranko, Belin and custom websites</title>
-<meta name="description" content="Three homepage directions for Devpilot, a two-founder software studio in Ljubljana. Pick a variant at the top.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Devpilot · Software and web development, Ljubljana</title>
+<meta property="og:image" content="https://devpilotbot.github.io/devpilot/assets/og-contour.png">
+<meta name="twitter:image" content="https://devpilotbot.github.io/devpilot/assets/og-contour.png">
+<meta name="description" content="Devpilot designs, builds and runs web applications, internal tools and websites. Written scope, working previews and code you own.">
 <style>
-  /* The picker: one dark strip over three full pages. It is review furniture, so it stays quiet and the same in every theme. */
+  /* Self-hosted latin subsets (same files Google Fonts served): Geist and Geist Mono are both variable (wght 100–900). */
+  @font-face { font-family: "Geist"; font-style: normal; font-weight: 100 900; font-display: swap; src: url(assets/fonts/gyByhwUxId8gMEwcGFU.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family: "Geist Mono"; font-style: normal; font-weight: 100 900; font-display: swap; src: url(assets/fonts/or3nQ6H-1_WfwkMZI_qYFrcdmg.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  /* The picker: one dark strip over four full pages. It is review furniture, so it stays quiet and the same in every theme. */
   :root { --bar: #111210; --bar-2: #1c1d1a; --bar-fg: #f3f2ee; --bar-muted: #9a978d; --bar-line: #2e2f2b; --bar-h: 56px;
           --sans: "Geist", system-ui, sans-serif; --mono: "Geist Mono", ui-monospace, monospace; }
   html, body { height: 100%; }
@@ -34,22 +36,26 @@
 
 
 <div class="bar" role="toolbar" aria-label="Variant picker">
-  <span class="tag mono">Devpilot · 3 directions</span>
+  <span class="tag mono">Devpilot · Contour review · A–D</span>
   <div class="seg" id="seg">
-    <button type="button" data-v="a" aria-pressed="true"><b>A</b><span>Paper</span></button>
+    <button type="button" data-v="a" aria-pressed="false"><b>A</b><span>Paper</span></button>
     <button type="button" data-v="b" aria-pressed="false"><b>B</b><span>Blueprint</span></button>
     <button type="button" data-v="c" aria-pressed="false"><b>C</b><span>Stage</span></button>
+    <button type="button" data-v="d" aria-pressed="true"><b>D</b><span>Contour</span></button>
   </div>
   <span class="desc" id="desc"></span>
-  <a class="open mono" id="open" href="variants/a.html" target="_blank" rel="noopener">Open on its own ↗</a>
+  <a class="open mono" id="open" href="variants/d.html" target="_blank" rel="noopener">Open on its own ↗</a>
 </div>
-<iframe class="page" id="page" title="Variant A · Paper" src="variants/a.html"></iframe>
+<!-- No src here: the script below picks the variant (hash → last choice → D) and sets it, so the first load is the right page. -->
+<iframe class="page" id="page" title="Variant D · Contour"></iframe>
+<noscript><iframe class="page" title="Variant D · Contour" src="variants/d.html"></iframe></noscript>
 
 <script>
   const V = {
     a: ["Paper", "Warm paper, Geist, the products demoed in place. Credible and calm."],
     b: ["Blueprint", "A drafting sheet: navy ink on a grid, title blocks, a schedule of services, a programme drawn to scale."],
     c: ["Stage", "A dark showroom: wide Archivo, the products on a lit stage, one tungsten accent, an amber close."],
+    d: ["Contour", "Ink and bone, instrument UI, one ignition accent. Software and web development from Ljubljana."],
   };
   const seg = document.getElementById("seg"), page = document.getElementById("page"), desc = document.getElementById("desc"), open = document.getElementById("open");
   let current = "";
@@ -65,11 +71,11 @@
     if (push) { try { history.replaceState(null, "", `#${v}`); } catch {} }
   }
   seg.addEventListener("click", (e) => { const b = e.target.closest("button[data-v]"); if (b) show(b.dataset.v, true); });
-  addEventListener("keydown", (e) => { if (e.target.closest("input, textarea")) return; const k = { 1: "a", 2: "b", 3: "c" }[e.key]; if (k) show(k, true); });
+  addEventListener("keydown", (e) => { if (e.target.closest("input, textarea")) return; const k = { 1: "a", 2: "b", 3: "c", 4: "d" }[e.key]; if (k) show(k, true); });
   addEventListener("hashchange", () => { const h = location.hash.slice(1); if (V[h]) show(h, false); });
   let start = location.hash.slice(1);
   if (!V[start]) { try { start = localStorage.getItem("devpilot-variant") || ""; } catch {} }
-  show(V[start] ? start : "a", false);
+  show(V[start] ? start : "d", false); /* overnight: Contour D is the review tip */
 </script>
 </body>
 </html>

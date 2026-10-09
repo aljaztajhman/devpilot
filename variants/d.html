@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Devpilot · Software and web development, Ljubljana</title>
+<meta name="description" content="Devpilot designs, builds and runs web applications, internal tools and websites. Written scope, working previews and code you own.">
+<meta property="og:title" content="Devpilot · Software that ships.">
+<meta property="og:description" content="Web applications, internal tools and websites, designed, built and run by one accountable company.">
+<meta name="theme-color" content="#0D0D0D">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://devpilotbot.github.io/devpilot/variants/d.html">
+<meta property="og:locale" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="https://devpilotbot.github.io/devpilot/assets/og-contour.png">
+<meta name="twitter:image" content="https://devpilotbot.github.io/devpilot/assets/og-contour.png">
+<link rel="canonical" href="https://devpilotbot.github.io/devpilot/variants/d.html">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23ECE8E3'/%3E%3Cpath d='M0 0H16A16 16 0 0 1 16 32H11.325V21.3125H16A5.3125 5.3125 0 1 0 10.6875 16V20.675H0Z' fill='%230D0D0D'/%3E%3C/svg%3E">
+<!-- Contour D first fold: board-locked Jan hero (Zulip 630402395, 2026-10-09; supersedes 630400016). Mechanical port + zoom→#main handoff — see assets/contour/board/ -->
+<!-- Self-hosted Geist / Inter Tight (latin + latin-ext, display=swap). Preload only Inter Tight (hero display); Geist via CSS. -->
+<link rel="preload" href="../assets/fonts/NGSnv5HMAFg6IuGlBNMjxJEL2VmU3NS7Z2mjPQ-aWy5S.woff2" as="font" type="font/woff2" crossorigin>
+<!-- d-fonts.css inlined (one render-blocking request less); assets/fonts/d-fonts.css stays for 404 / imprint / privacy. -->
+<style>
+@font-face{font-family:'Geist';font-style:normal;font-weight:500;font-display:swap;src:url(../assets/fonts/gyByhwUxId8gMEwcGFU.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Geist';font-style:normal;font-weight:600;font-display:swap;src:url(../assets/fonts/gyByhwUxId8gMEwcGFU.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Geist Mono';font-style:normal;font-weight:400;font-display:swap;src:url(../assets/fonts/or3yQ6H-1_WfwkMZI_qYPLs1a-t7PU0AbeE9KK5U5Ck.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Inter Tight';font-style:normal;font-weight:500;font-display:swap;src:url(../assets/fonts/NGSnv5HMAFg6IuGlBNMjxJEL2VmU3NS7Z2mjPQ-aWy5S.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+</style>
+<link rel="stylesheet" href="../assets/d.css">
+<link rel="stylesheet" href="../assets/contour/board/hero.css">
+<script>document.documentElement.classList.add("js")</script>
+</head>
+<body id="top">
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ============ BOARD HERO (Jan locked, Zulip 630402395) ============ -->
+<section class="hero board-hero" id="hero" aria-label="Intro">
+  <div class="board-stage" id="board-stage">
+    <canvas id="field" aria-hidden="true"></canvas>
+    <svg class="d-fallback" id="dfb" aria-hidden="true"><path id="dfbPath" fill="#ECE8E3"/></svg>
+
+    <div class="layer ink" id="ink">
+      <a class="x brand" href="../" aria-label="Devpilot home">
+        <svg viewBox="0 0 4944 1280" aria-hidden="true"><g fill="currentColor"><path d="M0 0H640A640 640 0 0 1 640 1280H453V852.5H640A212.5 212.5 0 1 0 427.5 640V827H0Z"/><path d="M1780 912.5V367.5H1968.1Q2100.9 367.5 2172.2 438.5Q2243.6 509.5 2243.6 640.8Q2243.6 771.3 2173.4 841.9Q2103.2 912.5 1972.7 912.5ZM1896.7 814.2H1968.1Q2047.1 814.2 2085.1 771.6Q2123.1 729 2123.1 640Q2123.1 551 2085.1 508.4Q2047.1 465.8 1968.1 465.8H1896.7ZM2508.5 921.7Q2445.5 921.7 2399.1 895.2Q2352.6 868.7 2326.9 820.4Q2301.2 772 2301.2 706.8Q2301.2 641.5 2326.9 593.6Q2352.6 545.6 2398.7 518.7Q2444.7 491.9 2507.7 491.9Q2569.1 491.9 2614.4 518.7Q2659.7 545.6 2684.6 595.5Q2709.6 645.4 2709.6 714.5V737.5H2420.2Q2422.5 786.6 2446.7 810.4Q2470.8 834.2 2510.8 834.2Q2539.9 834.2 2559.5 821.9Q2579.1 809.6 2587.5 784.3L2703.4 791.2Q2687.3 852.6 2635.1 887.2Q2582.9 921.7 2508.5 921.7ZM2420.2 666.9H2591.4Q2589.1 621.6 2566.4 599.3Q2543.8 577.1 2507.7 577.1Q2471.6 577.1 2448.2 600.5Q2424.8 623.9 2420.2 666.9ZM2903.8 912.5 2753.3 501.1H2873.8L2971.3 796.6L3068 501.1H3188.6L3037.3 912.5ZM3255.3 1027.6V501.1H3365.9L3368.2 587.8L3359 584Q3374.3 539.4 3408.9 515.6Q3443.4 491.9 3489.5 491.9Q3547 491.9 3585.4 520.3Q3623.8 548.7 3643.4 597.4Q3662.9 646.1 3662.9 706.8Q3662.9 766.7 3643.4 815.8Q3623.8 864.9 3585 893.3Q3546.3 921.7 3488.7 921.7Q3458.8 921.7 3432.7 910.6Q3406.6 899.5 3387.8 879.5Q3368.9 859.5 3360.5 831.9L3370.5 825.8V1027.6ZM3457.2 833.4Q3497.9 833.4 3521.3 799.7Q3544.7 765.9 3544.7 706.8Q3544.7 647.7 3521.3 613.9Q3497.9 580.1 3457.2 580.1Q3430.4 580.1 3410.8 594.3Q3391.2 608.5 3380.8 636.9Q3370.5 665.3 3370.5 706.8Q3370.5 748.2 3380.8 776.6Q3391.2 805 3410.8 819.2Q3430.4 833.4 3457.2 833.4ZM3742 912.5V501.1H3857.1V912.5ZM3739.7 450.4V358.3H3858.7V450.4ZM4065.2 912.5Q4014.5 912.5 3986.1 887.2Q3957.7 861.8 3957.7 805V367.5H4072.8V792.8Q4072.8 811.2 4081.3 818.9Q4089.7 826.5 4105.8 826.5H4133.5V912.5ZM4384.5 921.7Q4321.5 921.7 4274.7 895.2Q4227.9 868.7 4201.8 820.4Q4175.7 772 4175.7 706.8Q4175.7 641.5 4201.8 593.6Q4227.9 545.6 4274.7 518.7Q4321.5 491.9 4384.5 491.9Q4447.4 491.9 4494.3 518.7Q4541.1 545.6 4567.2 593.6Q4593.3 641.5 4593.3 706.8Q4593.3 772 4567.2 820.4Q4541.1 868.7 4494.3 895.2Q4447.4 921.7 4384.5 921.7ZM4384.5 833.4Q4427.5 833.4 4451.3 800Q4475.1 766.7 4475.1 706.8Q4475.1 646.9 4451.3 613.5Q4427.5 580.1 4384.5 580.1Q4341.5 580.1 4317.7 613.5Q4293.9 646.9 4293.9 706.8Q4293.9 766.7 4317.7 800Q4341.5 833.4 4384.5 833.4ZM4842.7 912.5Q4779 912.5 4749.1 882.9Q4719.2 853.4 4719.2 788.9V404.3H4834.3V775.1Q4834.3 805 4847 815.8Q4859.6 826.5 4885 826.5H4942.5V912.5ZM4653.1 587V501.1H4942.5V587Z"/></g></svg>
+      </a>
+      <div class="x mono clock" aria-hidden="true"><span>LJU <span data-clock data-clock-full>11:04:38</span></span><span>ALT <span data-hero-alt>000</span></span></div>
+      <nav class="x nav" aria-label="Main">
+        <a href="#work">Work<sup>13</sup></a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <p class="x mono tag fade">Software &amp; web studio · Ljubljana</p>
+      <p class="x mono coords fade" aria-hidden="true">46.05°N 14.51°E · Ljubljana<br>LJU <span data-clock data-clock-full>11:04:38</span></p>
+      <p class="x lede fade">Devpilot designs and builds apps and websites end-to-end, from first brief to live release.</p>
+      <h1 class="x fade"><span>Software</span><span class="l2">that ships.</span></h1>
+      <p class="x mono index fade">Index: 2 apps / 11 websites</p>
+      <p class="x mono scroll fade" aria-hidden="true">Scroll to fly in</p>
+      <p class="x mono contour" aria-hidden="true">(<span data-lvl>00</span>) Contour</p>
+    </div>
+    <!-- .inv copy of #ink is created by hero.js -->
+
+    <span class="sq fade" aria-hidden="true"></span>
+  </div>
+</section>
+
+<main id="main">
+
+  <div class="opening dark grain" data-theme="dark">
+
+  <!-- Build stage plate — below first fold on desktop (www Contour composition) -->
+  <div class="hero-stage">
+    <div class="wrap">
+      <div class="hero-visual">
+        <div class="plate-bar mono">
+          <span class="gap" aria-hidden="true"></span>
+          <span>Build stage</span>
+          <a href="#stranko" data-hl="stranko"><b>01</b> Stranko</a>
+          <a href="#belin" data-hl="belin"><b>02</b> Belin</a>
+          <a href="#custom" data-hl="custom"><b>03</b> Websites</a>
+          <span class="right">Live previews below</span>
+        </div>
+        <div class="stage-plate" aria-hidden="true">
+          <i class="cross tl"></i><i class="cross tr"></i><i class="cross bl"></i><i class="cross br"></i>
+          <figure class="shot s-stranko" data-shot="stranko" style="--d:0"><img src="../assets/previews/stranko.webp" srcset="../assets/previews/stranko-800.webp 800w, ../assets/previews/stranko-1200.webp 1200w, ../assets/previews/stranko.webp 1600w" sizes="(max-width: 640px) calc(70vw - 30px), (min-width: 1680px) 950px, 56vw" alt="" width="1600" height="800" decoding="async" fetchpriority="low"></figure>
+          <figure class="shot s-belin" data-shot="belin" style="--d:1"><img src="../assets/previews/belin.webp" srcset="../assets/previews/belin-800.webp 800w, ../assets/previews/belin-1200.webp 1200w, ../assets/previews/belin.webp 1600w" sizes="(max-width: 640px) calc(66vw - 28px), (min-width: 1680px) 855px, 50vw" alt="" width="1600" height="800" decoding="async" fetchpriority="low"></figure>
+          <figure class="shot s-custom" data-shot="custom" style="--d:2"><img src="../assets/previews/custom-phone.webp" srcset="../assets/previews/custom-phone-300.webp 300w, ../assets/previews/custom-phone-450.webp 450w, ../assets/previews/custom-phone.webp 600w" sizes="(max-width: 640px) calc(17vw - 7px), (min-width: 1680px) 198px, 12vw" alt="" width="600" height="1240" decoding="async" fetchpriority="low"></figure>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="facts mono" aria-label="Company facts">
+    <div class="wrap facts-in">
+      <span>Two products of our own, in production</span>
+      <span>Slovenian, German, English</span>
+      <span>Ljubljana · Central European Time</span>
+      <span>Next.js · Supabase · Vercel</span>
+      <span>Hosted in the EU</span>
+      <span>You own the code</span>
+    </div>
+  </div>
+
+  <!-- ============ SERVICES ============ -->
+  <section class="section services" id="services" aria-labelledby="services-title">
+    <div class="wrap">
+      <header class="sec-head rv">
+        <div class="sec-row mono"><p class="kicker">What we build</p><span class="idx">01 / 06</span></div>
+        <h2 id="services-title">Software for one company, or a product for a whole market.</h2>
+        <p class="sec-note">Every service below is backed by software we run in production ourselves.</p>
+      </header>
+      <div class="svc">
+        <div class="rv">
+          <span class="mono n">01</span>
+          <h3>Web applications and products</h3>
+          <p>A product for your market, from the first screen to paying customers. Multi-company, multilingual, on the same stack our own products run on.</p>
+          <a href="#belin">Proof: Belin <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="rv">
+          <span class="mono n">02</span>
+          <h3>Internal tools and field apps</h3>
+          <p>Replace the spreadsheet and the phone calls with one app your team uses on site: on a phone, on a weak signal, with no account and no app store.</p>
+          <a href="#belin">Proof: the crew app in Belin <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="rv">
+          <span class="mono n">03</span>
+          <h3>AI features inside your product</h3>
+          <p>Generation that never invents a fact. Prices, names and opening hours come only from your data, and anything missing is flagged instead of guessed.</p>
+          <a href="#stranko">Proof: Stranko <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="rv">
+          <span class="mono n">04</span>
+          <h3>Websites</h3>
+          <p>Designed around your company, in the languages your clients speak, on static pages that load fast on a building site. The domain and the code are yours.</p>
+          <a href="#custom">Proof: a sample site <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </div>
+  <div class="seam" aria-hidden="true"></div>
+
+  <div id="work">
+
+  <!-- ============ INDEX ============ -->
+  <section class="index wrap" aria-labelledby="index-title">
+    <header class="sec-head rv">
+      <div class="sec-row mono"><p class="kicker">Work</p><span class="idx">02 / 06</span></div>
+      <h2 id="index-title">What we’ve shipped.</h2>
+      <p class="sec-note">Two products we own and run, and websites built for other companies.</p>
+    </header>
+    <a class="row rv" href="#stranko">
+      <span class="mono n">01</span><span class="name"><i></i>Stranko</span>
+      <span class="desc">Websites for small businesses, written from a few sentences</span>
+      <span class="mono tag">Our product · Trades · SI</span><span class="mono status live"><b></b>In production</span><span class="go" aria-hidden="true">→</span>
+    </a>
+    <a class="row rv" href="#belin">
+      <span class="mono n">02</span><span class="name"><i></i>Belin</span>
+      <span class="desc">Daily reports, hours and handover paperwork for solar installers and their crews</span>
+      <span class="mono tag">Our product · Energy · SI AT DE</span><span class="mono status live"><b></b>In production</span><span class="go" aria-hidden="true">→</span>
+    </a>
+    <a class="row rv" href="#custom">
+      <span class="mono n">03</span><span class="name"><i></i>Websites</span>
+      <span class="desc">Designed and built around one company, in the languages its clients speak</span>
+      <span class="mono tag">Client work · Any sector</span><span class="mono status"><b></b>Taking projects</span><span class="go" aria-hidden="true">→</span>
+    </a>
+  </section>
+
+  <!-- ============ STRANKO ============ -->
+  <section class="chapter ch-stranko" id="stranko" data-demo="stranko" aria-labelledby="stranko-title">
+    <div class="wrap">
+      <header class="ch-head">
+        <div class="rv">
+          <p class="kicker mono"><span class="dot"></span>01 · Stranko · Our product · Website builder</p>
+          <h2 id="stranko-title">A small business describes itself in a few sentences. Stranko turns that into a website.</h2>
+        </div>
+        <div class="ch-side rv">
+          <p class="ch-lead">Stranko is our website builder for Slovenian trades: salons, dental practices, garages, bakeries. It’s made for owners who will never open an editor, and it never makes up a fact.</p>
+          <dl class="meta mono">
+            <div><dt>Shows</dt><dd>A product from idea to production</dd></div>
+            <div><dt>Sector</dt><dd>Small business, trades</dd></div>
+            <div><dt>Market</dt><dd>Slovenia</dd></div>
+            <div><dt>Status</dt><dd>In production</dd></div>
+          </dl>
+        </div>
+      </header>
+      <div class="ch-body">
+        <div class="stage">
+          <div class="frame" style="--frame-bg:#eef3f4"><iframe data-src="../demos/stranko.html" title="Stranko product demo" loading="lazy" tabindex="-1"></iframe></div>
+          <div class="stage-bar"><span class="mono count"><b>01</b> / 05</span><span class="cap"></span><span class="segs"></span></div>
+        </div>
+        <ol class="steps">
+          <li class="step" data-scene="prompt"><span class="mono n">01</span><h3>Describe the business.</h3><p>Name, address, services, opening hours. Add a logo and a few photos. That is the whole form.</p></li>
+          <li class="step" data-scene="build"><span class="mono n">02</span><h3>A finished homepage, checked before the owner sees it.</h3><p>Structure, design direction, photos and Slovenian copy, on phone and desktop.</p></li>
+          <li class="step" data-scene="trades"><span class="mono n">03</span><h3>Each trade gets its own design.</h3><p>Type, palette and rhythm follow the business, so a dental practice doesn’t look like a salon. Prices, hours and names come only from the owner; anything missing is flagged and blocks publishing until it’s filled in.</p></li>
+          <li class="step" data-scene="edit"><span class="mono n">04</span><h3>Changes in plain words.</h3><p>“We open at seven on Saturdays” becomes a checked edit everywhere on the site. Any earlier version can be restored in one click.</p></li>
+          <li class="step" data-scene="phone"><span class="mono n">05</span><h3>Built for the phone in a pocket.</h3><p>The site rebuilds itself for a small screen. Call and directions are one tap away on every page.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BELIN ============ -->
+  <div class="seam flip" aria-hidden="true"></div>
+  <section class="chapter ch-belin dark grain" id="belin" data-demo="belin" data-theme="dark" aria-labelledby="belin-title">
+    <div class="wrap">
+      <header class="ch-head">
+        <div class="rv">
+          <p class="kicker mono"><span class="dot"></span>02 · Belin · Our product · Field app for solar installers</p>
+          <h2 id="belin-title">The crew reports from the roof. The office sees it before they’ve climbed down.</h2>
+        </div>
+        <div class="ch-side rv">
+          <p class="ch-lead">Belin connects solar EPC contractors with the subcontractors who mount their panels. Progress, extra hours and handover paperwork all come from one daily report, in Slovenian, German and English.</p>
+          <dl class="meta mono">
+            <div><dt>Shows</dt><dd>A multilingual, multi-company app used on phones</dd></div>
+            <div><dt>Sector</dt><dd>Energy, construction</dd></div>
+            <div><dt>Markets</dt><dd>Slovenia, Austria, Germany</dd></div>
+            <div><dt>Stack</dt><dd>Next.js, Supabase, Vercel</dd></div>
+          </dl>
+        </div>
+      </header>
+      <div class="ch-body">
+        <div class="stage">
+          <div class="frame" style="--frame-bg:#0b1524"><iframe data-src="../demos/belin.html" title="Belin product demo" loading="lazy" tabindex="-1"></iframe></div>
+          <div class="stage-bar"><span class="mono count"><b>01</b> / 06</span><span class="cap"></span><span class="segs"></span></div>
+        </div>
+        <ol class="steps">
+          <li class="step" data-scene="portfolio"><span class="mono n">01</span><h3>Every site on one screen.</h3><p>The contractor sees progress, delays and open items across all subcontractors without a phone call.</p></li>
+          <li class="step" data-scene="overview"><span class="mono n">02</span><h3>Progress nobody has to estimate.</h3><p>Calculated from daily reports and photos, against the pace needed to finish on time.</p></li>
+          <li class="step" data-scene="phone"><span class="mono n">03</span><h3>Reported from the roof.</h3><p>The crew opens a link, adds photos and headcount, and sends. No account, no app store.</p></li>
+          <li class="step" data-scene="hours"><span class="mono n">04</span><h3>On the office screen a second later.</h3><p>Extra hours arrive as a written sheet the office can answer.</p></li>
+          <li class="step" data-scene="german"><span class="mono n">05</span><h3>Slovenian, German, English.</h3><p>Everyone reads Belin in their own language, and the paperwork follows.</p></li>
+          <li class="step" data-scene="closeout"><span class="mono n">06</span><h3>The handover writes itself.</h3><p>Acceptance protocol, hours report and invoice, signed and filed per project.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <div class="seam" aria-hidden="true"></div>
+
+  <!-- ============ WEBSITES ============ -->
+  <section class="chapter ch-custom" id="custom" data-device-demo aria-labelledby="custom-title">
+    <div class="wrap">
+      <header class="ch-head">
+        <div class="rv">
+          <p class="kicker mono"><span class="dot"></span>03 · Websites · Client work</p>
+          <h2 id="custom-title">When a site builder isn’t enough, we design the website around your company.</h2>
+        </div>
+        <div class="ch-side rv">
+          <p class="ch-lead">For companies with more to say than a template allows. Written with you, in the languages your clients speak, on the same fast static stack as our products. You own the result.</p>
+        </div>
+      </header>
+
+      <div class="device rv">
+        <div class="plate"><div class="frame" style="--frame-bg:#e9e6df"><iframe data-src="../demos/custom.html" title="Sample custom website, shown on a desktop and a phone" loading="lazy" tabindex="-1"></iframe></div></div>
+        <div class="device-bar">
+          <div class="toggle" role="group" aria-label="Device">
+            <button type="button" data-device="desktop" aria-pressed="true">Desktop</button>
+            <button type="button" data-device="phone" aria-pressed="false">Phone</button>
+          </div>
+          <div class="toggle" role="group" aria-label="Language">
+            <button type="button" data-lang="de" aria-pressed="true">Deutsch</button>
+            <button type="button" data-lang="en" aria-pressed="false">English</button>
+          </div>
+          <p class="mono note">Sample layout for a fictional installer, built for this page. Switch the device and the layout rebuilds itself.</p>
+        </div>
+      </div>
+
+      <dl class="sheet">
+        <div class="rv"><dt>Design</dt><dd>Made for your company, not adapted from a theme. Desktop and phone are designed together.</dd></div>
+        <div class="rv"><dt>Copy</dt><dd>Written or edited with you in Slovenian, German and English. Each version reads as if it was written in that language.</dd></div>
+        <div class="rv"><dt>Build</dt><dd>Static pages on a CDN: fast on a weak signal, with accessibility and search basics built in.</dd></div>
+        <div class="rv"><dt>Editing</dt><dd>Change text and photos yourself, or ask us to.</dd></div>
+        <div class="rv"><dt>Ownership</dt><dd>Domain, code and accounts in your name. Hosted in the EU.</dd></div>
+        <div class="rv"><dt>After launch</dt><dd>Updates and changes available on request.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  </div>
+
+  <div class="seam flip" aria-hidden="true"></div>
+
+  <!-- ============ PROCESS ============ -->
+  <section class="section process dark grain" id="process" data-theme="dark" aria-labelledby="process-title">
+    <div class="wrap">
+      <header class="sec-head rv">
+        <div class="sec-row mono"><p class="kicker">How a project runs</p><span class="idx">03 / 06</span></div>
+        <h2 id="process-title">A written scope, a clickable design, and a preview link before launch.</h2>
+        <p class="sec-note">Websites and software follow the same six steps. Software goes live in phases, each with its own written scope, so something useful ships early.</p>
+      </header>
+      <ol class="timeline">
+        <li class="rv"><span class="mono n">01</span><h3>First call</h3><span class="mono when">Intro</span><p>You tell us what the software has to do. We tell you whether we’re the right company for it.</p></li>
+        <li class="rv"><span class="mono n">02</span><h3>Scope</h3><span class="mono when">In writing</span><p>A written scope with deliverables, phases and a launch date agreed with you.</p></li>
+        <li class="rv"><span class="mono n">03</span><h3>Design</h3><span class="mono when">Clickable</span><p>The key screens on desktop and phone, with real copy. You click through them before anything is built.</p></li>
+        <li class="rv"><span class="mono n">04</span><h3>Build</h3><span class="mono when">Live preview</span><p>A preview link from the first day of build. You review the real thing, not screenshots.</p></li>
+        <li class="rv"><span class="mono n">05</span><h3>Launch</h3><span class="mono when">Handover</span><p>Go-live, domain, analytics and a handover call.</p></li>
+        <li class="rv"><span class="mono n">06</span><h3>Run</h3><span class="mono when">Optional</span><p>Hosting, updates and new features, if you want them.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <div class="seam" aria-hidden="true"></div>
+
+  <!-- ============ COMPANY ============ -->
+  <section class="section studio" id="about" aria-labelledby="about-title">
+    <div class="wrap">
+      <header class="sec-head rv">
+        <div class="sec-row mono"><p class="kicker">Company</p><span class="idx">04 / 06</span></div>
+        <h2 id="about-title">The people you speak to are the people who build it.</h2>
+        <p class="sec-note">No account managers between you and the engineers. The person on the first call is accountable for the scope, the code and the launch.</p>
+      </header>
+      <div class="studio-grid company-grid">
+        <dl class="principles rv" aria-label="How we work">
+          <div><dt>Written down.</dt><dd>Scope, phases and launch date are in writing before work starts.</dd></div>
+          <div><dt>Shown early.</dt><dd>You see working software during the build, not slide decks.</dd></div>
+          <div><dt>Yours.</dt><dd>Domain, accounts and repository are in your name from day one.</dd></div>
+          <div><dt>Kept running.</dt><dd>Hosting, maintenance and new features are available after launch.</dd></div>
+        </dl>
+        <dl class="id-table mono rv" aria-label="Company facts">
+          <div><dt>Based in</dt><dd>Ljubljana, Slovenia</dd></div>
+          <div><dt>Clients in</dt><dd>Slovenia, Austria, Germany</dd></div>
+          <div><dt>Languages</dt><dd>Slovenian, German, English</dd></div>
+          <div><dt>Own products</dt><dd>Stranko, Belin, both in production</dd></div>
+          <div><dt>Stack</dt><dd>Next.js, Supabase, Vercel</dd></div>
+          <div><dt>Hosting</dt><dd>EU</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="section faq" id="faq" aria-labelledby="faq-title">
+    <div class="wrap faq-grid">
+      <header class="sec-head rv">
+        <div class="sec-row mono"><p class="kicker">Questions</p><span class="idx">05 / 06</span></div>
+        <h2 id="faq-title">What clients ask before the first call.</h2>
+      </header>
+      <div class="qa">
+        <details class="rv"><summary>What does it cost?</summary><p>It depends on the scope. After the first call you get a written scope and a quote, before any work starts. Larger software is quoted phase by phase.</p></details>
+        <details class="rv"><summary>How long does it take?</summary><p>It depends on the scope. The launch date is agreed in writing before work starts, and software ships in phases, so a useful first version reaches you early.</p></details>
+        <details class="rv"><summary>Who owns the code?</summary><p>You do. The domain, the accounts and the repository are in your name from the start, and you can take them anywhere at any time.</p></details>
+        <details class="rv"><summary>Can you take over software someone else built?</summary><p>Usually. We read the code before we quote and tell you whether it makes sense to continue it or rebuild it.</p></details>
+        <details class="rv"><summary>Can our company use Stranko or Belin?</summary><p>Stranko is for small businesses in Slovenia. Belin is for solar EPC contractors and the crews who work for them. Write to us and we’ll show you either one on a call.</p></details>
+        <details class="rv"><summary>Which languages do you work in?</summary><p>Slovenian, German and English, for meetings, copy and the product itself.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <div class="seam flip" aria-hidden="true"></div>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="contact dark grain" id="contact" data-theme="dark" aria-labelledby="contact-title">
+    <div class="wrap">
+      <p class="kicker mono">Contact · 06 / 06</p>
+      <h2 id="contact-title" class="rv">Tell us what you need built.</h2>
+      <div class="email-row rv">
+        <a class="email" href="mailto:info@devpilot.si">info@devpilot.si</a>
+        <button class="copy mono" type="button" data-copy="info@devpilot.si" aria-label="Copy the email address">Copy</button>
+      </div>
+      <div class="contact-row rv">
+        <p>A few sentences about your company and what the software must do are enough. We’ll reply with next steps, and if we’re not the right fit, we’ll say so.</p>
+      </div>
+    </div>
+    <footer class="foot">
+      <div class="wrap foot-in mono">
+        <span>© 2026 Devpilot · Ljubljana, Slovenia</span>
+        <span>Ljubljana <time data-clock>--:--</time></span>
+        <span class="foot-links"><a href="../imprint.html">Imprint</a><a href="../privacy.html">Privacy</a></span>
+      </div>
+    </footer>
+  </section>
+</main>
+
+<script type="module" src="../assets/site.js"></script>
+<script src="../assets/contour/board/hero.js"></script>
+</body>
+</html>
