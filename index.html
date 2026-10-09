@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Devpilot · Stranko, Belin and custom websites</title>
-<meta name="description" content="Three homepage directions for Devpilot, a two-founder software studio in Ljubljana. Pick a variant at the top.">
+<meta name="description" content="Four homepage directions for Devpilot, a two-founder software studio in Ljubljana. Pick a variant at the top.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* The picker: one dark strip over three full pages. It is review furniture, so it stays quiet and the same in every theme. */
+  /* The picker: one dark strip over four full pages. It is review furniture, so it stays quiet and the same in every theme. */
   :root { --bar: #111210; --bar-2: #1c1d1a; --bar-fg: #f3f2ee; --bar-muted: #9a978d; --bar-line: #2e2f2b; --bar-h: 56px;
           --sans: "Geist", system-ui, sans-serif; --mono: "Geist Mono", ui-monospace, monospace; }
   html, body { height: 100%; }
@@ -34,11 +34,12 @@
 
 
 <div class="bar" role="toolbar" aria-label="Variant picker">
-  <span class="tag mono">Devpilot · 3 directions</span>
+  <span class="tag mono">Devpilot · 4 directions</span>
   <div class="seg" id="seg">
     <button type="button" data-v="a" aria-pressed="true"><b>A</b><span>Paper</span></button>
     <button type="button" data-v="b" aria-pressed="false"><b>B</b><span>Blueprint</span></button>
     <button type="button" data-v="c" aria-pressed="false"><b>C</b><span>Stage</span></button>
+    <button type="button" data-v="d" aria-pressed="false"><b>D</b><span>Contour</span></button>
   </div>
   <span class="desc" id="desc"></span>
   <a class="open mono" id="open" href="variants/a.html" target="_blank" rel="noopener">Open on its own ↗</a>
@@ -50,6 +51,7 @@
     a: ["Paper", "Warm paper, Geist, the products demoed in place. Credible and calm."],
     b: ["Blueprint", "A drafting sheet: navy ink on a grid, title blocks, a schedule of services, a programme drawn to scale."],
     c: ["Stage", "A dark showroom: wide Archivo, the products on a lit stage, one tungsten accent, an amber close."],
+    d: ["Contour", "Ink and bone, instrument UI, one ignition accent. Contour craft on the same studio story."],
   };
   const seg = document.getElementById("seg"), page = document.getElementById("page"), desc = document.getElementById("desc"), open = document.getElementById("open");
   let current = "";
@@ -65,7 +67,7 @@
     if (push) { try { history.replaceState(null, "", `#${v}`); } catch {} }
   }
   seg.addEventListener("click", (e) => { const b = e.target.closest("button[data-v]"); if (b) show(b.dataset.v, true); });
-  addEventListener("keydown", (e) => { if (e.target.closest("input, textarea")) return; const k = { 1: "a", 2: "b", 3: "c" }[e.key]; if (k) show(k, true); });
+  addEventListener("keydown", (e) => { if (e.target.closest("input, textarea")) return; const k = { 1: "a", 2: "b", 3: "c", 4: "d" }[e.key]; if (k) show(k, true); });
   addEventListener("hashchange", () => { const h = location.hash.slice(1); if (V[h]) show(h, false); });
   let start = location.hash.slice(1);
   if (!V[start]) { try { start = localStorage.getItem("devpilot-variant") || ""; } catch {} }
