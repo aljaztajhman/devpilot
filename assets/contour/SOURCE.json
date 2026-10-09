@@ -1,0 +1,26 @@
+{
+ "source": "www-devpilot-si-v2 unknown-wip@a05df40 \u00b7 css c5837dedb711 \u00b7 html 9bf770a67fcc",
+ "www": "/home/box/devpilot/engineer/www-devpilot-si-v2",
+ "fonts": {
+  "/_next/static/media/6ebafd0f286e011b-s.p.woff2": "GeistSans.woff2",
+  "/_next/static/media/eedff87053fce9ac.woff2": "GeistMono.woff2"
+ },
+ "files": [
+  "assets/contour/SOURCE.json",
+  "assets/contour/contour.js",
+  "assets/contour/field.js",
+  "assets/contour/fonts/GeistMono.woff2",
+  "assets/contour/fonts/GeistSans.woff2",
+  "assets/contour/img/hero-fallback-1200.webp",
+  "assets/contour/img/hero-fallback-1600.webp",
+  "assets/contour/img/hero-fallback-480.webp",
+  "assets/contour/img/hero-fallback-800.webp",
+  "assets/contour/img/hero-fallback-mobile-1200.webp",
+  "assets/contour/img/hero-fallback-mobile-1600.webp",
+  "assets/contour/img/hero-fallback-mobile-480.webp",
+  "assets/contour/img/hero-fallback-mobile-800.webp",
+  "assets/contour/img/hero-fallback-mobile.jpg",
+  "assets/contour/img/hero-fallback.jpg",
+  "assets/contour/www-hero.css"
+ ]
+}
