@@ -36,34 +36,12 @@
      per-frame update() never reads layout -- no forced reflow while scrolling. */
   let vh = 0, heroTop = 0, run = 0, endY = 0, dpr = 1, dirty = true;
 
-  /* The whole composition (D + headline + paragraph) scales as one unit,
-     so the headline always crosses the D the way it does in the design.
-     Reference frame: 1306 x 793 CSS px, D radius 320.2. */
+  /* Composition math lives inline in variants/d.html (window.__dpHeroLayout) so it also runs
+     before first paint; this just re-runs it and keeps the result. */
   function layout(){
-    W = stage.clientWidth; H = stage.clientHeight;
-    const pad = parseFloat(getComputedStyle(stage).getPropertyValue('--pad'));
-    let s, R, cx, cy, hx;
-    if (W > 760){
-      s  = Math.min(W/1306, H/793);
-      R  = 320.2*s;
-      const dx = Math.max(0, (W - 1306*s)/2);       // very wide screens: centre the composition
-      cx = W - dx - 59*s - R;
-      cy = Math.max(0, (H - 793*s)/2) + 46.75*s + R;
-      hx = dx + pad;
-    } else {
-      s  = (W - 2*pad) / 870;                       // "that ships." fills the width
-      R  = 320.2*s;
-      cx = W - pad - R;
-      const block = 700*s + 120;                    // D + headline + paragraph
-      cy = Math.max(96, (H - block)/2) + R;
-      hx = pad;
-    }
-    const F = 187*s;
-    const htop = cy + 0.5403*R - 0.834*F + 4*s;     // first baseline sits 0.54R below the centre
-    base = {cx, cy, R};
-    const set = (k,v) => stage.style.setProperty(k, v + 'px');
-    set('--cx',cx); set('--cy',cy); set('--R',R); set('--F',F); set('--hx',hx); set('--htop',htop);
-    stage.classList.toggle('lede-below', R < 250);
+    const r = window.__dpHeroLayout(stage);
+    W = r.W; H = r.H;
+    base = {cx:r.cx, cy:r.cy, R:r.R};
   }
 
   function measure(){
