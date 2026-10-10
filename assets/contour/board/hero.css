@@ -79,13 +79,15 @@
 /* ---------- zoom -> page handoff (Zulip 630402395) ----------
    #main overlaps the last screen of the runway, so the moment the sticky stage lets go
    #main's top is already at the top of the viewport. While the D flies in, hero.js pins
-   #main to the viewport, clips it to the D's hole and grows it from inside the hole. */
+   #main to the viewport, clips it to the D's hole and grows it from inside the hole.
+   Use ~ (not +): variants/d.html may insert a script between #hero and #main (pre-paint
+   __dpHeroLayout). Adjacent + would drop sticky/z-index and hide the page until the end. */
 .js #hero.board-hero{margin-bottom:-100vh;margin-bottom:-100svh}
-.js #hero.board-hero + #main{position:relative;z-index:1}
+.js #hero.board-hero ~ #main{position:relative;z-index:1}
 #main.handoff{background:#0D0D0D;will-change:transform,clip-path,opacity}
 /* the pin itself is compositor-side: sticky with bottom = viewport - #main height (--pin, set by
    hero.js) holds #main's top at the viewport top while its natural top is still below it.
    Selector matches the specificity of the position:relative rule above. */
-.js #hero.board-hero + #main.handoff{position:sticky;bottom:var(--pin,0px);transform-origin:0 0}
+.js #hero.board-hero ~ #main.handoff{position:sticky;bottom:var(--pin,0px);transform-origin:0 0}
 #hero.handing .board-stage{will-change:opacity}
 @media (prefers-reduced-motion:reduce){ .js #hero.board-hero{margin-bottom:0} }

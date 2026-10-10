@@ -64,7 +64,6 @@
 
     <span class="sq fade" aria-hidden="true"></span>
   </div>
-</section>
 <!-- Hero composition math (single source; hero.js calls window.__dpHeroLayout). Runs here, before first paint,
      so the headline never paints at hero.css's desktop defaults and then jumps (mobile CLS). -->
 <script>
@@ -99,6 +98,7 @@ window.__dpHeroLayout = function(stage){
 };
 (function(){ const st = document.getElementById('board-stage'); if (st) window.__dpHeroLayout(st); })();
 </script>
+</section>
 
 <main id="main">
 
