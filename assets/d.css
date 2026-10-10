@@ -28,6 +28,10 @@ p { margin: 0; text-wrap: pretty; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .skip { position: fixed; left: 12px; top: -60px; z-index: 100; background: var(--ign); color: var(--ink); padding: 10px 14px; border-radius: 2px; font-weight: 500; }
 .skip:focus { top: 12px; }
+/* D has no fixed bar, but html keeps scroll-padding-top (section anchors land 72px down). For the skip link's #main and the
+ * plate-bar links (inside that 72px when the flight ends below 1200px) the padding scrolled the page back into the hero
+ * runway, where hero.js's finish-the-flight jump on focusin cancels the browser's scroll to the next focused element. */
+#main, .plate-bar a { scroll-margin-top: calc(var(--nav-h) * -1); }
 :focus-visible { outline: 2px solid var(--ign); outline-offset: 3px; border-radius: 2px; }
 .kicker { color: var(--mute); display: flex; align-items: center; gap: 10px; }
 .sec-head .kicker::before { content: "+"; font-weight: 500; color: var(--mute); }
