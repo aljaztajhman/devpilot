@@ -119,6 +119,7 @@ function makePointer(stage, ring) {
 }
 
 export async function type(el, text, alive, cps = 46) {
+  if (!el) return; // the scene moved on before the beat started typing
   if (calm) { el.textContent = text; return; }
   const caret = document.createElement("span");
   caret.className = "caret";

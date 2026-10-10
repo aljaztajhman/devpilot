@@ -320,6 +320,7 @@ fit();
 const BEATS = {
   async prompt(alive, kit) {
     await wait(500);
+    if (!alive()) return;
     await type(screen.querySelector(".prompt .typed"), INTAKE, alive);
     if (!alive()) return;
     await wait(300);
@@ -352,6 +353,7 @@ const BEATS = {
   },
   async edit(alive, kit) {
     await wait(500);
+    if (!alive()) return;
     await type(screen.querySelector(".ibox .typed"), "Ob sobotah odpiramo ob sedmih", alive, 30);
     if (!alive()) return;
     await kit.pointer.click(".send");
