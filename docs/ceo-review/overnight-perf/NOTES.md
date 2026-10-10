@@ -27,3 +27,25 @@ Baseline tip: `798266f` (jank fix). Local Lighthouse:
 - FCP ~2.1s · LCP ~2.4s · SI ~2.1s · TBT variable (0–350 headless WebGL)
 - Fonts: latin-only self-host ~63KB dir (was ~126KB with latin-ext)
 - TBT win vs baseline 210ms attributed to site.js geometry cache
+
+## Final overnight pass 03:05–03:40 CEST (tip 70ff24c)
+- `945e692` demos self-host fonts (no third-party requests from Work iframes)
+- `55df185` hero composition computed before first paint (inline `__dpHeroLayout`, single source with hero.js) — fixes flaky mobile CLS 0.473 (h1 painted at desktop defaults since 7534ba1 made FCP faster) → 0
+- `e743fdc` 480w / 150w preview variants (below fold)
+- `64112d0` picker/imprint/privacy/404 icon + meta (best-practices 96→100)
+- `2ab65db` variants A/B/C self-host fonts — whole preview makes zero third-party requests
+- `1393fbf` facts strip role=group; drop ignored aria-label on Company `<dl>`s
+- `70ff24c` demos inline icon
+
+### Gate (live Pages vs board SoT 630402395 devpilot-hero.html, sha256 35a3be1b…)
+- 1280 / 1440: 0 px diff, all 10 hero element boxes identical
+- 390: element boxes identical; 27 anti-aliased px (max Δ42/255) on the brand-mark bowl edge — pre-existing, same on approved 798266f
+- Console clean (headless GL "GPU stall due to ReadPixels" screenshot warnings only)
+
+### Lighthouse (local, same machine) 798266f → 70ff24c
+- Mobile: Perf 87→98 · FCP 2.8→1.2s · LCP 3.4→1.9s · CLS .002→0 · A11y 93→100 · 398→185 KiB
+- Desktop: Perf 99→100 · LCP 0.7→0.4s · A11y 93→100 · 399→219 KiB
+- Live Pages (gzip): mobile 98 (LCP 1.7s, CLS 0, 123 KiB) · desktop 100 (LCP 0.4s, 158 KiB). SEO <100 = intentional noindex on preview.
+
+### Flags for board (not changed)
+- variants A/B/C (still reachable from picker) carry the old banned copy: two founders, fixed price, five weeks, one working day, hello@example.com. Board-reviewed artifacts → left as-is; rec: hide A/B/C from picker or retire.
